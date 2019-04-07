@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import Dexie from "dexie";
+
+import openSocket from "socket.io-client";
+const socket = openSocket("http://localhost:8000");
+
 const StyledMessages = styled.div`
   background-color: red;
   height: 70vh;
@@ -8,28 +13,53 @@ const StyledMessages = styled.div`
   max-width: 100%;
 `;
 
+const UserMessage = styled.li`
+  text-align: right;
+  color: white;
+`;
+
+const OtherMessage = styled.li`
+  text-align: left;
+  color: blue;
+`;
+
 const MessageScreen = () => {
   const [message, setMessage] = useState("");
-  const [userMessages, setUserMessages] = useState([]);
+  const [messages, setMessages] = useState([]);
 
-  // open the websocket? on mount
-
+  // indexedDB on mount
   useEffect(() => {
-    setUserMessages([{ text: "First!" }]);
+    const db = new Dexie("db");
+    db.version(1).stores({ messages: "" });
+    socket.on("connection", () => {
+      console.log("connecting");
+    });
+
+    socket.on("chat message", msg => {
+      db.table("messages")
+        .add({ messages: msg })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    });
   }, []);
 
-  useEffect(() => {
-    // let request = window.indexedDB.open("messages_db", 1);
-    // request.onerror = function() {
-    //   console.log("Database failed to open");
-    // };
-    // request.onsuccess = function() {
-    //   console.log("Database opened successfully");
-    // };
-    // // db = request.result;
-  }, [userMessages]);
+  const getMessages = () => {
+    db.table("messages")
+      .toArray()
+      .then(setMessages);
+  };
 
-  // useEffect to listen for messages?
+  const sendMessage = event => {
+    event.preventDefault();
+    socket.emit("chat message", message);
+
+    setMessage("");
+    getMessages();
+  };
 
   const recipientName = window.location.pathname;
   return (
@@ -47,12 +77,12 @@ const MessageScreen = () => {
       </h2>
       <StyledMessages>
         <ul>
-          {userMessages.map(message => {
-            return <li>{message.text}</li>;
+          {messages.map(msg => {
+            return <li>{msg.messages}</li>;
           })}
         </ul>
       </StyledMessages>
-      <form>
+      <form onSubmit={sendMessage}>
         <label htmlFor="Message" />
         <input
           type="text"

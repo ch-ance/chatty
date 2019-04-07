@@ -9,6 +9,7 @@ const MessagesHome = () => {
     <>
       <Route path="/" exact component={Home} />
       <Route path="/alice" component={MessageScreen} />
+      <Route path="/test" component={MessageScreen} />
     </>
   );
 };
