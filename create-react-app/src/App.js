@@ -70,6 +70,7 @@ class App extends Component {
     this.updateMessagesDB();
   };
 
+  // cjamge
   addMessage = messageText => {
     const message = {
       text: messageText
