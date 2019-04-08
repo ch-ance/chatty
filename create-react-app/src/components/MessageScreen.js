@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
-
-import Dexie from "dexie";
-
-import openSocket from "socket.io-client";
-const socket = openSocket("http://localhost:8000");
 
 const StyledMessages = styled.div`
   background-color: red;
@@ -13,85 +8,77 @@ const StyledMessages = styled.div`
   max-width: 100%;
 `;
 
-const UserMessage = styled.li`
-  text-align: right;
-  color: white;
-`;
+// const UserMessage = styled.li`
+//   text-align: right;
+//   color: white;
+// `;
 
-const OtherMessage = styled.li`
-  text-align: left;
-  color: blue;
-`;
+// const OtherMessage = styled.li`
+//   text-align: left;
+//   color: blue;
+// `;
 
-const MessageScreen = () => {
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+class MessageScreen extends Component {
+  constructor(props) {
+    super(props);
 
-  // indexedDB on mount
-  useEffect(() => {
-    const db = new Dexie("db");
-    db.version(1).stores({ messages: "" });
-    socket.on("connection", () => {
-      console.log("connecting");
-    });
+    this.state = {
+      messageInput: ""
+    };
 
-    socket.on("chat message", msg => {
-      db.table("messages")
-        .add({ messages: msg })
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    });
-  }, []);
+    this.recipientName = window.location.pathname;
+  }
 
-  const getMessages = () => {
-    db.table("messages")
-      .toArray()
-      .then(setMessages);
-  };
+  componentDidMount() {}
 
-  const sendMessage = event => {
+  getMessages = () => {};
+
+  sendMessage = event => {
     event.preventDefault();
-    socket.emit("chat message", message);
 
-    setMessage("");
-    getMessages();
+    this.props.handleSendMessage(this.state.messageInput);
+    this.props.emitMessageSocket(this.state.messageInput);
+    this.setState({ messageInput: "" });
   };
 
-  const recipientName = window.location.pathname;
-  return (
-    <>
-      <h2>
-        you and
-        {//gets rid of the '/' from the route
-        recipientName
-          .split("")
-          .splice(1)
-          .reverse()
-          .concat(" ")
-          .reverse()
-          .join("")}
-      </h2>
-      <StyledMessages>
-        <ul>
-          {messages.map(msg => {
-            return <li>{msg.messages}</li>;
-          })}
-        </ul>
-      </StyledMessages>
-      <form onSubmit={sendMessage}>
-        <label htmlFor="Message" />
-        <input
-          type="text"
-          value={message}
-          onChange={e => setMessage(e.target.value)}
-        />
-      </form>
-    </>
-  );
-};
+  inputHandler = event => {
+    this.setState({
+      messageInput: event.target.value
+    });
+  };
+
+  render() {
+    return (
+      <>
+        <h2>
+          you and
+          {//gets rid of the '/' from the route
+          this.recipientName
+            .split("")
+            .splice(1)
+            .reverse()
+            .concat(" ")
+            .reverse()
+            .join("")}
+        </h2>
+        <StyledMessages>
+          <ul>
+            {this.props.messages.map(msg => {
+              return <li>{msg.text}</li>;
+            })}
+          </ul>
+        </StyledMessages>
+        <form onSubmit={this.sendMessage}>
+          <label htmlFor="Message" />
+          <input
+            type="text"
+            value={this.state.messageInput}
+            onChange={this.inputHandler}
+          />
+        </form>
+      </>
+    );
+  }
+}
 
 export default MessageScreen;
