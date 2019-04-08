@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-
-const StyledMessages = styled.div`
-  background-color: red;
-  height: 70vh;
-  width: 100vw;
-  max-width: 100%;
-`;
+import MessageBox from "./MessageBox";
 
 // const UserMessage = styled.li`
 //   text-align: right;
@@ -61,13 +54,7 @@ class MessageScreen extends Component {
             .reverse()
             .join("")}
         </h2>
-        <StyledMessages>
-          <ul>
-            {this.props.messages.map(msg => {
-              return <li>{msg.text}</li>;
-            })}
-          </ul>
-        </StyledMessages>
+        <MessageBox messages={this.props.messages} />
         <form onSubmit={this.sendMessage}>
           <label htmlFor="Message" />
           <input

@@ -12,7 +12,7 @@ const socket = openSocket("http://localhost:8000");
 class App extends Component {
   constructor() {
     super();
-    this.state = { messages: [] };
+    this.state = { messages: [], friends: [] };
   }
 
   // open sockets on mount.
@@ -21,25 +21,66 @@ class App extends Component {
       console.log("connecting!");
     });
 
+    // KEEP THESE SEPERATE. CONNECTION ISN'T WORKING
     socket.on("chat message", msg => {
-      this.handleSendMessage(msg.text);
+      console.log("RECIEVING MESSAGE: ", msg);
+      this.addMessage(msg);
+      this.updateMessagesDB();
     });
+    this.updateMessagesDB();
+    // this.updateFriendsDB();
   }
 
   emitMessageSocket = msg => {
-    socket.emit("chat message", msg);
+    console.log("msg");
+  };
+
+  addFriend = (e, fr) => {
+    e.preventDefault();
+    const friend = {
+      friendName: fr
+    };
+    db.table("friends")
+      .add(friend)
+      .then(id => {
+        const newList = [
+          ...this.state.friends,
+          Object.assign({}, friend, { id })
+        ];
+        this.setState({ friends: newList });
+      });
+  };
+
+  updateFriendsDB = () => {
+    db.table("friends")
+      .toArray()
+      .then(friends => {
+        this.setState({ friends });
+      });
   };
 
   handleSendMessage = messageText => {
+    socket.emit("chat message", messageText);
+    this.addMessage(messageText);
+    this.updateMessagesDB();
+  };
+
+  addMessage = messageText => {
     const message = {
       text: messageText
     };
     db.table("messages")
       .add(message)
       .then(id => {
-        const newList = [...this.state.messages, Object.assign({}, message)];
+        const newList = [
+          ...this.state.messages,
+          Object.assign({}, message, { id })
+        ];
         this.setState({ messages: newList });
       });
+  };
+
+  updateMessagesDB = () => {
     db.table("messages")
       .toArray()
       .then(messages => {
@@ -55,6 +96,8 @@ class App extends Component {
             messages={this.state.messages}
             handleSendMessage={this.handleSendMessage}
             emitMessageSocket={this.emitMessageSocket}
+            friends={this.state.friends}
+            addFriend={this.addFriend}
           />
         </main>
       </>
