@@ -9,9 +9,12 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 io.on("connection", client => {
   console.log("user is connecting");
-  client.on("chat message", msg => {
+  client.on("chat message", (msg, socketId) => {
     console.log(`Message!: ${msg}`);
-    client.broadcast.emit("chat message", msg);
+    client.broadcast.emit("socket id", socketId);
+
+    // client.broadcast.emit("chat message", msg);
+    io.to(`${socketId}`).emit("chat message", msg);
   });
 });
 

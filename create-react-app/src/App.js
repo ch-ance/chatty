@@ -12,23 +12,28 @@ const socket = openSocket("http://localhost:8000");
 class App extends Component {
   constructor() {
     super();
-    this.state = { messages: [], friends: [] };
+    this.state = { messages: [], friends: [], id: "" };
   }
 
   // open sockets on mount.
   componentDidMount() {
-    socket.on("connection", () => {
-      console.log("connecting!");
+    socket.on("connect", () => {
+      console.log("SOCKET iD: ", socket.id);
+      this.setState({ id: socket.id });
     });
 
-    // KEEP THESE SEPERATE. CONNECTION ISN'T WORKING
-    socket.on("chat message", msg => {
+    socket.on("chat message", (msg, id) => {
       console.log("RECIEVING MESSAGE: ", msg);
-      this.addMessage(msg);
+      this.addMessage(msg, id);
       this.updateMessagesDB();
     });
+
+    socket.on("socket id", () => {
+      console.log("BROADCASTING ID", socket.id);
+    });
+
     this.updateMessagesDB();
-    // this.updateFriendsDB();
+    this.updateFriendsDB();
   }
 
   emitMessageSocket = msg => {
@@ -59,8 +64,8 @@ class App extends Component {
       });
   };
 
-  handleSendMessage = messageText => {
-    socket.emit("chat message", messageText);
+  handleSendMessage = (messageText, socketId) => {
+    socket.emit("chat message", messageText, socketId);
     this.addMessage(messageText);
     this.updateMessagesDB();
   };
@@ -88,6 +93,11 @@ class App extends Component {
       });
   };
 
+  broadcastId = event => {
+    event.preventDefault();
+    socket.emit("socket id", this.state.id);
+  };
+
   render() {
     return (
       <>
@@ -98,6 +108,7 @@ class App extends Component {
             emitMessageSocket={this.emitMessageSocket}
             friends={this.state.friends}
             addFriend={this.addFriend}
+            broadcastId={this.broadcastId}
           />
         </main>
       </>
