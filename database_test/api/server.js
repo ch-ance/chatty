@@ -2,6 +2,7 @@ const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 const server = express();
+const knex = require("knex");
 
 const db = require("../database/dbConfig.js");
 
@@ -68,12 +69,27 @@ server.post("/api/users/:id/friends", async (req, res) => {
 
 // Gets a list of a user's friends
 server.get("/api/users/:id/friends", async (req, res) => {
-  const id = req.params.id;
   try {
-    const userFriends = await db("users")
-      .where({ id })
-      .join("friends")
-      .where("friends.user_id", "=", "users.id");
+    const user_id = req.params.id;
+    const userFriendsIDs = await db("users")
+      .select("other_user_id")
+      .join("friends", "friends.user_id", "=", "users.id")
+      .where({ user_id })
+      .map(obj => {
+        return obj.other_user_id;
+      });
+
+    // const userFriends = await db("users")
+    // .select("*")
+    // .where({ id: userFriendsIDs[0] })
+    // .first();
+
+    const userFriends = userFriendsIDs.map(id => {
+      return db("users")
+        .select("*")
+        .where({ id });
+    });
+
     res.status(200).json(userFriends);
   } catch (error) {
     console.error(JSON.stringify(error));
