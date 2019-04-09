@@ -43,7 +43,8 @@ server.get("/api/users/:id", async (req, res) => {
 });
 
 // Takes id from params and adds them as a friend to other_user_id
-// This should be done twice when a connection is made, once for each user
+// This should be done twice when a friendship is made, once for each user
+// Two API calls for now, should refactor later so that this function takes care of both users
 server.post("/api/users/:id/friends", async (req, res) => {
   const id = req.params.id;
   try {
@@ -71,25 +72,19 @@ server.post("/api/users/:id/friends", async (req, res) => {
 server.get("/api/users/:id/friends", async (req, res) => {
   try {
     const user_id = req.params.id;
-    const userFriendsIDs = await db("users")
-      .select("other_user_id")
-      .join("friends", "friends.user_id", "=", "users.id")
-      .where({ user_id })
-      .map(obj => {
-        return obj.other_user_id;
+
+    const userFriendsIDs = await db("friends")
+      .join("users", "friends.other_user_id", "users.id")
+      .where("friends.other_user_id", "=", user_id)
+      .map(friend => {
+        return friend.user_id;
       });
 
-    // const userFriends = await db("users")
-    // .select("*")
-    // .where({ id: userFriendsIDs[0] })
-    // .first();
+    const users = await db("users");
 
-    const userFriends = userFriendsIDs.map(id => {
-      return db("users")
-        .select("*")
-        .where({ id });
+    const userFriends = users.filter(user => {
+      return userFriendsIDs.includes(user.id);
     });
-
     res.status(200).json(userFriends);
   } catch (error) {
     console.error(JSON.stringify(error));
