@@ -9,8 +9,14 @@ exports.up = function(knex) {
       .unique();
     tbl.string("password", 255).notNullable();
 
-    tbl.string("socket_id", 255);
-    tbl.boolean("is_online").notNullable();
+    tbl
+      .string("socket_id", 255)
+      .notNullable()
+      .defaultTo("");
+    tbl
+      .boolean("is_online")
+      .notNullable()
+      .defaultTo(false);
   });
 };
 

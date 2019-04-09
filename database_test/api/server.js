@@ -3,6 +3,12 @@ const helmet = require("helmet");
 const cors = require("cors");
 const server = express();
 const knex = require("knex");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const secret = process.env.JWT_SECRET || "chance halo anthony embrey-farquhar";
+
+// REFACTOR NEEDED: update restricted routes to use authenticate
+const { authenticate } = require("../auth/authenticate");
 
 const db = require("../database/dbConfig.js");
 
@@ -96,41 +102,65 @@ server.get("/api/users/:id/friends", async (req, res) => {
 
 // GET FRIENDS OF USER
 
-// server.get("/api/users/friends/:id", async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     // const friendships = await db("friendships");
-//     // const user = await db("users").where({ id });
+// Update socket_id when a user connects
+server.put("/api/users/:id/connect", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { socket_id } = req.body;
 
-//     const userFriends = await db("users AS u")
-//       .where({ id })
-//       .join("friendships AS f");
-//     //   .where("u.id", "=", "f.second_user_id");
-//     res.status(200).json(userFriends);
-//   } catch (error) {
-//     console.error(JSON.stringify(error));
-//     res.status(500).json({
-//       message: "Error retrieving friendships."
-//     });
-//   }
-// });
+    await db("users")
+      .where({ id })
+      .update({ socket_id })
+      .then(id => {
+        res.status(200).json(id);
+      });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("ERROR UPDATING SOCKET ID: ", error);
+  }
+});
 
-// server.get("/api/users/friends/:id", async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     // const friendships = await db("friendships");
-//     // const user = await db("users").where({ id });
-//     const userFriends = await db("users")
-//       .where({ id })
-//       .join("friendships", "friendships.id", "=", "users.id");
-//     // .join("friendships", "friendships.first_friend_id", "=", "users.id");
-//     res.status(200).json(userFriends);
-//   } catch (error) {
-//     console.error(JSON.stringify(error));
-//     res.status(500).json({
-//       message: "Error retrieving friendships."
-//     });
-//   }
-// });
+// REMOVE SOCKET_ID WHEN A USER DISCONNECTS
+server.put("/api/users/:id/disconnect", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await db("users")
+      .where({ id })
+      .update({ socket_id: "" })
+      .then(id => {
+        res.status(200).json(id);
+      });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("ERROR UPDATING SOCKET ID: ", error);
+  }
+});
+
+// LOGIN AND REGISTER
+
+server.post("/api/register", (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    res.status(400).json({
+      message: "Username and password required"
+    });
+  }
+
+  const hash = bcrypt.hashSync(password);
+
+  db("users")
+    .insert({ username, password: hash })
+    .then(([id]) => {
+      res.status(201).json({
+        username,
+        id
+      });
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
 
 module.exports = server;
