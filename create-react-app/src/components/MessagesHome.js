@@ -4,9 +4,8 @@ import { Link } from "react-router-dom";
 class MessagesHome extends Component {
   constructor(props) {
     super(props);
-    this.state = { socket_id: "", homePage: null };
+    this.state = { homePage: null };
   }
-
   render() {
     return (
       <>

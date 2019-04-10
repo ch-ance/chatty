@@ -23,6 +23,7 @@ class App extends Component {
     socket.on("connect", () => {
       console.log("SOCKET iD: ", socket.id);
       localStorage.setItem("socket_id", socket.id);
+      this.updateOnlineStatus(socket.id);
     });
 
     socket.on("chat message", (msg, id) => {
@@ -32,6 +33,12 @@ class App extends Component {
 
     this.updateFriends();
   }
+
+  updateOnlineStatus = socket_id => {
+    axios.put(`${baseURL}/api/users/${localStorage.getItem("id")}/connect`, {
+      socket_id
+    });
+  };
 
   updateFriends = () => {
     axios
@@ -47,9 +54,11 @@ class App extends Component {
     this.setState({ loggedIn: !this.state.loggedIn, messages: [] });
   };
 
-  handleSendMessage = (messageText, socketId, friendName) => {
-    socket.to(socketId).emit("chat message", messageText);
-    this.addMessage(messageText, friendName);
+  handleSendMessage = (messageText, friendName) => {
+    socket.emit("chat message", messageText);
+    // .to(localStorage.getItem("friend_socket_id"))
+
+    // this.addMessage(messageText, friendName);
   };
 
   addMessage = (messageText, socketId) => {

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import MessageBox from "./MessageBox";
+import axios from "axios";
+import baseURL from "../api/url";
 
 // const UserMessage = styled.li`
 //   text-align: right;
@@ -20,7 +22,7 @@ class MessageScreen extends Component {
       messages: []
     };
 
-    this.recipientName = window.location.pathname.split("/");
+    this.recipientName = window.location.pathname.replace("/", "");
   }
 
   sendMessage = event => {
@@ -35,6 +37,24 @@ class MessageScreen extends Component {
       messageInput: event.target.value
     });
   };
+
+  componentDidUpdate() {
+    axios
+      .get(`${baseURL}/api/users/${localStorage.getItem("id")}/friends`)
+      .then(res => {
+        const friend = res.data.filter(friend => {
+          return friend.username === this.recipientName;
+        });
+        // console.log(
+        //   `USERNAME: ${res.data[0].username} ----- RECIP: ${this.recipientName}`
+        // );
+        console.log("FRIEND ID ", friend[0].socket_id);
+        localStorage.setItem("friend_socket_id", friend[0].socket_id);
+      })
+      .catch(err => {
+        console.log("COULDN'T GET FRIEND: ", err);
+      });
+  }
 
   render() {
     return (
