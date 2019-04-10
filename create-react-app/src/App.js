@@ -1,9 +1,14 @@
 import React, { Component, useState } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
+import db from "./database/db";
 import axios from "axios";
 import baseURL from "./api/url";
+import openSocket from "socket.io-client";
 import MessageScreen from "./components/MessageScreen";
 import MessagesHome from "./components/MessagesHome";
+
+const socket = openSocket("http://localhost:8000");
+
 // conditional render based on whether user is logged in
 // login screen
 // messages screen/contacts => message app screen
@@ -11,22 +16,70 @@ import MessagesHome from "./components/MessagesHome";
 class App extends Component {
   constructor() {
     super();
-    this.state = { loggedIn: false };
+    this.state = { loggedIn: false, messages: [], friends: [] };
   }
 
+  componentDidMount() {
+    socket.on("connect", () => {
+      console.log("SOCKET iD: ", socket.id);
+      localStorage.setItem("socket_id", socket.id);
+    });
+
+    socket.on("chat message", (msg, id) => {
+      console.log("RECIEVING MESSAGE: " + msg + " FROM: " + id);
+      this.addMessage(msg, id);
+    });
+
+    this.updateFriends();
+  }
+
+  updateFriends = () => {
+    axios
+      .get(`${baseURL}/api/users/${localStorage.getItem("id")}/friends`)
+      .then(res => {
+        this.setState({
+          friends: res.data
+        });
+      });
+  };
+
   toggleLoggedIn = () => {
-    this.setState({ loggedIn: !this.state.loggedIn });
+    this.setState({ loggedIn: !this.state.loggedIn, messages: [] });
+  };
+
+  handleSendMessage = (messageText, socketId, friendName) => {
+    socket.to(socketId).emit("chat message", messageText);
+    this.addMessage(messageText, friendName);
+  };
+
+  addMessage = (messageText, socketId) => {
+    const message = {
+      text: messageText,
+      me: localStorage.getItem("username"),
+      friend: "Jane"
+    };
+    db.table("messages")
+      .add(message)
+      .then(id => {
+        const newList = [
+          ...this.state.messages,
+          Object.assign({}, message, { id })
+        ];
+        this.setState({ messages: newList });
+      });
   };
 
   render() {
     return (
       <>
         {this.state.loggedIn ? (
-          <MessagesHome toggleLoggedIn={this.toggleLoggedIn} />
+          <MessagesHome
+            toggleLoggedIn={this.toggleLoggedIn}
+            friends={this.state.friends}
+          />
         ) : (
           <Login toggleLoggedIn={this.toggleLoggedIn} />
         )}
-        <Route path="/alice" component={MessageScreen} />
         <Route
           path="/test"
           exact
@@ -58,8 +111,6 @@ const Login = ({ toggleLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  // const [toHomePage, setToHomePage] = useState(false);
-
   const handleSubmit = event => {
     event.preventDefault();
     axios
@@ -71,9 +122,11 @@ const Login = ({ toggleLoggedIn }) => {
         console.log(res.data);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("id", res.data.id);
+        localStorage.setItem("username", res.data.username);
         axios.put(`${baseURL}/api/${res.data.id}/connect`, {
           socket_id: localStorage.getItem("socket_id")
         });
+        localStorage.setItem("loggedIn", true);
         toggleLoggedIn();
       })
       .catch(err => {

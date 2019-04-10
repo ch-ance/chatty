@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import db from "../database/db";
 import styled from "styled-components";
 
 const StyledMessages = styled.div`
@@ -17,9 +18,20 @@ class MessageBox extends Component {
     return (
       <StyledMessages>
         <ul>
-          {this.props.messages.reverse().map(msg => {
-            return msg.text && <li>{msg.text}</li>;
-          })}
+          {this.props.messages ? (
+            this.props.messages
+              .filter(message => {
+                return (
+                  message.me === localStorage.getItem("username") ||
+                  message.friend === this.props.recepientName
+                );
+              })
+              .map(message => {
+                return message.text && <li>{message.text}</li>;
+              })
+          ) : (
+            <li>No messages</li>
+          )}
         </ul>
       </StyledMessages>
     );

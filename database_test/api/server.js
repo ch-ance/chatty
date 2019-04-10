@@ -181,7 +181,8 @@ server.post("/api/login", (req, res) => {
         res.status(200).json({
           message: `Welcome ${user.username}!`,
           token,
-          id: user.id
+          id: user.id,
+          username: user.username
         });
       } else {
         res.status(401).json({ message: "Invalid credentials" });

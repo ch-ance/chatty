@@ -16,15 +16,12 @@ class MessageScreen extends Component {
     super(props);
 
     this.state = {
-      messageInput: ""
+      messageInput: "",
+      messages: []
     };
 
-    this.recipientName = window.location.pathname;
+    this.recipientName = window.location.pathname.split("/");
   }
-
-  componentDidMount() {}
-
-  getMessages = () => {};
 
   sendMessage = event => {
     event.preventDefault();
@@ -42,18 +39,7 @@ class MessageScreen extends Component {
   render() {
     return (
       <>
-        <h2>
-          you and
-          {//gets rid of the '/' from the route
-          this.recipientName
-            .split("")
-            .splice(1)
-            .reverse()
-            .concat(" ")
-            .reverse()
-            .join("")}
-        </h2>
-        <MessageBox messages={this.props.messages} />
+        <h2>you and {this.recipientName}</h2>
         <form onSubmit={this.sendMessage}>
           <label htmlFor="Message" />
           <input
@@ -62,6 +48,10 @@ class MessageScreen extends Component {
             onChange={this.inputHandler}
           />
         </form>
+        <MessageBox
+          recipientName={this.recipientName}
+          messages={this.props.messages}
+        />
       </>
     );
   }
