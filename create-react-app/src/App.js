@@ -1,10 +1,9 @@
-import React, { Component } from "react";
-import "./App.css";
+import React, { Component, useState } from "react";
+import { Route, Redirect } from "react-router-dom";
+import axios from "axios";
+import baseURL from "./api/url";
+import MessageScreen from "./components/MessageScreen";
 import MessagesHome from "./components/MessagesHome";
-import db from "./database/db";
-import openSocket from "socket.io-client";
-const socket = openSocket("http://localhost:8000");
-
 // conditional render based on whether user is logged in
 // login screen
 // messages screen/contacts => message app screen
@@ -12,109 +11,107 @@ const socket = openSocket("http://localhost:8000");
 class App extends Component {
   constructor() {
     super();
-    this.state = { messages: [], friends: [], id: "" };
+    this.state = { loggedIn: false };
   }
 
-  // open sockets on mount.
-  componentDidMount() {
-    socket.on("connect", () => {
-      console.log("SOCKET iD: ", socket.id);
-      this.setState({ id: socket.id });
-    });
-
-    socket.on("chat message", (msg, id) => {
-      console.log("RECIEVING MESSAGE: ", msg);
-      this.addMessage(msg, id);
-      this.updateMessagesDB();
-    });
-
-    socket.on("socket id", () => {
-      console.log("BROADCASTING ID", socket.id);
-    });
-
-    this.updateMessagesDB();
-    this.updateFriendsDB();
-  }
-
-  emitMessageSocket = msg => {
-    console.log("msg");
-  };
-
-  addFriend = (e, fr) => {
-    e.preventDefault();
-    const friend = {
-      friendName: fr
-    };
-    db.table("friends")
-      .add(friend)
-      .then(id => {
-        const newList = [
-          ...this.state.friends,
-          Object.assign({}, friend, { id })
-        ];
-        this.setState({ friends: newList });
-      });
-  };
-
-  updateFriendsDB = () => {
-    db.table("friends")
-      .toArray()
-      .then(friends => {
-        this.setState({ friends });
-      });
-  };
-
-  handleSendMessage = (messageText, socketId) => {
-    socket.emit("chat message", messageText, socketId);
-    this.addMessage(messageText);
-    this.updateMessagesDB();
-  };
-
-  // cjamge
-  addMessage = messageText => {
-    const message = {
-      text: messageText
-    };
-    db.table("messages")
-      .add(message)
-      .then(id => {
-        const newList = [
-          ...this.state.messages,
-          Object.assign({}, message, { id })
-        ];
-        this.setState({ messages: newList });
-      });
-  };
-
-  updateMessagesDB = () => {
-    db.table("messages")
-      .toArray()
-      .then(messages => {
-        this.setState({ messages });
-      });
-  };
-
-  broadcastId = event => {
-    event.preventDefault();
-    socket.emit("socket id", this.state.id);
+  toggleLoggedIn = () => {
+    this.setState({ loggedIn: !this.state.loggedIn });
   };
 
   render() {
     return (
       <>
-        <main>
-          <MessagesHome
-            messages={this.state.messages}
-            handleSendMessage={this.handleSendMessage}
-            emitMessageSocket={this.emitMessageSocket}
-            friends={this.state.friends}
-            addFriend={this.addFriend}
-            broadcastId={this.broadcastId}
-          />
-        </main>
+        {this.state.loggedIn ? (
+          <MessagesHome toggleLoggedIn={this.toggleLoggedIn} />
+        ) : (
+          <Login toggleLoggedIn={this.toggleLoggedIn} />
+        )}
+        <Route path="/alice" component={MessageScreen} />
+        <Route
+          path="/test"
+          exact
+          render={props => (
+            <MessageScreen
+              {...props}
+              handleSendMessage={this.handleSendMessage}
+              messages={this.state.messages}
+            />
+          )}
+        />
+        <Route
+          path="/:friend"
+          exact
+          render={props => (
+            <MessageScreen
+              {...props}
+              handleSendMessage={this.handleSendMessage}
+              messages={this.state.messages}
+            />
+          )}
+        />
       </>
     );
   }
 }
+
+const Login = ({ toggleLoggedIn }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  // const [toHomePage, setToHomePage] = useState(false);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    axios
+      .post(`${baseURL}/api/login`, {
+        username,
+        password
+      })
+      .then(res => {
+        console.log(res.data);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("id", res.data.id);
+        axios.put(`${baseURL}/api/${res.data.id}/connect`, {
+          socket_id: localStorage.getItem("socket_id")
+        });
+        toggleLoggedIn();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  return (
+    <>
+      <header>
+        <h1>chatty login</h1>
+      </header>
+      <section>
+        <h2>Have an account? Log in below!</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              onChange={e => setUsername(e.target.value)}
+              value={username}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              onChange={e => setPassword(e.target.value)}
+              value={password}
+            />
+          </div>
+          <div>
+            <button type="submit">Login</button>
+          </div>
+        </form>
+      </section>
+    </>
+  );
+};
 
 export default App;

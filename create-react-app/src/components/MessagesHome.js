@@ -1,74 +1,100 @@
-import React from "react";
-import { Route, Link } from "react-router-dom";
+import React, { Component } from "react";
+import db from "../database/db";
+import openSocket from "socket.io-client";
+const socket = openSocket("http://localhost:8000");
 
-import MessageScreen from "./MessageScreen";
-import AddFriendForm from "./forms/AddFriendForm";
-import requiresAuth from "./requiresAuth";
+class MessagesHome extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { messages: [], friends: [], socket_id: "", homePage: null };
+  }
 
-const MessagesHome = ({
-  messages,
-  handleSendMessage,
-  emitMessageSocket,
-  clearChat,
-  friends,
-  addFriend,
-  broadcastId
-}) => {
-  return (
-    <>
-      <button onClick={broadcastId}>Broadcast ID</button>
-      <Route
-        path="/"
-        exact
-        render={props => (
-          <Home {...props} addFriend={addFriend} friends={friends} />
-        )}
-      />
-      <Route path="/alice" component={MessageScreen} />
-      <Route
-        path="/test"
-        render={props => (
-          <MessageScreen
-            {...props}
-            handleSendMessage={handleSendMessage}
-            messages={messages}
-            emitMessageSocket={emitMessageSocket}
-            clearChat={clearChat}
-          />
-        )}
-      />
-      <Route
-        path="/:friend"
-        render={props => (
-          <MessageScreen
-            {...props}
-            handleSendMessage={handleSendMessage}
-            messages={messages}
-            emitMessageSocket={emitMessageSocket}
-            clearChat={clearChat}
-          />
-        )}
-      />
-    </>
-  );
-};
+  render() {
+    return (
+      <>
+        <main>
+          <button onClick={this.logout}>Logout</button>
+          <h2>chatty Homepage...!</h2>
+        </main>
+      </>
+    );
+  }
 
-const Home = ({ addFriend, friends }) => {
-  return (
-    <>
-      <h2>Messsages: </h2>
-      <br />
-      <h3>Add Friend:</h3>
-      <AddFriendForm addFriend={addFriend} />
-      <h3>Friends: </h3>
-      <ul>
-        {friends.map(friend => {
-          return <Link to={`/${friend.friendName}`}>{friend.friendName}</Link>;
-        })}
-      </ul>
-      <Link to="/alice">Alice</Link>
-    </>
-  );
-};
+  logout = event => {
+    event.preventDefault();
+    localStorage.clear();
+    this.props.toggleLoggedIn();
+  };
 
-export default requiresAuth(MessagesHome);
+  // open sockets on mount.
+  componentDidMount() {
+    socket.on("connect", () => {
+      console.log("SOCKET iD: ", socket.id);
+      localStorage.setItem("socket_id", socket.id);
+    });
+
+    socket.on("chat message", (msg, id) => {
+      console.log("RECIEVING MESSAGE: ", msg);
+      this.addMessage(msg, id);
+      this.updateMessagesDB();
+    });
+
+    this.updateMessagesDB();
+    this.updateFriendsDB();
+  }
+
+  addFriend = (e, friendName) => {
+    e.preventDefault();
+    const friend = {
+      friendName
+    };
+    db.table("friends")
+      .add(friend)
+      .then(id => {
+        const newList = [
+          ...this.state.friends,
+          Object.assign({}, friend, { id })
+        ];
+        this.setState({ friends: newList });
+      });
+  };
+
+  updateFriendsDB = () => {
+    db.table("friends")
+      .toArray()
+      .then(friends => {
+        this.setState({ friends });
+      });
+  };
+
+  handleSendMessage = (messageText, socketId) => {
+    socket.emit("chat message", messageText, socketId);
+    this.addMessage(messageText);
+    this.updateMessagesDB();
+  };
+
+  addMessage = messageText => {
+    const message = {
+      text: messageText
+    };
+    db.table("messages")
+      .add(message)
+      .then(id => {
+        const newList = [
+          ...this.state.messages,
+          Object.assign({}, message, { id })
+        ];
+        this.setState({ messages: newList });
+      });
+  };
+
+  updateMessagesDB = () => {
+    db.table("messages")
+      .toArray()
+      .then(messages => {
+        this.setState({ messages });
+      });
+  };
+}
+
+export default MessagesHome;

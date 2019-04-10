@@ -30,7 +30,6 @@ class MessageScreen extends Component {
     event.preventDefault();
 
     this.props.handleSendMessage(this.state.messageInput);
-    this.props.emitMessageSocket(this.state.messageInput);
     this.setState({ messageInput: "" });
   };
 

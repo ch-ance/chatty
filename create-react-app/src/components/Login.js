@@ -1,15 +1,32 @@
 import React, { useState } from "react";
+import axios from "axios";
+import baseURL from "../api/url";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  // const [toHomePage, setToHomePage] = useState(false);
+
   const handleSubmit = event => {
     event.preventDefault();
-
-    localStorage.setItem("token", "ayy");
-    setUsername("");
-    setPassword("");
+    axios
+      .post(`${baseURL}/api/login`, {
+        username,
+        password
+      })
+      .then(res => {
+        console.log(res.data);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("id", res.data.id);
+        axios.put(`${baseURL}/api/${res.data.id}/connect`, {
+          socket_id: localStorage.getItem("socket_id")
+        });
+        // setToHomePage(true);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
