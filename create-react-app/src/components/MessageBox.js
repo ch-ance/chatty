@@ -27,7 +27,11 @@ class MessageBox extends Component {
                 );
               })
               .map(message => {
-                return message.text && <li>{message.text}</li>;
+                return (
+                  message.text && (
+                    <li>{`From: ${message.senderName}: ${message.text}`}</li>
+                  )
+                );
               })
           ) : (
             <li>No messages</li>

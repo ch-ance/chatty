@@ -26,9 +26,9 @@ class App extends Component {
       this.updateOnlineStatus(socket.id);
     });
 
-    socket.on("chat message", (msg, id) => {
-      console.log("RECIEVING MESSAGE: " + msg + " FROM: " + id);
-      this.addMessage(msg, id);
+    socket.on("chat message", (msg, senderName) => {
+      console.log("RECIEVING MESSAGE: " + msg + " FROM: " + senderName);
+      this.addMessage(msg, senderName);
     });
 
     this.updateFriends();
@@ -54,18 +54,24 @@ class App extends Component {
     this.setState({ loggedIn: !this.state.loggedIn, messages: [] });
   };
 
+  // Socket.emit parameters are what is being passed to the socket server (duh)
   handleSendMessage = (messageText, friendName) => {
-    socket.emit("chat message", messageText);
+    socket.emit(
+      "chat message",
+      messageText,
+      localStorage.getItem("friend_socket_id"),
+      localStorage.getItem("username")
+    );
     // .to(localStorage.getItem("friend_socket_id"))
 
     // this.addMessage(messageText, friendName);
   };
 
-  addMessage = (messageText, socketId) => {
+  addMessage = (messageText, senderName) => {
     const message = {
       text: messageText,
       me: localStorage.getItem("username"),
-      friend: "Jane"
+      senderName: senderName
     };
     db.table("messages")
       .add(message)
