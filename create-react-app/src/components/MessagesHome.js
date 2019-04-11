@@ -11,6 +11,7 @@ class MessagesHome extends Component {
       <>
         <main>
           <button onClick={this.logout}>Logout</button>
+          <Link to="/">Back to home page</Link>
           <h2>chatty Homepage...!</h2>
           <h3>Messages:-_-:</h3>
           <ul>

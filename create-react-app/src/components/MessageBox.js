@@ -12,7 +12,7 @@ const StyledMessages = styled.div`
 class MessageBox extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { messages: [] };
   }
   render() {
     return (

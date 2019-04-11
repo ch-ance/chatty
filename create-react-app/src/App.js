@@ -32,6 +32,7 @@ class App extends Component {
     });
 
     this.updateFriends();
+    this.getMessages();
   }
 
   updateOnlineStatus = socket_id => {
@@ -84,6 +85,8 @@ class App extends Component {
       });
   };
 
+  getMessages = () => {};
+
   render() {
     return (
       <>
@@ -102,7 +105,7 @@ class App extends Component {
             <MessageScreen
               {...props}
               handleSendMessage={this.handleSendMessage}
-              messages={this.state.messages}
+              messages={this.getMessages()}
             />
           )}
         />
@@ -113,7 +116,7 @@ class App extends Component {
             <MessageScreen
               {...props}
               handleSendMessage={this.handleSendMessage}
-              messages={this.state.messages}
+              messages={this.getMessages()}
             />
           )}
         />
