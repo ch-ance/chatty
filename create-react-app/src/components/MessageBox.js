@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import db from "../database/db";
+import "./messages.css";
 import styled from "styled-components";
 
 const StyledMessages = styled.div`
-  background-color: red;
-  height: 70vh;
+  background-color: lightgrey;
+  height: 100%;
   width: 100vw;
   max-width: 100%;
+  overflow: scroll;
 `;
 
 class MessageBox extends Component {
@@ -18,7 +20,7 @@ class MessageBox extends Component {
     return (
       <StyledMessages>
         <ul>
-          {this.props.messages ? (
+          {this.props.messages && this.props.messages.length > 0 ? (
             this.props.messages
               .filter(message => {
                 return (
@@ -28,9 +30,9 @@ class MessageBox extends Component {
               })
               .map(message => {
                 return (
-                  message.text && (
-                    <li>{`From: ${message.senderName}: ${message.text}`}</li>
-                  )
+                  <li className={message.isFromUser ? "userMessage" : ""}>
+                    {message.text}
+                  </li>
                 );
               })
           ) : (

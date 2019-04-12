@@ -4,6 +4,9 @@ import MessagesHome from "./MessagesHome";
 
 export default function(Component) {
   return class Authenticated extends React.Component {
+    constructor(props) {
+      super(props);
+    }
     render() {
       const token = localStorage.getItem("token");
       return (
@@ -11,7 +14,11 @@ export default function(Component) {
           {!token ? (
             <Component {...this.props} />
           ) : (
-            <MessagesHome {...this.props} />
+            <MessagesHome
+              {...this.props}
+              messages={this.props.messages}
+              friends={this.props.friends}
+            />
           )}
         </>
       );
