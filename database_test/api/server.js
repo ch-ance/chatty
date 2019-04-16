@@ -52,16 +52,32 @@ server.get( "/api/users/:id", async ( req, res ) => {
 // This should be done twice when a friendship is made, once for each user
 // Two API calls for now, should refactor later so that this function takes care of both users
 server.post( "/api/users/:id/addFriend", async ( req, res ) => {
-  const id = req.params.id;
+  const user_id = req.params.id;
+  const friendName = req.body.friendName;
+  const users = await db( "users" );
+
+  const [ friend ] = users.filter( user => {
+    return user.username === friendName
+  } );
+  console.log( friend )
   try {
-    const { other_user_id } = req.body;
     await db( "friends" )
       .insert( {
-        user_id: id,
-        other_user_id
+        user_id,
+        other_user_id: friend.id
       } )
-      .then( id => {
-        res.status( 201 ).json( id );
+      .then( async () => {
+        await db( "friends" )
+          .insert( {
+            user_id: friend.id,
+            other_user_id: user_id
+          } )
+          .then( id => {
+            res.status( 201 ).json( id );
+          } )
+          .catch( err => {
+            console.error( "ERROR ADDING FRIENDSHIP:  ", err );
+          } );
       } )
       .catch( err => {
         console.error( "ERROR ADDING FRIENDSHIP:  ", err );

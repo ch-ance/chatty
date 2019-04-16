@@ -68,13 +68,15 @@ const MessagesHome = props => {
 
 	function addFriend ( event ) {
 		event.preventDefault()
+		console.log( "trying to add " + friendName + " as a friend" )
+		axios.post( `${ baseURL }/api/users/${ localStorage.getItem( "id" ) }/addFriend`, {
+			friendName
+		} ).then( res => {
+			console.log( "Friend added!", res )
+		} ).catch( err => {
+			console.err( "Error adding friend: ", err )
+		} )
 
-		axios.get( `${ baseURL }/api/users` ).then( res => { } )
-		const other_user_id = 2
-
-		// axios.post( `${ baseURL }/api/users/${ localStorage.getItem( 'id' ) }/addFriend`, {
-		// other_user_id
-		// } );
 		setFriendName( '' )
 	}
 	function logout ( event ) {
