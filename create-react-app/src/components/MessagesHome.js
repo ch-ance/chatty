@@ -76,7 +76,6 @@ const MessagesHome = props => {
 		} ).catch( err => {
 			console.err( "Error adding friend: ", err )
 		} )
-
 		setFriendName( '' )
 	}
 	function logout ( event ) {
