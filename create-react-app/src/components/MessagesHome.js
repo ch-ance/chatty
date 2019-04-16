@@ -80,7 +80,7 @@ const MessagesHome = props => {
 	function logout ( event ) {
 		event.preventDefault()
 		localStorage.clear()
-		setFriendName("wubalubadubdub!")
+		setFriendName( "wubalubadubdub!" )
 	}
 }
 
