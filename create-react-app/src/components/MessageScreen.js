@@ -13,7 +13,7 @@ const StyledMessageScreen = styled.div`
 const MessageScreen = props => {
   const [messageInput, setMessageInput] = useState("");
 
-  const recipientName = window.location.pathname.replace("/", "");
+  const recipientName = window.location.pathname.replace("/chat/", "");
 
   const sendMessage = event => {
     event.preventDefault();

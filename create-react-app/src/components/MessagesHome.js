@@ -1,17 +1,15 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-
-const StyledMain = styled.main`
-  width: 50px;
-`;
+import React, { useState, useEffect, Component } from 'react'
+import { Link, Redirect } from 'react-router-dom'
+import styled from 'styled-components'
+import axios from 'axios'
+import baseURL from '../api/url'
 
 const StyledMessageHomeHeader = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
+`
 
 const StyledFriendsUL = styled.ul`
   text-align: right;
@@ -21,38 +19,69 @@ const StyledFriendsUL = styled.ul`
     text-decoration: none;
     font-size: 3rem;
   }
-`;
+`
 
-class MessagesHome extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { homePage: null };
-  }
-  render() {
-    return (
-      <main>
-        <button onClick={this.logout}>Logout</button>
-        <StyledMessageHomeHeader>
-          <h2>chatty Homepage...!</h2>
-          <h3>Messages:-_-:</h3>
-        </StyledMessageHomeHeader>
-        <StyledFriendsUL>
-          {this.props.friends.map(friend => {
-            return (
-              <Link to={`/${friend.username}`}>
-                <a>{friend.username}</a>
-              </Link>
-            );
-          })}
-        </StyledFriendsUL>
-      </main>
-    );
-  }
 
-  logout = event => {
-    event.preventDefault();
-    localStorage.clear();
-  };
+const MessagesHome = props => {
+	const [ friendName, setFriendName ] = useState( '' )
+
+	if ( localStorage.getItem( 'token' ) == null ) {
+		return (
+			<Redirect to="/" />
+		)
+	}
+
+	return (
+		<main>
+			<button onClick={ logout }>Logout</button>
+			<StyledMessageHomeHeader>
+				<h2>chatty Homepage...!</h2>
+				<h3>Messages:-_-:</h3>
+			</StyledMessageHomeHeader>
+			<StyledFriendsUL>
+				{ props.friends.map( friend => {
+					return (
+						<Link to={ `/chat/${ friend.username }` }>
+							<a>{ friend.username }</a>
+						</Link>
+					)
+				} ) }
+			</StyledFriendsUL>
+			<div>
+				<h3>Add a friend!</h3>
+				<form>
+					<label htmlFor="friendName" />
+					<input
+						onChange={ e => setFriendName( e.target.value ) }
+						value={ friendName }
+					/>
+					<button onClick={ addFriend }>Add friend!</button>
+				</form>
+			</div>
+		</main>
+
+
+
+
+	)
+
+
+	function addFriend ( event ) {
+		event.preventDefault()
+
+		axios.get( `${ baseURL }/api/users` ).then( res => { } )
+		const other_user_id = 2
+
+		// axios.post( `${ baseURL }/api/users/${ localStorage.getItem( 'id' ) }/addFriend`, {
+		// other_user_id
+		// } );
+		setFriendName( '' )
+	}
+	function logout ( event ) {
+		event.preventDefault()
+		localStorage.clear()
+		setFriendName("wubalubadubdub!")
+	}
 }
 
-export default MessagesHome;
+export default MessagesHome
