@@ -3,7 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import baseURL from "../api/url";
 
-const Login = ({ toggle }) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,7 +23,7 @@ const Login = ({ toggle }) => {
           socket_id: localStorage.getItem("socket_id")
         });
         localStorage.setItem("loggedIn", true);
-        toggle();
+        setUsername("wubalubadubdub!")
       })
       .catch(err => {
         console.log(err);
