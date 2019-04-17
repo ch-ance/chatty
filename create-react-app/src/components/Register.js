@@ -17,12 +17,15 @@ const Register = () => {
       })
       .then(res => {
         console.log(res.data);
+        localStorage.setItem("token", res.data.token);
       })
       .catch(err => {
         console.log(err);
       });
     // set state to rerender. Bad??
-    setUsername("wubadubadubdub!");
+    setTimeout(() => {
+      setUsername("wubadubadubdub!");
+    }, 1000);
   };
   if (localStorage.getItem("token")) {
     return <Redirect to="/Home" />;
