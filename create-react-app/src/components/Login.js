@@ -3,6 +3,8 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import baseURL from "../api/url";
 
+import "./login.scss";
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +25,8 @@ const Login = () => {
           socket_id: localStorage.getItem("socket_id")
         });
         localStorage.setItem("loggedIn", true);
-        setUsername("wubalubadubdub!")
+        // setting state to trigger rerender. Bad?
+        setUsername("wubalubadubdub!");
       })
       .catch(err => {
         console.log(err);
@@ -35,35 +38,36 @@ const Login = () => {
   return (
     <div className="loginPage">
       <header className="homePageHeader">
-        <h1>chatty login</h1>
+        <h1>Chatty</h1>
       </header>
       <section>
-        <h2>Have an account? Log in below!</h2>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              onChange={e => setUsername(e.target.value)}
-              value={username}
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              onChange={e => setPassword(e.target.value)}
-              value={password}
-            />
+          <div className="credentialsBox">
+            <div className="credentials">
+              <label htmlFor="username">Username</label>
+              <br />
+              <input
+                type="text"
+                onChange={e => setUsername(e.target.value)}
+                value={username}
+              />
+            </div>
+            <div className="credentials">
+              <label htmlFor="password">Password</label>
+              <br />
+              <input
+                type="password"
+                onChange={e => setPassword(e.target.value)}
+                value={password}
+              />
+            </div>
           </div>
           <div>
             <button type="submit">Login</button>
           </div>
         </form>
-        <Link to="/register">
-          <h3>
-            Or click <strong>here</strong> to register!
-          </h3>
+        <Link to="/register" className="registerText">
+          <h3>Not Registered? Click here to learn more.</h3>
         </Link>
       </section>
     </div>
