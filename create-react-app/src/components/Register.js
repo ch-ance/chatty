@@ -40,29 +40,31 @@ const Register = () => {
         <div className="subHeaderText">
           <h3>
             To sign up, just create a username and password below. We'll never
-            ask for any other information from you.
+            ask you for any personal information.
           </h3>
         </div>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="username">Username</label>
-            <br />
-            <input
-              type="text"
-              onChange={e => setUsername(e.target.value)}
-              value={username}
-            />
+          <div className="credentialsBox">
+            <div className="credentials">
+              <label htmlFor="username">Username</label>
+              <br />
+              <input
+                type="text"
+                onChange={e => setUsername(e.target.value)}
+                value={username}
+              />
+            </div>
+            <div className="credentials">
+              <label htmlFor="password">Password</label>
+              <br />
+              <input
+                type="password"
+                onChange={e => setPassword(e.target.value)}
+                value={password}
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <br />
-            <input
-              type="password"
-              onChange={e => setPassword(e.target.value)}
-              value={password}
-            />
-          </div>
-          <div>
+          <div className="button">
             <button type="submit">Register</button>
           </div>
         </form>

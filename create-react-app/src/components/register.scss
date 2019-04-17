@@ -30,7 +30,7 @@ div .registerPage {
             text-align: center;
         }
 
-        form {
+        .credentialsBox {
             background-color: white;
             width: 80vw;
             height: (195 / 667) * 100vh;
@@ -39,9 +39,41 @@ div .registerPage {
             align-items: center;
             justify-content: space-between;
             margin: 0 auto;
-            label {
-                font-size: 1.8em;
-            }
+        }
+
+        .credentials:nth-child(1) {
+            margin-top: 4em;
+        }
+    
+        .credentials:nth-child(2) {
+            margin-bottom: 3em;
+        }
+
+        button {
+            all: unset;
+            width: 80vw;
+            text-align: center;
+            height: (70 / 667) * 100vh;
+            font-size: 4.8em;
+            background-color: #383BDF;
+        }
+
+        .button {
+            display: flex;
+            justify-content: center;
+        }
+
+        label {
+            letter-spacing: .112em;
+            font-size: 1.2em;
+        }
+
+        input {
+            border: none;
+            border-bottom: 1px solid #383BDF;
+            width: 60vw;
+            letter-spacing: .112em;
+            font-size: 1.8em;
         }
     }
 }
