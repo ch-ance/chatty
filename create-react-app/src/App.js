@@ -122,7 +122,7 @@ class App extends Component {
       text,
       me: localStorage.getItem("username"),
       friendName,
-      isFromUser
+      isFromUser: true
     };
     db.table("messages")
       .add(message)
