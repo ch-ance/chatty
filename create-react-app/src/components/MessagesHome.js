@@ -1,74 +1,88 @@
-import React from "react";
-import { Route, Link } from "react-router-dom";
+import React, { useState, useEffect, Component } from 'react'
+import { Link, Redirect } from 'react-router-dom'
+import styled from 'styled-components'
+import axios from 'axios'
+import baseURL from '../api/url'
 
-import MessageScreen from "./MessageScreen";
-import AddFriendForm from "./forms/AddFriendForm";
-import requiresAuth from "./requiresAuth";
+const StyledMessageHomeHeader = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
-const MessagesHome = ({
-  messages,
-  handleSendMessage,
-  emitMessageSocket,
-  clearChat,
-  friends,
-  addFriend,
-  broadcastId
-}) => {
-  return (
-    <>
-      <button onClick={broadcastId}>Broadcast ID</button>
-      <Route
-        path="/"
-        exact
-        render={props => (
-          <Home {...props} addFriend={addFriend} friends={friends} />
-        )}
-      />
-      <Route path="/alice" component={MessageScreen} />
-      <Route
-        path="/test"
-        render={props => (
-          <MessageScreen
-            {...props}
-            handleSendMessage={handleSendMessage}
-            messages={messages}
-            emitMessageSocket={emitMessageSocket}
-            clearChat={clearChat}
-          />
-        )}
-      />
-      <Route
-        path="/:friend"
-        render={props => (
-          <MessageScreen
-            {...props}
-            handleSendMessage={handleSendMessage}
-            messages={messages}
-            emitMessageSocket={emitMessageSocket}
-            clearChat={clearChat}
-          />
-        )}
-      />
-    </>
-  );
-};
+const StyledFriendsUL = styled.ul`
+  text-align: right;
+  margin-right: 5rem;
 
-const Home = ({ addFriend, friends }) => {
-  return (
-    <>
-      <h2>Messsages: </h2>
-      <br />
-      <h3>Add Friend:</h3>
-      <AddFriendForm addFriend={addFriend} />
-      <h3>Friends: </h3>
-      <ul>
-        {friends.map(friend => {
-          return <Link to={`/${friend.friendName}`}>{friend.friendName}</Link>;
-        })}
-      </ul>
-      <Link to="/alice">Alice</Link>
-    </>
-  );
-};
+  a {
+    text-decoration: none;
+    font-size: 3rem;
+  }
+`
 
-export default requiresAuth(MessagesHome);
+
+const MessagesHome = props => {
+	const [ friendName, setFriendName ] = useState( '' )
+
+	if ( localStorage.getItem( 'token' ) == null ) {
+		return (
+			<Redirect to="/" />
+		)
+	}
+
+	return (
+		<main>
+			<button onClick={ logout }>Logout</button>
+			<StyledMessageHomeHeader>
+				<h2>chatty Homepage...!</h2>
+				<h3>Messages:-_-:</h3>
+			</StyledMessageHomeHeader>
+			<StyledFriendsUL>
+				{ props.friends.map( friend => {
+					return (
+						<Link to={ `/chat/${ friend.username }` }>
+							<a>{ friend.username }</a>
+						</Link>
+					)
+				} ) }
+			</StyledFriendsUL>
+			<div>
+				<h3>Add a friend!</h3>
+				<form>
+					<label htmlFor="friendName" />
+					<input
+						onChange={ e => setFriendName( e.target.value ) }
+						value={ friendName }
+					/>
+					<button onClick={ addFriend }>Add friend!</button>
+				</form>
+			</div>
+		</main>
+
+
+
+
+	)
+
+
+	function addFriend ( event ) {
+		event.preventDefault()
+		console.log( "trying to add " + friendName + " as a friend" )
+		axios.post( `${ baseURL }/api/users/${ localStorage.getItem( "id" ) }/addFriend`, {
+			friendName
+		} ).then( res => {
+			console.log( "Friend added!", res )
+		} ).catch( err => {
+			console.err( "Error adding friend: ", err )
+		} )
+		setFriendName( '' )
+	}
+	function logout ( event ) {
+		event.preventDefault()
+		localStorage.clear()
+		setFriendName( "wubalubadubdub!" )
+	}
+}
+
+export default MessagesHome

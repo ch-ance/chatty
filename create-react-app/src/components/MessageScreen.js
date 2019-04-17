@@ -1,71 +1,61 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import db from "../database/db";
 import MessageBox from "./MessageBox";
+import axios from "axios";
+import baseURL from "../api/url";
 
-// const UserMessage = styled.li`
-//   text-align: right;
-//   color: white;
-// `;
+const StyledMessageScreen = styled.div`
+  height: 50%;
+`;
 
-// const OtherMessage = styled.li`
-//   text-align: left;
-//   color: blue;
-// `;
+const MessageScreen = props => {
+  const [messageInput, setMessageInput] = useState("");
 
-class MessageScreen extends Component {
-  constructor(props) {
-    super(props);
+  const recipientName = window.location.pathname.replace("/chat/", "");
 
-    this.state = {
-      messageInput: ""
-    };
-
-    this.recipientName = window.location.pathname;
-  }
-
-  componentDidMount() {}
-
-  getMessages = () => {};
-
-  sendMessage = event => {
+  const sendMessage = event => {
     event.preventDefault();
 
-    this.props.handleSendMessage(this.state.messageInput);
-    this.props.emitMessageSocket(this.state.messageInput);
-    this.setState({ messageInput: "" });
+    props.handleSendMessage(messageInput, recipientName);
+    setMessageInput("");
   };
 
-  inputHandler = event => {
-    this.setState({
-      messageInput: event.target.value
-    });
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      axios
+        .get(`${baseURL}/api/users/${localStorage.getItem("id")}/friends`)
+        .then(res => {
+          const friend = res.data.filter(friend => {
+            return friend.username === recipientName;
+          });
+          console.log("FRIEND ID ", friend[0].socket_id);
+          localStorage.setItem("friend_socket_id", friend[0].socket_id);
+        })
+        .catch(err => {
+          console.log("COULDN'T GET FRIEND: ", err);
+        });
+      props.getMessages();
+    }, 500);
+  }, []);
 
-  render() {
-    return (
-      <>
-        <h2>
-          you and
-          {//gets rid of the '/' from the route
-          this.recipientName
-            .split("")
-            .splice(1)
-            .reverse()
-            .concat(" ")
-            .reverse()
-            .join("")}
-        </h2>
-        <MessageBox messages={this.props.messages} />
-        <form onSubmit={this.sendMessage}>
-          <label htmlFor="Message" />
-          <input
-            type="text"
-            value={this.state.messageInput}
-            onChange={this.inputHandler}
-          />
-        </form>
-      </>
-    );
-  }
-}
+  return (
+    <StyledMessageScreen>
+      <Link to="/">Back to home page</Link>
+      <button onClick={() => console.log("Click")}>clik</button>
+      <h2>you and {recipientName}</h2>
+      <form onSubmit={sendMessage}>
+        <label htmlFor="Message" />
+        <input
+          type="text"
+          value={messageInput}
+          onChange={e => setMessageInput(e.target.value)}
+        />
+      </form>
+      <MessageBox recipientName={recipientName} messages={props.messages} />
+    </StyledMessageScreen>
+  );
+};
 
 export default MessageScreen;

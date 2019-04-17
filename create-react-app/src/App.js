@@ -1,9 +1,19 @@
-import React, { Component } from "react";
-import "./App.css";
-import MessagesHome from "./components/MessagesHome";
+import React, { Component, useState } from "react";
+import { Route } from "react-router-dom";
 import db from "./database/db";
+import axios from "axios";
+import baseURL from "./api/url";
 import openSocket from "socket.io-client";
-const socket = openSocket("http://localhost:8000");
+import requiresAuth from "./components/requiresAuth";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Home from "./components/Home";
+import MessageScreen from "./components/MessageScreen";
+import MessagesHome from "./components/MessagesHome";
+
+import "./App.scss";
+
+const socket = openSocket( "http://localhost:8000" );
 
 // conditional render based on whether user is logged in
 // login screen
@@ -12,108 +22,130 @@ const socket = openSocket("http://localhost:8000");
 class App extends Component {
   constructor() {
     super();
-    this.state = { messages: [], friends: [], id: "" };
+    this.state = { toggle: true, messages: [], friends: [] };
   }
 
-  // open sockets on mount.
-  componentDidMount() {
-    socket.on("connect", () => {
-      console.log("SOCKET iD: ", socket.id);
-      this.setState({ id: socket.id });
-    });
-
-    socket.on("chat message", (msg, id) => {
-      console.log("RECIEVING MESSAGE: ", msg);
-      this.addMessage(msg, id);
-      this.updateMessagesDB();
-    });
-
-    socket.on("socket id", () => {
-      console.log("BROADCASTING ID", socket.id);
-    });
-
-    this.updateMessagesDB();
-    this.updateFriendsDB();
-  }
-
-  emitMessageSocket = msg => {
-    console.log("msg");
-  };
-
-  addFriend = (e, fr) => {
-    e.preventDefault();
-    const friend = {
-      friendName: fr
-    };
-    db.table("friends")
-      .add(friend)
-      .then(id => {
-        const newList = [
-          ...this.state.friends,
-          Object.assign({}, friend, { id })
-        ];
-        this.setState({ friends: newList });
-      });
-  };
-
-  updateFriendsDB = () => {
-    db.table("friends")
-      .toArray()
-      .then(friends => {
-        this.setState({ friends });
-      });
-  };
-
-  handleSendMessage = (messageText, socketId) => {
-    socket.emit("chat message", messageText, socketId);
-    this.addMessage(messageText);
-    this.updateMessagesDB();
-  };
-
-  addMessage = messageText => {
-    const message = {
-      text: messageText
-    };
-    db.table("messages")
-      .add(message)
-      .then(id => {
-        const newList = [
-          ...this.state.messages,
-          Object.assign({}, message, { id })
-        ];
-        this.setState({ messages: newList });
-      });
-  };
-
-  updateMessagesDB = () => {
-    db.table("messages")
-      .toArray()
-      .then(messages => {
-        this.setState({ messages });
-      });
-  };
-
-  broadcastId = event => {
-    event.preventDefault();
-    socket.emit("socket id", this.state.id);
-  };
-
-  render() {
+  render () {
     return (
-      <>
-        <main>
-          <MessagesHome
-            messages={this.state.messages}
-            handleSendMessage={this.handleSendMessage}
-            emitMessageSocket={this.emitMessageSocket}
-            friends={this.state.friends}
-            addFriend={this.addFriend}
-            broadcastId={this.broadcastId}
-          />
-        </main>
-      </>
+      <div className="container">
+        <Route
+          path="/"
+          exact
+          render={ props => (
+            <Login
+              { ...props }
+              d={ console.log }
+              friends={ this.state.friends }
+              messages={ this.state.friends }
+            />
+          ) }
+        />
+        <Route
+          path="/register"
+          exact
+          render={ props => <Register { ...props } /> }
+        />
+        <Route
+          path="/Home"
+          exact
+          render={ props => (
+            <MessagesHome
+              { ...props }
+              friends={ this.state.friends }
+              messages={ this.state.friends }
+            />
+          ) }
+        />
+        <Route
+          path="/chat/:friend"
+          exact
+          render={ props => (
+            <MessageScreen
+              { ...props }
+              handleSendMessage={ this.handleSendMessage }
+              messages={ this.state.messages }
+              getMessages={ this.getMessages }
+            />
+          ) }
+        />
+      </div>
     );
   }
+
+  componentDidMount () {
+    socket.on( "connect", () => {
+      console.log( "SOCKET iD: ", socket.id );
+      localStorage.setItem( "socket_id", socket.id );
+      this.updateOnlineStatus( socket.id );
+    } );
+
+    socket.on( "chat message", ( msg, senderName ) => {
+      console.log( "RECIEVING MESSAGE: " + msg + " FROM: " + senderName );
+      this.addMessage( msg, senderName, false );
+    } );
+    this.updateFriends();
+  }
+
+  toggle = () => {
+    this.setState( { toggle: !this.state.toggle } );
+  };
+
+  updateOnlineStatus = socket_id => {
+    axios.put( `${ baseURL }/api/users/${ localStorage.getItem( "id" ) }/connect`, {
+      socket_id
+    } );
+  };
+
+  updateFriends = () => {
+    axios
+      .get( `${ baseURL }/api/users/${ localStorage.getItem( "id" ) }/friends` )
+      .then( res => {
+        this.setState( {
+          friends: res.data
+        } );
+      } );
+  };
+
+  // Socket.emit parameters are what is being passed to the socket server (duh)
+  handleSendMessage = ( messageText, friendName ) => {
+    socket.emit(
+      "chat message",
+      messageText,
+      localStorage.getItem( "friend_socket_id" ),
+      localStorage.getItem( "username" )
+    );
+    // .to(localStorage.getItem("friend_socket_id"))
+
+    this.addMessage( messageText, friendName, true );
+  };
+
+  addMessage = ( text, friendName, isFromUser ) => {
+    const message = {
+      text,
+      me: localStorage.getItem( "username" ),
+      friendName,
+      isFromUser
+    };
+    db.table( "messages" )
+      .add( message )
+      .then( id => {
+        const newList = [
+          ...this.state.messages,
+          Object.assign( {}, message, { id } )
+        ];
+        this.getMessages();
+      } );
+  };
+
+  getMessages = async () => {
+    await db
+      .table( "messages" )
+      .toArray()
+      .then( messages => {
+        this.setState( { messages } );
+      } )
+      .catch( console.error );
+  };
 }
 
 export default App;

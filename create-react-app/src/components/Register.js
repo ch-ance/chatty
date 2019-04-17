@@ -3,27 +3,19 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import baseURL from "../api/url";
 
-const Login = () => {
+const Register = ({ toggle }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = event => {
     event.preventDefault();
     axios
-      .post(`${baseURL}/api/login`, {
+      .post(`${baseURL}/api/register`, {
         username,
         password
       })
       .then(res => {
         console.log(res.data);
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("id", res.data.id);
-        localStorage.setItem("username", res.data.username);
-        axios.put(`${baseURL}/api/${res.data.id}/connect`, {
-          socket_id: localStorage.getItem("socket_id")
-        });
-        localStorage.setItem("loggedIn", true);
-        setUsername("wubalubadubdub!")
       })
       .catch(err => {
         console.log(err);
@@ -33,12 +25,15 @@ const Login = () => {
     return <Redirect to="/Home" />;
   }
   return (
-    <div className="loginPage">
-      <header className="homePageHeader">
+    <div className="registerPage">
+      <header className="registerPageHeader">
         <h1>chatty login</h1>
       </header>
       <section>
-        <h2>Have an account? Log in below!</h2>
+        <h2>
+          Welcome to chattyApp! Simply enter a unique username and password
+          below and click 'Register' to get started!
+        </h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="username">Username</label>
@@ -57,17 +52,15 @@ const Login = () => {
             />
           </div>
           <div>
-            <button type="submit">Login</button>
+            <button type="submit">Register</button>
           </div>
         </form>
-        <Link to="/register">
-          <h3>
-            Or click <strong>here</strong> to register!
-          </h3>
+        <Link to="/">
+          <button>Click here to go login</button>
         </Link>
       </section>
     </div>
   );
 };
 
-export default Login;
+export default Register;
