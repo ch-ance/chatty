@@ -28,7 +28,7 @@ const MessagesHome = props => {
           );
         })}
       </ul>
-      <div>
+      {/* <div>
         <h3>Add a friend!</h3>
         <form>
           <label htmlFor="friendName" />
@@ -38,7 +38,7 @@ const MessagesHome = props => {
           />
           <button onClick={addFriend}>Add friend!</button>
         </form>
-      </div>
+      </div> */}
     </main>
   );
 
