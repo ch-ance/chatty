@@ -1,0 +1,47 @@
+div .registerPage {
+    height: 100%;
+    
+    background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.2) 23.96%,
+    rgba(255, 255, 255, 0.1) 84.38%), 
+    linear-gradient(180deg, #388EDF 0%, 
+    rgba(56, 142, 223, 0.671875) 74.28%, 
+    rgba(56, 142, 223, 0.5) 99.98%, 
+    rgba(56, 142, 223, 0) 99.99%);
+
+    section {
+        .headerText {
+            width: 90vw;
+            margin: 0 auto;
+            padding: 2em;
+        }
+        h2 {
+            font-size: 2.4em;
+            text-align: right;
+            text-indent: 4.3em;
+        }
+        .subHeaderText {
+            width: 90vw;
+            margin: 0 auto;
+            padding: 2em;
+        }
+        h3 {
+            font-size: 1.8em;
+            text-align: center;
+        }
+
+        form {
+            background-color: white;
+            width: 80vw;
+            height: (195 / 667) * 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 auto;
+            label {
+                font-size: 1.8em;
+            }
+        }
+    }
+}

@@ -4,10 +4,8 @@ import db from "./database/db";
 import axios from "axios";
 import baseURL from "./api/url";
 import openSocket from "socket.io-client";
-import requiresAuth from "./components/requiresAuth";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Home from "./components/Home";
 import MessageScreen from "./components/MessageScreen";
 import MessagesHome from "./components/MessagesHome";
 
