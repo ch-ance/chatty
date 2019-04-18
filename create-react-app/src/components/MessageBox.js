@@ -27,16 +27,14 @@ class MessageBox extends Component {
                         : "friendMessageOuter messageOuter"
                     }
                   >
-                    <div className="bubble">
-                      <div
-                        className={
-                          message.isFromUser
-                            ? "userMessage message"
-                            : "friendMessage message"
-                        }
-                      >
-                        {message.text}
-                      </div>
+                    <div
+                      className={
+                        message.isFromUser
+                          ? "userMessage message"
+                          : "friendMessage message"
+                      }
+                    >
+                      {message.text}
                     </div>
                   </li>
                 );
