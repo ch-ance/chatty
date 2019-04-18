@@ -1,15 +1,5 @@
 import React, { Component } from "react";
-import db from "../database/db";
-import "./messages.css";
-import styled from "styled-components";
-
-const StyledMessages = styled.div`
-  background-color: lightgrey;
-  height: 100%;
-  width: 100vw;
-  max-width: 100%;
-  overflow: scroll;
-`;
+import "./messageScreen.scss";
 
 class MessageBox extends Component {
   constructor(props) {
@@ -18,20 +8,34 @@ class MessageBox extends Component {
   }
   render() {
     return (
-      <StyledMessages>
+      <div className="messageBox">
         <ul>
           {this.props.messages && this.props.messages.length > 0 ? (
             this.props.messages
               .filter(message => {
                 return (
-                  message.me === localStorage.getItem("username") ||
+                  message.me === localStorage.getItem("username") &&
                   message.friend === this.props.recepientName
                 );
               })
               .map(message => {
                 return (
-                  <li className={message.isFromUser ? "userMessage" : ""}>
-                    {message.text}
+                  <li
+                    className={
+                      message.isFromUser
+                        ? "userMessageOuter messageOuter"
+                        : "friendMessageOuter messageOuter"
+                    }
+                  >
+                    <div
+                      className={
+                        message.isFromUser
+                          ? "userMessage message"
+                          : "friendMessage message"
+                      }
+                    >
+                      {message.text}
+                    </div>
                   </li>
                 );
               })
@@ -39,7 +43,7 @@ class MessageBox extends Component {
             <li>No messages</li>
           )}
         </ul>
-      </StyledMessages>
+      </div>
     );
   }
 }

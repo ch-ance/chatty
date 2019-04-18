@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-import db from "../database/db";
 import MessageBox from "./MessageBox";
 import axios from "axios";
 import baseURL from "../api/url";
-
-const StyledMessageScreen = styled.div`
-  height: 50%;
-`;
+import "./messageScreen.scss";
 
 const MessageScreen = props => {
   const [messageInput, setMessageInput] = useState("");
@@ -41,10 +36,19 @@ const MessageScreen = props => {
   }, []);
 
   return (
-    <StyledMessageScreen>
-      <Link to="/">Back to home page</Link>
-      <button onClick={() => console.log("Click")}>clik</button>
-      <h2>you and {recipientName}</h2>
+    <div className="messageScreen">
+      <header>
+        <Link to="/">
+          <a href="/">Go Back</a>
+        </Link>
+        <h2>{recipientName}</h2>
+      </header>
+      <MessageBox
+        recipientName={recipientName}
+        messages={props.messages.filter(message => {
+          return message.friendName === recipientName;
+        })}
+      />
       <form onSubmit={sendMessage}>
         <label htmlFor="Message" />
         <input
@@ -53,8 +57,7 @@ const MessageScreen = props => {
           onChange={e => setMessageInput(e.target.value)}
         />
       </form>
-      <MessageBox recipientName={recipientName} messages={props.messages} />
-    </StyledMessageScreen>
+    </div>
   );
 };
 

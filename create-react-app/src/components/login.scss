@@ -1,0 +1,71 @@
+div .loginPage {
+    height: 100%;
+    
+    background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.2) 23.96%,
+    rgba(255, 255, 255, 0.1) 84.38%), 
+    linear-gradient(180deg, #388EDF 0%, 
+    rgba(56, 142, 223, 0.671875) 74.28%, 
+    rgba(56, 142, 223, 0.5) 99.98%, 
+    rgba(56, 142, 223, 0) 99.99%);
+
+    header {
+        text-align: center;
+        width: 100%;
+        height: (320/667) * 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        h1 {
+            font-size: 4.8em;
+            font-weight: normal;
+        }
+    }
+
+    .credentialsBox {
+        background-color: white;
+        width: 80vw;
+        height: (195 / 667) * 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .credentials:nth-child(1) {
+        margin-top: 4em;
+    }
+
+    .credentials:nth-child(2) {
+        margin-bottom: 3em;
+    }
+
+    button {
+        all: unset;
+        width: 80vw;
+        text-align: center;
+        height: (70 / 667) * 100vh;
+        font-size: 4.8em;
+        background-color: #383BDF;
+    }
+
+    label {
+        letter-spacing: .112em;
+        font-size: 1.2em;
+    }
+
+    input {
+        border: none;
+        border-bottom: 1px solid #383BDF;
+        width: 60vw;
+        letter-spacing: .112em;
+        font-size: 1.8em;
+    }
+
+    .registerText {
+        font-size: 1.4em;
+        text-decoration: none;
+        margin: 1em;
+    }
+}

@@ -1,19 +1,16 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import db from "./database/db";
 import axios from "axios";
 import baseURL from "./api/url";
-import openSocket from "socket.io-client";
-import requiresAuth from "./components/requiresAuth";
+import db from "./database/db";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Home from "./components/Home";
 import MessageScreen from "./components/MessageScreen";
 import MessagesHome from "./components/MessagesHome";
-
 import "./App.scss";
 
-const socket = openSocket( "http://localhost:8000" );
+import openSocket from "socket.io-client";
+const socket = openSocket("http://localhost:8000");
 
 // conditional render based on whether user is logged in
 // login screen
@@ -25,126 +22,124 @@ class App extends Component {
     this.state = { toggle: true, messages: [], friends: [] };
   }
 
-  render () {
+  render() {
     return (
       <div className="container">
         <Route
           path="/"
           exact
-          render={ props => (
+          render={props => (
             <Login
-              { ...props }
-              d={ console.log }
-              friends={ this.state.friends }
-              messages={ this.state.friends }
+              {...props}
+              d={console.log}
+              friends={this.state.friends}
+              messages={this.state.friends}
+              updateOnlineStatus={this.updateOnlineStatus}
             />
-          ) }
+          )}
         />
         <Route
           path="/register"
           exact
-          render={ props => <Register { ...props } /> }
+          render={props => <Register {...props} />}
         />
         <Route
           path="/Home"
           exact
-          render={ props => (
+          render={props => (
             <MessagesHome
-              { ...props }
-              friends={ this.state.friends }
-              messages={ this.state.friends }
+              {...props}
+              friends={this.state.friends}
+              messages={this.state.friends}
+              updateFriends={this.updateFriends}
+              updateOnlineStatus={this.updateOnlineStatus}
+              addMessage={this.addMessage}
             />
-          ) }
+          )}
         />
         <Route
           path="/chat/:friend"
           exact
-          render={ props => (
+          render={props => (
             <MessageScreen
-              { ...props }
-              handleSendMessage={ this.handleSendMessage }
-              messages={ this.state.messages }
-              getMessages={ this.getMessages }
+              {...props}
+              messages={this.state.messages}
+              getMessages={this.getMessages}
+              handleSendMessage={this.handleSendMessage}
             />
-          ) }
+          )}
         />
       </div>
     );
   }
+  componentDidMount() {
+    socket.on("connect", () => {
+      console.log("SOCKET iD: ", socket.id);
+      localStorage.setItem("socket_id", socket.id);
+      this.updateOnlineStatus(socket.id);
+      this.updateFriends();
+    });
 
-  componentDidMount () {
-    socket.on( "connect", () => {
-      console.log( "SOCKET iD: ", socket.id );
-      localStorage.setItem( "socket_id", socket.id );
-      this.updateOnlineStatus( socket.id );
-    } );
-
-    socket.on( "chat message", ( msg, senderName ) => {
-      console.log( "RECIEVING MESSAGE: " + msg + " FROM: " + senderName );
-      this.addMessage( msg, senderName, false );
-    } );
+    socket.on("chat message", (msg, senderName) => {
+      console.log("RECIEVING MESSAGE: " + msg + " FROM: " + senderName);
+      this.addMessage(msg, senderName, false);
+    });
     this.updateFriends();
   }
 
-  toggle = () => {
-    this.setState( { toggle: !this.state.toggle } );
-  };
-
-  updateOnlineStatus = socket_id => {
-    axios.put( `${ baseURL }/api/users/${ localStorage.getItem( "id" ) }/connect`, {
-      socket_id
-    } );
-  };
-
-  updateFriends = () => {
-    axios
-      .get( `${ baseURL }/api/users/${ localStorage.getItem( "id" ) }/friends` )
-      .then( res => {
-        this.setState( {
-          friends: res.data
-        } );
-      } );
-  };
-
-  // Socket.emit parameters are what is being passed to the socket server (duh)
-  handleSendMessage = ( messageText, friendName ) => {
-    socket.emit(
-      "chat message",
-      messageText,
-      localStorage.getItem( "friend_socket_id" ),
-      localStorage.getItem( "username" )
-    );
-    // .to(localStorage.getItem("friend_socket_id"))
-
-    this.addMessage( messageText, friendName, true );
-  };
-
-  addMessage = ( text, friendName, isFromUser ) => {
+  addMessage = (text, friendName, isFromUser) => {
     const message = {
       text,
-      me: localStorage.getItem( "username" ),
+      me: localStorage.getItem("username"),
       friendName,
       isFromUser
     };
-    db.table( "messages" )
-      .add( message )
-      .then( id => {
-        const newList = [
-          ...this.state.messages,
-          Object.assign( {}, message, { id } )
-        ];
+    db.table("messages")
+      .add(message)
+      .then(id => {
+        // const newList = [
+        //   ...this.state.messages,
+        //   Object.assign({}, message, { id })
+        // ];
         this.getMessages();
-      } );
+      });
+  };
+
+  handleSendMessage = (messageText, friendName) => {
+    socket.emit(
+      "chat message",
+      messageText,
+      localStorage.getItem("friend_socket_id"),
+      localStorage.getItem("username")
+    );
+
+    this.addMessage(messageText, friendName, true);
   };
 
   getMessages = async () => {
     await db
-      .table( "messages" )
+      .table("messages")
       .toArray()
-      .then( messages => {
-        this.setState( { messages } );
-      } )
-      .catch( console.error );
+      .then(messages => {
+        this.setState({ messages });
+      })
+      .catch(console.error);
+  };
+
+  updateOnlineStatus = socket_id => {
+    axios.put(`${baseURL}/api/users/${localStorage.getItem("id")}/connect`, {
+      socket_id
+    });
+  };
+
+  updateFriends = () => {
+    axios
+      .get(`${baseURL}/api/users/${localStorage.getItem("id")}/friends`)
+      .then(res => {
+        this.setState({
+          friends: res.data
+        });
+      });
   };
 }
 
