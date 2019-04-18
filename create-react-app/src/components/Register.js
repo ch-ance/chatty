@@ -23,9 +23,7 @@ const Register = () => {
         console.log(err);
       });
     // set state to rerender. Bad??
-    setTimeout(() => {
-      setUsername("wubadubadubdub!");
-    }, 500);
+    setUsername("wubadubadubdub!");
   };
   if (localStorage.getItem("success")) {
     return <Redirect to="/Home" />;
