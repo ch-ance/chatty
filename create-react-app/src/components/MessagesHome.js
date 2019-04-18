@@ -12,11 +12,6 @@ const MessagesHome = props => {
     return <Redirect to="/" />;
   }
 
-  useEffect(() => {
-    props.updateOnlineStatus(localStorage.getItem("socket_id"));
-    props.updateFriends();
-  }, []);
-
   return (
     <main>
       <header>
@@ -67,7 +62,6 @@ const MessagesHome = props => {
       `${baseURL}/api/users/${localStorage.getItem("id")}/disconnect`,
       {}
     );
-
     localStorage.clear();
     setFriendName("wubalubadubdub!");
   }

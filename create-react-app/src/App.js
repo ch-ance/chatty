@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import db from "./database/db";
 import axios from "axios";
 import baseURL from "./api/url";
-import openSocket from "socket.io-client";
+import db from "./database/db";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import MessageScreen from "./components/MessageScreen";
 import MessagesHome from "./components/MessagesHome";
-
 import "./App.scss";
 
+import openSocket from "socket.io-client";
 const socket = openSocket("http://localhost:8000");
 
 // conditional render based on whether user is logged in
@@ -54,6 +53,7 @@ class App extends Component {
               messages={this.state.friends}
               updateFriends={this.updateFriends}
               updateOnlineStatus={this.updateOnlineStatus}
+              addMessage={this.addMessage}
             />
           )}
         />
@@ -63,9 +63,9 @@ class App extends Component {
           render={props => (
             <MessageScreen
               {...props}
-              handleSendMessage={this.handleSendMessage}
               messages={this.state.messages}
               getMessages={this.getMessages}
+              handleSendMessage={this.handleSendMessage}
             />
           )}
         />
@@ -76,6 +76,8 @@ class App extends Component {
     socket.on("connect", () => {
       console.log("SOCKET iD: ", socket.id);
       localStorage.setItem("socket_id", socket.id);
+      this.updateOnlineStatus(socket.id);
+      this.updateFriends();
     });
 
     socket.on("chat message", (msg, senderName) => {
@@ -84,39 +86,6 @@ class App extends Component {
     });
     this.updateFriends();
   }
-
-  toggle = () => {
-    this.setState({ toggle: !this.state.toggle });
-  };
-
-  updateOnlineStatus = socket_id => {
-    axios.put(`${baseURL}/api/users/${localStorage.getItem("id")}/connect`, {
-      socket_id
-    });
-  };
-
-  updateFriends = () => {
-    axios
-      .get(`${baseURL}/api/users/${localStorage.getItem("id")}/friends`)
-      .then(res => {
-        this.setState({
-          friends: res.data
-        });
-      });
-  };
-
-  // Socket.emit parameters are what is being passed to the socket server (duh)
-  handleSendMessage = (messageText, friendName) => {
-    socket.emit(
-      "chat message",
-      messageText,
-      localStorage.getItem("friend_socket_id"),
-      localStorage.getItem("username")
-    );
-    // .to(localStorage.getItem("friend_socket_id"))
-
-    this.addMessage(messageText, friendName, true);
-  };
 
   addMessage = (text, friendName) => {
     const message = {
@@ -136,6 +105,17 @@ class App extends Component {
       });
   };
 
+  handleSendMessage = (messageText, friendName) => {
+    socket.emit(
+      "chat message",
+      messageText,
+      localStorage.getItem("friend_socket_id"),
+      localStorage.getItem("username")
+    );
+
+    this.addMessage(messageText, friendName, true);
+  };
+
   getMessages = async () => {
     await db
       .table("messages")
@@ -144,6 +124,22 @@ class App extends Component {
         this.setState({ messages });
       })
       .catch(console.error);
+  };
+
+  updateOnlineStatus = socket_id => {
+    axios.put(`${baseURL}/api/users/${localStorage.getItem("id")}/connect`, {
+      socket_id
+    });
+  };
+
+  updateFriends = () => {
+    axios
+      .get(`${baseURL}/api/users/${localStorage.getItem("id")}/friends`)
+      .then(res => {
+        this.setState({
+          friends: res.data
+        });
+      });
   };
 }
 

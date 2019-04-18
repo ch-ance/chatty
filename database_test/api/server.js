@@ -149,11 +149,11 @@ server.put("/api/users/:id/disconnect", async (req, res) => {
       .update({ socket_id: "", is_online: false })
       .then(id => {
         res.status(200).json(id);
-        console.log();
+        console.log("DISCOnnecting");
       });
   } catch (error) {
     console.error(error);
-    res.status(500).json("ERROR UPDATING SOCKET ID: ", error);
+    res.status(500).json("ERROR reaching disconnect endpoint: ", error);
   }
 });
 
