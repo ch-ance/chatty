@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import baseURL from "../api/url";
@@ -12,6 +12,11 @@ const MessagesHome = props => {
     return <Redirect to="/" />;
   }
 
+  useEffect(() => {
+    props.updateOnlineStatus(localStorage.getItem("socket_id"));
+    props.updateFriends();
+  }, []);
+
   return (
     <main>
       <header>
@@ -20,15 +25,13 @@ const MessagesHome = props => {
       <ul>
         {props.friends.map(friend => {
           return (
-            <Link to={`/chat/${friend.username}`}>
-              <a>
-                <MessagePreview friend={friend} />
-              </a>
+            <Link key={friend.id} to={`/chat/${friend.username}`}>
+              <MessagePreview friend={friend} />
             </Link>
           );
         })}
       </ul>
-      {/* <div>
+      <div>
         <h3>Add a friend!</h3>
         <form>
           <label htmlFor="friendName" />
@@ -38,7 +41,8 @@ const MessagesHome = props => {
           />
           <button onClick={addFriend}>Add friend!</button>
         </form>
-      </div> */}
+        <button onClick={logout}>LOGOUT</button>
+      </div>
     </main>
   );
 
@@ -59,6 +63,11 @@ const MessagesHome = props => {
   }
   function logout(event) {
     event.preventDefault();
+    axios.put(
+      `${baseURL}/api/users/${localStorage.getItem("id")}/disconnect`,
+      {}
+    );
+
     localStorage.clear();
     setFriendName("wubalubadubdub!");
   }

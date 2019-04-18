@@ -120,14 +120,18 @@ server.get("/api/users/:id/friends", async (req, res) => {
 // Update socket_id when a user connects
 server.put("/api/users/:id/connect", async (req, res) => {
   try {
-    const id = req.params.id;
     const { socket_id } = req.body;
+    const id = req.params.id;
 
     await db("users")
       .where({ id })
-      .update({ socket_id })
+      .update({ socket_id, is_online: true })
       .then(id => {
+        console.log(socket_id);
         res.status(200).json(id);
+      })
+      .catch(err => {
+        console.error(err);
       });
   } catch (error) {
     console.error(error);
@@ -142,9 +146,10 @@ server.put("/api/users/:id/disconnect", async (req, res) => {
 
     await db("users")
       .where({ id })
-      .update({ socket_id: "" })
+      .update({ socket_id: "", is_online: false })
       .then(id => {
         res.status(200).json(id);
+        console.log();
       });
   } catch (error) {
     console.error(error);

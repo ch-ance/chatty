@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-import db from "../database/db";
 import MessageBox from "./MessageBox";
 import axios from "axios";
 import baseURL from "../api/url";
@@ -41,7 +39,7 @@ const MessageScreen = props => {
     <div className="messageScreen">
       <header>
         <Link to="/">
-          <a>Go Back</a>
+          <a href="/">Go Back</a>
         </Link>
         <h2>{recipientName}</h2>
       </header>

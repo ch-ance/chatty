@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import baseURL from "../api/url";
 import "./register.scss";
@@ -17,7 +17,7 @@ const Register = () => {
       })
       .then(res => {
         console.log(res.data);
-        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("success", true);
       })
       .catch(err => {
         console.log(err);
@@ -25,9 +25,9 @@ const Register = () => {
     // set state to rerender. Bad??
     setTimeout(() => {
       setUsername("wubadubadubdub!");
-    }, 1000);
+    }, 500);
   };
-  if (localStorage.getItem("token")) {
+  if (localStorage.getItem("success")) {
     return <Redirect to="/Home" />;
   }
   return (

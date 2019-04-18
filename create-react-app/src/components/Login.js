@@ -5,7 +5,7 @@ import baseURL from "../api/url";
 
 import "./login.scss";
 
-const Login = () => {
+const Login = ({ updateOnlineStatus }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,10 +21,6 @@ const Login = () => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("id", res.data.id);
         localStorage.setItem("username", res.data.username);
-        axios.put(`${baseURL}/api/${res.data.id}/connect`, {
-          socket_id: localStorage.getItem("socket_id")
-        });
-        localStorage.setItem("loggedIn", true);
         // setting state to trigger rerender. Bad?
         setUsername("wubalubadubdub!");
       })
@@ -32,9 +28,11 @@ const Login = () => {
         console.log(err);
       });
   };
+
   if (localStorage.getItem("token")) {
     return <Redirect to="/Home" />;
   }
+
   return (
     <div className="loginPage">
       <header className="homePageHeader">

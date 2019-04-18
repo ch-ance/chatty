@@ -9,7 +9,7 @@ const MessagePreview = ({ friend }) => {
         <h3>Hey! I noticed..</h3>
       </div>
       <div className="status-box">
-        <div className={"online"} />
+        <div className={friend.is_online === 1 ? "online" : "offline"} />
       </div>
     </div>
   );

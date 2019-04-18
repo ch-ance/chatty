@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import db from "./database/db";
 import axios from "axios";
@@ -35,6 +35,7 @@ class App extends Component {
               d={console.log}
               friends={this.state.friends}
               messages={this.state.friends}
+              updateOnlineStatus={this.updateOnlineStatus}
             />
           )}
         />
@@ -51,6 +52,8 @@ class App extends Component {
               {...props}
               friends={this.state.friends}
               messages={this.state.friends}
+              updateFriends={this.updateFriends}
+              updateOnlineStatus={this.updateOnlineStatus}
             />
           )}
         />
@@ -69,12 +72,10 @@ class App extends Component {
       </div>
     );
   }
-
   componentDidMount() {
     socket.on("connect", () => {
       console.log("SOCKET iD: ", socket.id);
       localStorage.setItem("socket_id", socket.id);
-      this.updateOnlineStatus(socket.id);
     });
 
     socket.on("chat message", (msg, senderName) => {
@@ -117,7 +118,7 @@ class App extends Component {
     this.addMessage(messageText, friendName, true);
   };
 
-  addMessage = (text, friendName, isFromUser) => {
+  addMessage = (text, friendName) => {
     const message = {
       text,
       me: localStorage.getItem("username"),
@@ -127,10 +128,10 @@ class App extends Component {
     db.table("messages")
       .add(message)
       .then(id => {
-        const newList = [
-          ...this.state.messages,
-          Object.assign({}, message, { id })
-        ];
+        // const newList = [
+        //   ...this.state.messages,
+        //   Object.assign({}, message, { id })
+        // ];
         this.getMessages();
       });
   };
