@@ -14,14 +14,30 @@ class MessageBox extends Component {
             this.props.messages
               .filter(message => {
                 return (
-                  message.me === localStorage.getItem("username") ||
+                  message.me === localStorage.getItem("username") &&
                   message.friend === this.props.recepientName
                 );
               })
               .map(message => {
                 return (
-                  <li className={message.isFromUser ? "userMessage" : ""}>
-                    {message.text}
+                  <li
+                    className={
+                      message.isFromUser
+                        ? "userMessageOuter messageOuter"
+                        : "friendMessageOuter messageOuter"
+                    }
+                  >
+                    <div className="bubble">
+                      <div
+                        className={
+                          message.isFromUser
+                            ? "userMessage message"
+                            : "friendMessage message"
+                        }
+                      >
+                        {message.text}
+                      </div>
+                    </div>
                   </li>
                 );
               })

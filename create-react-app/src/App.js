@@ -87,12 +87,12 @@ class App extends Component {
     this.updateFriends();
   }
 
-  addMessage = (text, friendName) => {
+  addMessage = (text, friendName, isFromUser) => {
     const message = {
       text,
       me: localStorage.getItem("username"),
       friendName,
-      isFromUser: true
+      isFromUser
     };
     db.table("messages")
       .add(message)
