@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import baseURL from "../api/url";
@@ -7,6 +7,10 @@ import "./messagesHome.scss";
 
 const MessagesHome = props => {
   const [friendName, setFriendName] = useState("");
+
+  useEffect(() => {
+    props.updateFriends();
+  }, []);
 
   if (localStorage.getItem("token") == null) {
     return <Redirect to="/" />;
@@ -36,7 +40,7 @@ const MessagesHome = props => {
           />
           <button onClick={addFriend}>Add friend!</button>
         </form>
-        <button onClick={logout}>LOGOUT</button>
+        <button onClick={props.logout}>LOGOUT</button>
       </div>
     </main>
   );
@@ -55,15 +59,6 @@ const MessagesHome = props => {
         console.error("Error adding friend: ", err);
       });
     setFriendName("");
-  }
-  function logout(event) {
-    event.preventDefault();
-    axios.put(
-      `${baseURL}/api/users/${localStorage.getItem("id")}/disconnect`,
-      {}
-    );
-    localStorage.clear();
-    setFriendName("wubalubadubdub!");
   }
 };
 

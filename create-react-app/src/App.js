@@ -19,7 +19,7 @@ const socket = openSocket("http://localhost:8000");
 class App extends Component {
   constructor() {
     super();
-    this.state = { toggle: true, messages: [], friends: [] };
+    this.state = { messages: [], friends: [] };
   }
 
   render() {
@@ -54,6 +54,7 @@ class App extends Component {
               updateFriends={this.updateFriends}
               updateOnlineStatus={this.updateOnlineStatus}
               addMessage={this.addMessage}
+              logout={this.logout}
             />
           )}
         />
@@ -140,6 +141,19 @@ class App extends Component {
           friends: res.data
         });
       });
+  };
+
+  logout = event => {
+    event.preventDefault();
+    axios.put(
+      `${baseURL}/api/users/${localStorage.getItem("id")}/disconnect`,
+      {}
+    );
+    localStorage.clear();
+    this.setState({
+      friends: [],
+      messages: []
+    });
   };
 }
 
