@@ -18,21 +18,20 @@ const MessageScreen = props => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      axios
-        .get(`${baseURL}/api/users/${localStorage.getItem("id")}/friends`)
-        .then(res => {
-          const friend = res.data.filter(friend => {
-            return friend.username === recipientName;
-          });
-          console.log("FRIEND ID ", friend[0].socket_id);
-          localStorage.setItem("friend_socket_id", friend[0].socket_id);
-        })
-        .catch(err => {
-          console.log("COULDN'T GET FRIEND: ", err);
+    axios
+      .get(`${baseURL}/api/users/${localStorage.getItem("id")}/friends`)
+      .then(res => {
+        const [friend] = res.data.filter(friend => {
+          return friend.username === recipientName;
         });
-      props.getMessages();
-    }, 500);
+        console.log("FRIEND ID ", friend.socket_id);
+        localStorage.setItem("friend_socket_id", friend.socket_id);
+      })
+      .catch(err => {
+        console.log("COULDN'T GET FRIEND: ", err);
+      });
+    props.getMessages();
+    props.updateFriends();
   }, []);
 
   return (
