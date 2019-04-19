@@ -67,6 +67,7 @@ class App extends Component {
               messages={this.state.messages}
               getMessages={this.getMessages}
               handleSendMessage={this.handleSendMessage}
+              updateFriends={this.updateFriends}
             />
           )}
         />
