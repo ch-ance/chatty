@@ -8,6 +8,8 @@ import "./messagesHome.scss";
 const MessagesHome = props => {
   const [friendName, setFriendName] = useState("");
 
+  const [friendToggled, toggleFriend] = useState(false);
+
   useEffect(() => {
     props.updateFriends();
   }, []);
@@ -30,20 +32,27 @@ const MessagesHome = props => {
           );
         })}
       </ul>
-      <div>
-        <h3>Add a friend!</h3>
+      <button onClick={toggleDisplay} className="addFriendButton">
+        Add a Friend!
+      </button>
+      <div className={friendToggled ? "displayAddFriend" : "hide"}>
         <form>
           <label htmlFor="friendName" />
           <input
             onChange={e => setFriendName(e.target.value)}
             value={friendName}
           />
-          <button onClick={addFriend}>Add friend!</button>
+          <button onClick={addFriend}>Send friend request</button>
         </form>
         <button onClick={props.logout}>LOGOUT</button>
       </div>
     </main>
   );
+
+  function toggleDisplay(event) {
+    event.preventDefault();
+    toggleFriend(!friendToggled);
+  }
 
   function addFriend(event) {
     event.preventDefault();
