@@ -71,9 +71,8 @@ server.post("/api/users/:id/addFriend", async (req, res) => {
             user_id: friend.id,
             other_user_id: user_id
           })
-          .returning("id")
-          .then(id => {
-            res.status(201).json(id);
+          .then(() => {
+            res.status(201).json("Friend added");
           })
           .catch(err => {
             console.error("ERROR ADDING FRIENDSHIP:  ", err);
@@ -127,10 +126,9 @@ server.put("/api/users/:id/connect", async (req, res) => {
     await db("users")
       .where({ id })
       .update({ socket_id, is_online: true })
-      .returning("id")
       .then(id => {
         console.log(socket_id);
-        res.status(200).json(id);
+        res.status(200).json("connected");
       })
       .catch(err => {
         console.error(err);
@@ -149,9 +147,8 @@ server.put("/api/users/:id/disconnect", async (req, res) => {
     await db("users")
       .where({ id })
       .update({ socket_id: "", is_online: false })
-      .returning("id")
       .then(id => {
-        res.status(200).json(id);
+        res.status(200).json("Disconnecting");
         console.log("DISCOnnecting");
       });
   } catch (error) {

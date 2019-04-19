@@ -1,3 +1,3 @@
-const baseURL = "http://localhost:5000";
+const baseURL = "https://salty-escarpment-76786.herokuapp.com";
 
 export default baseURL;
