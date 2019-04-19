@@ -10,7 +10,8 @@ import MessagesHome from "./components/MessagesHome";
 import "./App.scss";
 
 import openSocket from "socket.io-client";
-const socket = openSocket("http://localhost:8000");
+const socket = openSocket("https://chatty-sockets.herokuapp.com/");
+// const socket = openSocket("http://localhost:8000");
 
 // conditional render based on whether user is logged in
 // login screen
