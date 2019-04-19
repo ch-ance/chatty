@@ -1,66 +1,62 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import { Link } from "react-router-dom";
+import MessageBox from "./MessageBox";
+import axios from "axios";
+import baseURL from "../api/url";
+import "./messageScreen.scss";
 
-const StyledMessages = styled.div`
-  background-color: red;
-  height: 70vh;
-  width: 100vw;
-  max-width: 100%;
-`;
+const MessageScreen = props => {
+  const [messageInput, setMessageInput] = useState("");
 
-const MessageScreen = () => {
-  const [message, setMessage] = useState("");
-  const [userMessages, setUserMessages] = useState([]);
+  const recipientName = window.location.pathname.replace("/chat/", "");
 
-  // open the websocket? on mount
+  const sendMessage = event => {
+    event.preventDefault();
+
+    props.handleSendMessage(messageInput, recipientName);
+    setMessageInput("");
+  };
 
   useEffect(() => {
-    setUserMessages([{ text: "First!" }]);
+    axios
+      .get(`${baseURL}/api/users/${localStorage.getItem("id")}/friends`)
+      .then(res => {
+        const [friend] = res.data.filter(friend => {
+          return friend.username === recipientName;
+        });
+        console.log("FRIEND ID ", friend.socket_id);
+        localStorage.setItem("friend_socket_id", friend.socket_id);
+      })
+      .catch(err => {
+        console.log("COULDN'T GET FRIEND: ", err);
+      });
+    props.getMessages();
+    props.updateFriends();
   }, []);
 
-  useEffect(() => {
-    // let request = window.indexedDB.open("messages_db", 1);
-    // request.onerror = function() {
-    //   console.log("Database failed to open");
-    // };
-    // request.onsuccess = function() {
-    //   console.log("Database opened successfully");
-    // };
-    // // db = request.result;
-  }, [userMessages]);
-
-  // useEffect to listen for messages?
-
-  const recipientName = window.location.pathname;
   return (
-    <>
-      <h2>
-        you and
-        {//gets rid of the '/' from the route
-        recipientName
-          .split("")
-          .splice(1)
-          .reverse()
-          .concat(" ")
-          .reverse()
-          .join("")}
-      </h2>
-      <StyledMessages>
-        <ul>
-          {userMessages.map(message => {
-            return <li>{message.text}</li>;
-          })}
-        </ul>
-      </StyledMessages>
-      <form>
+    <div className="messageScreen">
+      <header>
+        <Link to="/">
+          <a href="/">Go Back</a>
+        </Link>
+        <h2>{recipientName}</h2>
+      </header>
+      <MessageBox
+        recipientName={recipientName}
+        messages={props.messages.filter(message => {
+          return message.friendName === recipientName;
+        })}
+      />
+      <form onSubmit={sendMessage}>
         <label htmlFor="Message" />
         <input
           type="text"
-          value={message}
-          onChange={e => setMessage(e.target.value)}
+          value={messageInput}
+          onChange={e => setMessageInput(e.target.value)}
         />
       </form>
-    </>
+    </div>
   );
 };
 

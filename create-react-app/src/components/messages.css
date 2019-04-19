@@ -1,0 +1,11 @@
+li {
+  color: blue;
+  padding: 1px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.userMessage {
+  font-size: 24px;
+  text-align: right;
+}

@@ -1,0 +1,2 @@
+main color #388EDF
+THE GREY #E7E6EB
