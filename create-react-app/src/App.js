@@ -79,8 +79,6 @@ class App extends Component {
     socket.on("connect", () => {
       console.log("SOCKET iD: ", socket.id);
       localStorage.setItem("socket_id", socket.id);
-      this.updateOnlineStatus(socket.id);
-      this.updateFriends();
     });
 
     socket.on("chat message", (msg, senderName) => {
@@ -129,10 +127,12 @@ class App extends Component {
       .catch(console.error);
   };
 
-  updateOnlineStatus = socket_id => {
+  updateOnlineStatus = () => {
+    const socket_id = localStorage.getItem("socket_id");
     axios.put(`${baseURL}/api/users/${localStorage.getItem("id")}/connect`, {
       socket_id
     });
+    console.log("SOCKET iD: ", socket_id);
   };
 
   updateFriends = () => {

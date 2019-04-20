@@ -12,6 +12,7 @@ const MessagesHome = props => {
 
   useEffect(() => {
     props.updateFriends();
+    props.updateOnlineStatus();
   }, []);
 
   if (localStorage.getItem("token") == null) {
