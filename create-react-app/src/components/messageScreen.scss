@@ -1,5 +1,7 @@
 .messageScreen {
     height: 100vh;
+    width: 100vw;
+    max-width: 100%;
     header {
         position: fixed;
         width: 100%;
@@ -42,6 +44,7 @@
     width: 100vw;
     max-width: 100%;
     overflow: scroll;
+    overflow-x: hidden;
 
     ul {
     margin-top: 20%;
