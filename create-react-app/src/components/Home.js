@@ -19,4 +19,6 @@ class Home extends Component {
   }
 }
 
-export default requiresAuth(Home);
+    export default requiresAuth(Home);
+
+
