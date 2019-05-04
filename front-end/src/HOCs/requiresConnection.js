@@ -3,14 +3,26 @@ const url = "ws://localhost:3030";
 
 const requiresConnection = Component =>
   class extends React.Component {
-    state = {
-      ws: undefined
-    };
+    constructor(props) {
+      super(props);
+      this.state = {
+        ws: undefined
+      };
+    }
     connect = () => {
       this.setState({
         ws: new WebSocket(url)
       });
     };
+
+    componentDidMount() {
+      const userID = this.getID();
+      this.props.history.push(`/${userID}`);
+    }
+    getID() {
+      return Math.floor(Math.random() * 100);
+    }
+
     render() {
       // if websocket is connected, render HomeScreen
       if (this.state.ws !== undefined) {

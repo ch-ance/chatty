@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 
 import requiresConnection from "./HOCs/requiresConnection";
 import "./App.css";
@@ -21,17 +21,23 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <HomeScreen
-          ws={this.props.ws}
-          messages={this.state.messages}
-          addMessage={this.addMessage}
+        <Route
+          path="/"
+          render={props => (
+            <HomeScreen
+              {...props}
+              ws={this.props.ws}
+              messages={this.state.messages}
+              addMessage={this.addMessage}
+            />
+          )}
         />
       </div>
     );
   }
 }
 
-const HomeScreen = ({ ws, messages, addMessage }) => {
+const HomeScreen = ({ ws, messages, addMessage, history }) => {
   useEffect(() => {
     ws.onopen = () => {
       console.log("connected");
@@ -44,42 +50,38 @@ const HomeScreen = ({ ws, messages, addMessage }) => {
     };
   }, []);
 
-  const [user_id, setUserId] = useState(0);
+  const [friendID, setFriendID] = useState(0);
 
-  function getID() {
-    setUserId(Math.floor(Math.random() * 100));
-  }
   return (
     <div>
       <h1>HomeScreen</h1>
-      <Chat ws={ws} messages={messages} />
-      <button onClick={getID}>Get my ID</button>
-      <div>My unique id is: {user_id}</div>
+      <h3>Recipient ID: </h3>
+      <input
+        type="text"
+        value={friendID}
+        onChange={e => setFriendID(e.target.value)}
+      />{" "}
+      <span>{friendID}</span>
+      <Chat ws={ws} messages={messages} friendID={friendID} />
+      <button>Get my ID</button>
+      <div>My unique id is:</div>
     </div>
   );
 };
 
-const Chat = ({ ws, messages }) => {
+const Chat = ({ ws, messages, friendID }) => {
   function sendMessage(event) {
     event.preventDefault();
-    const message = { name: "Chance", message: messageText };
+    const message = { name: "Chance", message: messageText, friendID };
     ws.send(JSON.stringify(message));
     setMessageText("");
   }
 
   const [messageText, setMessageText] = useState("");
 
-  const [friendID, setFriendID] = useState(0);
-
   return (
     <div>
       <form onSubmit={sendMessage}>
-        <h3>Recipient ID: </h3>
-        <input
-          type="text"
-          value={friendID}
-          onChange={e => setFriendID(e.target.value)}
-        />
         <input
           type="text"
           value={messageText}
@@ -97,4 +99,4 @@ const Chat = ({ ws, messages }) => {
   );
 };
 
-export default requiresConnection(App);
+export default withRouter(requiresConnection(App));
