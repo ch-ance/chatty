@@ -26,6 +26,7 @@ class App extends Component {
   render() {
     return (
       <div className="container">
+        <h1>This app is broken!</h1>
         <Route
           path="/"
           exact
