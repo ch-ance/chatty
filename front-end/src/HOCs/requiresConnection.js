@@ -1,21 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
+const url = "ws://localhost:3030";
 
 const requiresConnection = Component =>
   class extends React.Component {
+    state = {
+      ws: undefined
+    };
+    connect = () => {
+      this.setState({
+        ws: new WebSocket(url)
+      });
+    };
     render() {
       // if websocket is connected, render HomeScreen
-      if (true) {
-        return <Component />;
+      if (this.state.ws !== undefined) {
+        return <Component ws={this.state.ws} />;
       } else {
-        return <Connect />;
+        return <Connect connect={this.connect} />;
       }
     }
   };
 
-const Connect = () => {
+const Connect = ({ connect }) => {
+  useEffect(() => {
+    connect();
+  }, []);
   return (
     <div>
-      <button>Click to connect</button>
+      <h2>Attempting to connect . . .</h2>
     </div>
   );
 };
