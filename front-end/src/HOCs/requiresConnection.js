@@ -15,28 +15,26 @@ const requiresConnection = Component =>
       });
     };
 
-    componentDidMount() {
-      const userID = this.getID();
-      this.props.history.push(`/${userID}`);
-    }
-    getID() {
-      return Math.floor(Math.random() * 100);
-    }
-
     render() {
       // if websocket is connected, render HomeScreen
       if (this.state.ws !== undefined) {
         return <Component ws={this.state.ws} />;
       } else {
-        return <Connect connect={this.connect} />;
+        return <Connect connect={this.connect} props={this.props} />;
       }
     }
   };
 
-const Connect = ({ connect }) => {
+const Connect = ({ connect, props }) => {
   useEffect(() => {
+    const userID = getID();
+    props.history.push(`/${userID}`);
     connect();
   }, []);
+
+  function getID() {
+    return Math.floor(Math.random() * 100);
+  }
   return (
     <div>
       <h2>Attempting to connect . . .</h2>

@@ -52,19 +52,33 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
 
   const [friendID, setFriendID] = useState(0);
 
+  /// RANDOM USER ID CODE BELOW
+
   return (
     <div>
       <h1>HomeScreen</h1>
-      <h3>Recipient ID: </h3>
+      <button
+        onClick={() => {
+          const userID = Math.floor(Math.random() * 100);
+          // ws.send(`${userID}poop`);
+          ws.send(`${userID}poop`);
+        }}
+      >
+        Go Online
+      </button>
+      <br />
+      <br />
+      <span>friend ID: </span>
       <input
         type="text"
         value={friendID}
         onChange={e => setFriendID(e.target.value)}
       />{" "}
       <span>{friendID}</span>
+      <br />
+      <br />
+      <br />
       <Chat ws={ws} messages={messages} friendID={friendID} />
-      <button>Get my ID</button>
-      <div>My unique id is:</div>
     </div>
   );
 };
@@ -72,7 +86,7 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
 const Chat = ({ ws, messages, friendID }) => {
   function sendMessage(event) {
     event.preventDefault();
-    const message = { name: "Chance", message: messageText, friendID };
+    const message = { friendID, name: "Chance", message: messageText };
     ws.send(JSON.stringify(message));
     setMessageText("");
   }
