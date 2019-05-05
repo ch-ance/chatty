@@ -60,8 +60,7 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
       <button
         onClick={() => {
           const userID = Math.floor(Math.random() * 100);
-          // ws.send(`${userID}poop`);
-          ws.send(`${userID}poop`);
+          ws.send(`${userID}unirvkau`);
         }}
       >
         Go Online
