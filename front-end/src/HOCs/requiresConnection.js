@@ -28,7 +28,6 @@ const requiresConnection = Component =>
 const Connect = ({ connect, props }) => {
   useEffect(() => {
     const userID = getID();
-    props.history.push(`/${userID}`);
     connect();
   }, []);
 
