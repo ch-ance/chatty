@@ -60,7 +60,11 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
       <button
         onClick={() => {
           const userID = Math.floor(Math.random() * 100);
-          ws.send(`${userID}unirvkau`);
+          const userIDMessage = {
+            identifier: true,
+            userID
+          };
+          ws.send(JSON.stringify(userIDMessage));
         }}
       >
         Go Online
@@ -85,8 +89,14 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
 const Chat = ({ ws, messages, friendID }) => {
   function sendMessage(event) {
     event.preventDefault();
-    const message = { friendID, name: "Chance", message: messageText };
+    const message = {
+      pm: true,
+      friendID,
+      name: "Chance",
+      message: messageText
+    };
     ws.send(JSON.stringify(message));
+    // need to stringify for WebSocket server to accept and read it
     setMessageText("");
   }
 
