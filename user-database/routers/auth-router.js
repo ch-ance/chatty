@@ -3,7 +3,9 @@ const Users = require("../data/helpers/users-model");
 
 authRouter.post("/register", async (req, res) => {
   try {
-    const user = await Users.add(req.body);
+    const { username, password } = req.body;
+
+    await Users.add(user);
     res.status(201).json({ user });
   } catch (error) {
     res.status(400).json({ message: "Error adding user" });

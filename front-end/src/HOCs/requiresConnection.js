@@ -1,4 +1,8 @@
 import React, { useEffect } from "react";
+
+import Login from "../components/Login/Login";
+import "../index.scss";
+
 const url = "ws://localhost:3030";
 
 const requiresConnection = Component =>
@@ -6,7 +10,8 @@ const requiresConnection = Component =>
     constructor(props) {
       super(props);
       this.state = {
-        ws: undefined
+        ws: undefined,
+        user: null
       };
     }
     connect = () => {
@@ -16,6 +21,11 @@ const requiresConnection = Component =>
     };
 
     render() {
+      // if user is not logged in, return Login page
+      if (this.state.user === null) {
+        return <Login />;
+      }
+
       // if websocket is connected, render HomeScreen
       if (this.state.ws !== undefined) {
         return <Component ws={this.state.ws} />;
@@ -27,13 +37,9 @@ const requiresConnection = Component =>
 
 const Connect = ({ connect, props }) => {
   useEffect(() => {
-    const userID = getID();
     connect();
   }, []);
 
-  function getID() {
-    return Math.floor(Math.random() * 100);
-  }
   return (
     <div>
       <h2>Attempting to connect . . .</h2>

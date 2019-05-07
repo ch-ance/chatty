@@ -2,7 +2,6 @@ import React, { Component, useEffect, useState } from "react";
 import { Route, withRouter } from "react-router-dom";
 
 import requiresConnection from "./HOCs/requiresConnection";
-import "./App.css";
 
 class App extends Component {
   constructor() {
@@ -57,18 +56,6 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
   return (
     <div>
       <h1>HomeScreen</h1>
-      <button
-        onClick={() => {
-          const userID = Math.floor(Math.random() * 100);
-          const userIDMessage = {
-            identifier: true,
-            userID
-          };
-          ws.send(JSON.stringify(userIDMessage));
-        }}
-      >
-        Go Online
-      </button>
       <br />
       <br />
       <span>friend ID: </span>
