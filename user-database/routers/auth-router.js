@@ -19,4 +19,15 @@ authRouter.post("/register", async (req, res) => {
   }
 });
 
+authRouter.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const [user] = await Users.findByUsername(username);
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "User not found" });
+  }
+});
+
 module.exports = authRouter;

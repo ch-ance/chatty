@@ -20,10 +20,16 @@ const requiresConnection = Component =>
       });
     };
 
+    login = user => {
+      this.setState({
+        user
+      });
+    };
+
     render() {
       // if user is not logged in, return Login page
       if (this.state.user === null) {
-        return <Login />;
+        return <Login login={this.login} />;
       }
 
       // if websocket is connected, render HomeScreen
@@ -38,7 +44,7 @@ const requiresConnection = Component =>
 const Connect = ({ connect, props }) => {
   useEffect(() => {
     connect();
-  }, []);
+  }, [connect]);
 
   return (
     <div>

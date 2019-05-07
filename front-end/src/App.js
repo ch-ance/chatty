@@ -47,11 +47,9 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
       console.log("New Message: ", message);
       addMessage(message);
     };
-  }, []);
+  }, [addMessage, ws.onmessage, ws.onopen]);
 
   const [friendID, setFriendID] = useState(0);
-
-  /// RANDOM USER ID CODE BELOW
 
   return (
     <div>

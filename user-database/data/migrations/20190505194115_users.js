@@ -2,9 +2,15 @@ exports.up = function(knex) {
   return knex.schema.createTable("users", users => {
     users.increments("ID");
     users
-      .integer("wsid")
+      .integer("userID")
       .notNullable()
       .unique();
+    users
+      .string("username", 16)
+      .unique()
+      .notNullable();
+
+    users.string("password", 128).notNullable();
   });
 };
 
