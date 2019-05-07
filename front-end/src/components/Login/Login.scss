@@ -1,4 +1,13 @@
 .login-page {
   height: 100vh;
   background: $background-login;
+
+  button {
+    background: none;
+    border: 1px solid $buttonBorderColor;
+  }
+
+  .activeTab {
+    background: $activeTabColor;
+  }
 }

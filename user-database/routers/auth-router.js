@@ -5,6 +5,13 @@ authRouter.post("/register", async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    const userID = Math.floor(Math.random() * 1000);
+
+    const user = {
+      username,
+      password,
+      userID
+    };
     await Users.add(user);
     res.status(201).json({ user });
   } catch (error) {
