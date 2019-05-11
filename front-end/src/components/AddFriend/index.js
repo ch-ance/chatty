@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 
+import db from "../../db";
+
 const AddFriend = () => {
   const [contactID, setContactID] = useState("");
   const [nickname, setNickname] = useState("");
+
+  async function addContact(event) {
+    event.preventDefault();
+    console.log(db.contacts);
+    // need some error handling for users that already exist, DUH!
+    await db.contacts.add({
+      nickname,
+      contactID
+    });
+  }
   return (
     <form>
       <h2>Enter contact ID</h2>
@@ -17,7 +29,7 @@ const AddFriend = () => {
         value={nickname}
         onChange={e => setNickname(e.target.value)}
       />
-      <button>Add to Contacts</button>
+      <button onClick={addContact}>Add to Contacts</button>
     </form>
   );
 };

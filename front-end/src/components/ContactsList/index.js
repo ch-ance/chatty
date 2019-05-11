@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const ContactsList = ({ contacts }) => {
+import Contact from "../Contact";
+
+import db from "../../db";
+
+const ContactsList = () => {
+  const [contacts, setContacts] = useState([]);
+
+  async function getContacts() {
+    await db
+      .table("contacts")
+      .toArray()
+      .then(contacts => {
+        setContacts(contacts);
+      })
+      .catch(console.error);
+  }
+
+  useEffect(() => {
+    getContacts();
+  }, []);
+
   return (
     <ul>
-      {/* {contacts.map(contact => {
-          return <li>contact</li>;
-        })} */}
+      {contacts.map(contact => {
+        return <Contact contact={contact} />;
+      })}
     </ul>
   );
 };
