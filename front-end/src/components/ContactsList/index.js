@@ -4,7 +4,7 @@ import Contact from "../Contact";
 
 import db from "../../db";
 
-const ContactsList = () => {
+const ContactsList = ({ history, setFriendID }) => {
   const [contacts, setContacts] = useState([]);
 
   async function getContacts() {
@@ -24,7 +24,13 @@ const ContactsList = () => {
   return (
     <ul>
       {contacts.map(contact => {
-        return <Contact contact={contact} />;
+        return (
+          <Contact
+            contact={contact}
+            history={history}
+            setFriendID={setFriendID}
+          />
+        );
       })}
     </ul>
   );

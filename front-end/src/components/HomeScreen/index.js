@@ -24,7 +24,7 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
   return (
     <div>
       <TopNav history={history} />
-      <HomeContainer path={path} />
+      <HomeContainer path={path} history={history} messages={messages} />
     </div>
   );
 };
