@@ -10,7 +10,9 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      messages: []
+      messages: [],
+      loggedIn: false,
+      online: false
     };
   }
 
@@ -18,6 +20,12 @@ class App extends Component {
     this.setState(prevState => ({
       messages: [...prevState.messages, message]
     }));
+  };
+
+  toggleOnline = () => {
+    this.setState({
+      online: !this.state.online
+    });
   };
 
   render() {
@@ -31,6 +39,8 @@ class App extends Component {
               ws={this.props.ws}
               messages={this.state.messages}
               addMessage={this.addMessage}
+              online={this.state.online}
+              toggleOnline={this.toggleOnline}
             />
           )}
         />

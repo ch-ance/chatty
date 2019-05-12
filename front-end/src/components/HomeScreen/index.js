@@ -5,7 +5,14 @@ import "../../index.scss";
 
 const Context = React.createContext();
 
-const HomeScreen = ({ ws, messages, addMessage, history }) => {
+const HomeScreen = ({
+  ws,
+  messages,
+  addMessage,
+  history,
+  toggleOnline,
+  online
+}) => {
   useEffect(() => {
     ws.onopen = client => {
       console.log("connected");
@@ -18,7 +25,7 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
     };
   }, [addMessage, ws.onmessage, ws.onopen]);
 
-  const [friendID, setFriendID] = useState(0);
+  const [friendID, setFriendID] = useState("");
 
   console.log(history.location.pathname);
 
@@ -27,7 +34,12 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
   return (
     <Context.Provider value={1}>
       <div className="home-screen">
-        <TopNav history={history} />
+        <TopNav
+          history={history}
+          online={online}
+          toggleOnline={toggleOnline}
+          ws={ws}
+        />
         <HomeContainer
           path={path}
           history={history}
@@ -41,13 +53,31 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
   );
 };
 
-const TopNav = history => {
+const TopNav = ({ history, online, toggleOnline, ws }) => {
+  console.log("ONLINE? :", online);
+
+  function goOnline() {
+    const message = {
+      userID: localStorage.getItem("userID"),
+      identifier: true
+    };
+    ws.send(JSON.stringify(message));
+  }
+
   return (
     <div className="top-nav">
       <h1>chatty</h1>
+      <h3
+        onClick={() => {
+          toggleOnline();
+          goOnline();
+        }}
+      >
+        {online ? "Connected" : "Tap here to go online"}
+      </h3>
       <button
         onClick={() => {
-          history.history.push("/settings");
+          history.push("/settings");
         }}
       >
         Menu
