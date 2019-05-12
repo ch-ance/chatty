@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import HomeContainer from "../HomeContainer";
-import Chat from "../Chat";
+
+import "../../index.scss";
+
+const Context = React.createContext();
 
 const HomeScreen = ({ ws, messages, addMessage, history }) => {
   useEffect(() => {
@@ -22,16 +25,25 @@ const HomeScreen = ({ ws, messages, addMessage, history }) => {
   const path = history.location.pathname;
 
   return (
-    <div>
-      <TopNav history={history} />
-      <HomeContainer path={path} history={history} messages={messages} />
-    </div>
+    <Context.Provider value={1}>
+      <div className="home-screen">
+        <TopNav history={history} />
+        <HomeContainer
+          path={path}
+          history={history}
+          messages={messages}
+          friendID={friendID}
+          setFriendID={setFriendID}
+          ws={ws}
+        />
+      </div>
+    </Context.Provider>
   );
 };
 
 const TopNav = history => {
   return (
-    <div>
+    <div className="top-nav">
       <h1>chatty</h1>
       <button
         onClick={() => {

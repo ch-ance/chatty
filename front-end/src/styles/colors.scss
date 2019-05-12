@@ -1,16 +1,5 @@
-$background-login: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.2) 23.96%,
-    rgba(255, 255, 255, 0.1) 84.38%
-  ),
-  linear-gradient(
-    180deg,
-    #388edf 0%,
-    rgba(56, 142, 223, 0.671875) 74.28%,
-    rgba(56, 142, 223, 0.5) 99.98%,
-    rgba(56, 142, 223, 0) 99.99%
-  );
+$background-login: radial-gradient(circle, #5a7977 10%, #5e5c5c 95%);
 
 // used on login/register
-$buttonBorderColor: red;
-$activeTabColor: green;
+$loginBackgroundColor: grey;
+$activeTabColor: lightgreen;

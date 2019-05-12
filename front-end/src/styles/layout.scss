@@ -1,5 +1,16 @@
+@import url("https://fonts.googleapis.com/css?family=Rajdhani");
+
 html {
   box-sizing: border-box;
+  letter-spacing: 0.3rem;
+}
+
+body {
+  font-family: "Rajdhani", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  min-height: 100vh;
 }
 
 *,

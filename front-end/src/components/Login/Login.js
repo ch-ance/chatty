@@ -6,42 +6,9 @@ const Login = ({ login }) => {
   const [password, setPassword] = useState("");
   const [registering, setRegistering] = useState(false);
 
-  const logIn = event => {
-    event.preventDefault();
-
-    axios
-      .post(`${process.env.REACT_APP_USERS_DATABASE}/api/auth/login`, {
-        username,
-        password
-      })
-      .then(res => {
-        localStorage.setItem("userID", res.data.userID);
-        login(res.data);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-
-  const register = event => {
-    event.preventDefault();
-
-    axios
-      .post(`${process.env.REACT_APP_USERS_DATABASE}/api/auth/register`, {
-        username,
-        password
-      })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-
   return (
     <div className="login-page">
-      <div>
+      <div className="tab-selector">
         <button
           className={!registering ? "activeTab" : ""}
           onClick={() => setRegistering(false)}
@@ -76,6 +43,39 @@ const Login = ({ login }) => {
       </form>
     </div>
   );
+
+  function logIn(event) {
+    event.preventDefault();
+
+    axios
+      .post(`${process.env.REACT_APP_USERS_DATABASE}/api/auth/login`, {
+        username,
+        password
+      })
+      .then(res => {
+        localStorage.setItem("userID", res.data.userID);
+        login(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  function register(event) {
+    event.preventDefault();
+
+    axios
+      .post(`${process.env.REACT_APP_USERS_DATABASE}/api/auth/register`, {
+        username,
+        password
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
 };
 
 export default Login;

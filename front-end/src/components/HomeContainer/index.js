@@ -4,10 +4,16 @@ import ContactsList from "../ContactsList";
 import Settings from "../Settings";
 import Chat from "../Chat";
 
-const HomeContainer = ({ history, path, messages }) => {
+const HomeContainer = ({
+  history,
+  path,
+  messages,
+  friendID,
+  setFriendID,
+  ws
+}) => {
   console.log(path.path);
 
-  const [friendID, setFriendID] = useState("");
   if (path === "/") {
     return <ContactsList history={history} setFriendID={setFriendID} />;
   }
@@ -17,7 +23,7 @@ const HomeContainer = ({ history, path, messages }) => {
   }
 
   if (path === "/chat") {
-    return <Chat friendID={friendID} messages={messages} />;
+    return <Chat friendID={friendID} messages={messages} ws={ws} />;
   }
 
   return <h2>Uh something is wrong</h2>;
