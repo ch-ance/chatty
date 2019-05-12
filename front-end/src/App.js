@@ -6,6 +6,8 @@ import db from "./db";
 import HomeScreen from "./components/HomeScreen";
 import requiresConnection from "./HOCs/requiresConnection";
 
+db.open("contacts");
+
 class App extends Component {
   constructor() {
     super();
@@ -23,8 +25,9 @@ class App extends Component {
   };
 
   toggleOnline = () => {
+    // only sets to online for now, need to add toggle
     this.setState({
-      online: !this.state.online
+      online: true
     });
   };
 

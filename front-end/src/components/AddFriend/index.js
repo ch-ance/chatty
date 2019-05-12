@@ -12,7 +12,8 @@ const AddFriend = () => {
     // need some error handling for users that already exist, DUH!
     await db.contacts.add({
       nickname,
-      contactID
+      contactID,
+      myID: localStorage.getItem("userID")
     });
   }
   return (

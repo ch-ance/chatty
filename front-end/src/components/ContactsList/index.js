@@ -10,6 +10,8 @@ const ContactsList = ({ history, setFriendID }) => {
   async function getContacts() {
     await db
       .table("contacts")
+      .where("myID")
+      .equals(localStorage.getItem("userID"))
       .toArray()
       .then(contacts => {
         setContacts(contacts);
