@@ -1,6 +1,9 @@
 {
-  "version": 2,
+  "version": 3,
   "name": "chatty",
+  "env": {
+    "DATABASE_URL": "https://chatty-user-db.herokuapp.com"
+  },
   "builds": [
     {
       "src": "package.json",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import axios from "axios";
-
+require("dotenv").config();
 const Login = ({ login }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -49,7 +49,7 @@ const Login = ({ login }) => {
     event.preventDefault();
 
     axios
-      .post(`${process.env.REACT_APP_USERS_DATABASE}/api/auth/login`, {
+      .post(`${process.env.DATABASE_URL}/api/auth/login`, {
         username,
         password
       })
@@ -66,7 +66,7 @@ const Login = ({ login }) => {
     event.preventDefault();
 
     axios
-      .post(`${process.env.REACT_APP_USERS_DATABASE}/api/auth/register`, {
+      .post(`${process.env.DATABASE_URL}/api/auth/register`, {
         username,
         password
       })
