@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import axios from "axios";
-require("dotenv").config();
+require("now-env");
 const Login = ({ login }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
