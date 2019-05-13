@@ -49,7 +49,7 @@ const Login = ({ login }) => {
     event.preventDefault();
 
     axios
-      .post(`${process.env.DATABASE_URL}/api/auth/login`, {
+      .post(`https://chatty-user-db.herokuapp.com/api/auth/login`, {
         username,
         password
       })
@@ -66,7 +66,7 @@ const Login = ({ login }) => {
     event.preventDefault();
 
     axios
-      .post(`${process.env.DATABASE_URL}/api/auth/register`, {
+      .post(`https://chatty-user-db.herokuapp.com/api/auth/register`, {
         username,
         password
       })

@@ -6,6 +6,9 @@
       "DATABASE_URL": "https://chatty-user-db.herokuapp.com"
     }
   },
+  "env": {
+    "DATABASE_URL": "https://chatty-user-db.herokuapp.com"
+  },
   "builds": [
     {
       "src": "package.json",
