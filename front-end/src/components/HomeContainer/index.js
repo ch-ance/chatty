@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import ContactsList from "../ContactsList";
+import ContactList from "../ContactList";
 import Settings from "../Settings";
 import Chat from "../Chat";
 import AddContact from "../AddFriend";
@@ -16,7 +16,7 @@ const HomeContainer = ({
   console.log(path.path);
 
   if (path === "/") {
-    return <ContactsList history={history} setFriendID={setFriendID} />;
+    return <ContactList history={history} setFriendID={setFriendID} />;
   }
 
   if (path === "/settings") {

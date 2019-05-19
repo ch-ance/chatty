@@ -1,0 +1,7 @@
+@mixin buttonCreator($width, $height) {
+  width: $width;
+  height: $height;
+  border-radius: 5px;
+  border-width: 0;
+  box-shadow: 3px 3px 5px black;
+}

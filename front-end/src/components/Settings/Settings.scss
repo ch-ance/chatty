@@ -1,0 +1,18 @@
+.settings-page {
+  margin: 5% 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  .addContactButton {
+    @include buttonCreator(20%, 20px);
+    background: $topNav;
+    color: white;
+    margin-bottom: 1.5rem;
+    &:hover {
+      background: lighten($topNav, 25%);
+      cursor: pointer;
+    }
+  }
+}

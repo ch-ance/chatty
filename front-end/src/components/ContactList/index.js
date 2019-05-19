@@ -4,7 +4,9 @@ import Contact from "../Contact";
 
 import db from "../../db";
 
-const ContactsList = ({ history, setFriendID }) => {
+import "../../index.scss";
+
+const ContactList = ({ history, setFriendID }) => {
   const [contacts, setContacts] = useState([]);
 
   async function getContacts() {
@@ -24,7 +26,7 @@ const ContactsList = ({ history, setFriendID }) => {
   }, []);
 
   return (
-    <ul>
+    <ul className="contact-list">
       {contacts.map(contact => {
         return (
           <Contact
@@ -38,4 +40,4 @@ const ContactsList = ({ history, setFriendID }) => {
   );
 };
 
-export default ContactsList;
+export default ContactList;

@@ -3,6 +3,7 @@ import HomeContainer from "../HomeContainer";
 
 import "../../index.scss";
 
+// does nothing
 const Context = React.createContext();
 
 const HomeScreen = ({
@@ -32,6 +33,7 @@ const HomeScreen = ({
   const path = history.location.pathname;
 
   return (
+    // this context is kind of a joke, nothing is actually happening
     <Context.Provider value={1}>
       <div className="home-screen">
         <TopNav
@@ -65,6 +67,7 @@ const TopNav = ({ history, path, online, toggleOnline }) => {
   //   };
   //   ws.send(JSON.stringify(message));
   // }
+  // IMPORTANT: USER NOT ONLINE IF THIS DOESNT RUN
 
   return (
     <div className="top-nav">

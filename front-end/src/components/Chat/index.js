@@ -17,22 +17,22 @@ const Chat = ({ ws, messages, friendID }) => {
   const [messageText, setMessageText] = useState("");
 
   return (
-    <div>
+    <div className={"chatPage"}>
       <h3>Chatting with {friendID}</h3>
-      <form onSubmit={sendMessage}>
-        <input
-          type="text"
-          value={messageText}
-          onChange={e => setMessageText(e.target.value)}
-        />
-
-        <button>Send message</button>
-      </form>
+      <form onSubmit={sendMessage} />
       <ul>
         {messages.map(message => {
           return <li>{message.message}</li>;
         })}
       </ul>
+
+      <input
+        type="text"
+        value={messageText}
+        onChange={e => setMessageText(e.target.value)}
+      />
+
+      <button>Send message</button>
     </div>
   );
 };

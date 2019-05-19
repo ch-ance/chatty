@@ -6,8 +6,9 @@ const Settings = ({ history }) => {
   const path = history.location.pathname;
   console.log(path);
   return (
-    <div>
+    <div className="settings-page">
       <button
+        className="addContactButton"
         onClick={e => {
           e.preventDefault();
           history.push("/addContact");

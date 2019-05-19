@@ -17,7 +17,7 @@ const AddFriend = () => {
     });
   }
   return (
-    <form>
+    <form className="add-contact-form">
       <h2>Enter contact ID</h2>
       <input
         type="text"

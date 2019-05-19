@@ -1,0 +1,20 @@
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  li {
+    padding: 2rem;
+    font-size: 2rem;
+    width: 100%;
+    background: $contactListOdd;
+    &:nth-child(even) {
+      background: $contactListEven;
+    }
+    &:hover {
+      background: lighten($contactListOdd, 30%);
+      &:nth-child(even) {
+        background: lighten($contactListEven, 30%);
+      }
+    }
+  }
+}
