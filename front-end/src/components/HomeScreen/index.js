@@ -54,30 +54,31 @@ const HomeScreen = ({
   );
 };
 
-const TopNav = ({ history, path, online, toggleOnline, ws }) => {
-  console.log("ONLINE? :", online);
-
-  console.log("IN NAV PATH:   ", path);
-
-  function goOnline() {
-    const message = {
-      userID: localStorage.getItem("userID"),
-      identifier: true
-    };
-    ws.send(JSON.stringify(message));
-  }
+const TopNav = ({ history, path, online, toggleOnline }) => {
+  // This should possibly be moved, and changed to "goOffline"
+  // Maybe check if the actual ws is connected?
+  // as the default behavior will be 'connected'/online
+  // function goOnline() {
+  //   const message = {
+  //     userID: localStorage.getItem("userID"),
+  //     identifier: true
+  //   };
+  //   ws.send(JSON.stringify(message));
+  // }
 
   return (
     <div className="top-nav">
-      <h1>chatty</h1>
-      <h3
-        onClick={() => {
-          toggleOnline();
-          goOnline();
+      <button
+        className={path !== "/" ? "back" : "none"}
+        onClick={e => {
+          e.preventDefault();
+          history.push("/");
         }}
       >
-        {online ? "Connected" : "Tap here to go online"}
-      </h3>
+        Back
+      </button>
+      <h1>chatty</h1>
+      <h3>{online ? "Connected" : "Offline"}</h3>
       <button
         onClick={() => {
           path === "/settings" ? history.push("/") : history.push("/settings");

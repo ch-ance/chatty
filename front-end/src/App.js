@@ -14,7 +14,7 @@ class App extends Component {
     this.state = {
       messages: [],
       loggedIn: false,
-      online: false
+      online: true
     };
   }
 

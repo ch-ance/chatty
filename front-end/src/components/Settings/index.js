@@ -2,11 +2,19 @@ import React from "react";
 
 import AddFriend from "../AddFriend";
 
-const Settings = () => {
+const Settings = ({ history }) => {
+  const path = history.location.pathname;
+  console.log(path);
   return (
     <div>
-      <h2>Settings Screen</h2>
-      <AddFriend />
+      <button
+        onClick={e => {
+          e.preventDefault();
+          history.push("/addContact");
+        }}
+      >
+        Add a contact
+      </button>
       <GetMyID />
     </div>
   );

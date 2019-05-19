@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ContactsList from "../ContactsList";
 import Settings from "../Settings";
 import Chat from "../Chat";
+import AddContact from "../AddFriend";
 
 const HomeContainer = ({
   history,
@@ -19,11 +20,15 @@ const HomeContainer = ({
   }
 
   if (path === "/settings") {
-    return <Settings />;
+    return <Settings history={history} />;
   }
 
   if (path === "/chat") {
     return <Chat friendID={friendID} messages={messages} ws={ws} />;
+  }
+
+  if (path === "/addContact") {
+    return <AddContact />;
   }
 
   return <h2>Uh something is wrong</h2>;
