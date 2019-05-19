@@ -39,6 +39,7 @@ const HomeScreen = ({
           online={online}
           toggleOnline={toggleOnline}
           ws={ws}
+          path={path}
         />
         <HomeContainer
           path={path}
@@ -53,8 +54,10 @@ const HomeScreen = ({
   );
 };
 
-const TopNav = ({ history, online, toggleOnline, ws }) => {
+const TopNav = ({ history, path, online, toggleOnline, ws }) => {
   console.log("ONLINE? :", online);
+
+  console.log("IN NAV PATH:   ", path);
 
   function goOnline() {
     const message = {
@@ -77,10 +80,10 @@ const TopNav = ({ history, online, toggleOnline, ws }) => {
       </h3>
       <button
         onClick={() => {
-          history.push("/settings");
+          path === "/settings" ? history.push("/") : history.push("/settings");
         }}
       >
-        Menu
+        {path === "/settings" ? "Close Menu" : "Open Menu"}
       </button>
     </div>
   );
