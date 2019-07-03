@@ -3,6 +3,7 @@ import { TextField } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/styles'
+import { withRouter } from 'react-router-dom'
 
 import axios from 'axios'
 
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Login = ({ login }) => {
+const Login = ({ login, history }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -68,9 +69,17 @@ const Login = ({ login }) => {
                     Log In
                 </Button>
             </form>
-            <Typography variant="h6" className={classes.learnMore}>
-                New to Chatty? Click here to register and learn how it works
-            </Typography>
+            <button
+                onClick={e => {
+                    e.preventDefault()
+                    history.push('/learn-more')
+                }}
+                style={{ all: 'unset' }}
+            >
+                <Typography variant="h6" className={classes.learnMore}>
+                    New to Chatty? Click here to register and learn how it works
+                </Typography>
+            </button>
         </div>
     )
 
@@ -108,4 +117,4 @@ const Login = ({ login }) => {
     }
 }
 
-export default Login
+export default withRouter(Login)

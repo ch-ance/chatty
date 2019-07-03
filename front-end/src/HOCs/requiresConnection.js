@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import LearnMore from '../components/LearnMore/LearnMore'
 import Login from '../components/Login/Login'
 
 const url = process.env.REACT_APP_SOCKET_URL || 'ws://localhost:3030'
@@ -10,24 +11,27 @@ const requiresConnection = Component =>
             super(props)
             this.state = {
                 ws: undefined,
-                user: null
+                user: null,
             }
         }
         connect = () => {
             this.setState({
-                ws: new WebSocket(url)
+                ws: new WebSocket(url),
             })
         }
 
         login = user => {
             this.setState({
-                user
+                user,
             })
         }
 
         render() {
             // if user is not logged in, return Login page
             if (this.state.user === null) {
+                if (window.location.pathname === '/learn-more') {
+                    return <LearnMore />
+                }
                 return <Login login={this.login} />
             }
 
