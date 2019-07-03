@@ -6,15 +6,14 @@ import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
 import App from './App'
 import { blue, yellow } from '@material-ui/core/colors'
-
 const theme = createMuiTheme({
     palette: {
-        primary: yellow,
-        secondary: blue
+        primary: blue,
+        secondary: blue,
     },
     status: {
-        danger: 'orange'
-    }
+        danger: 'orange',
+    },
 })
 
 ReactDOM.render(
@@ -25,5 +24,5 @@ ReactDOM.render(
             </ThemeProvider>
         </CssBaseline>
     </Router>,
-    document.getElementById('root')
+    document.getElementById('root'),
 )
