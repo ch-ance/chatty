@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
 import LearnMore from '../components/LearnMore/LearnMore'
+import Register from '../components/Register/Register'
 import Login from '../components/Login/Login'
 
 const url = process.env.REACT_APP_SOCKET_URL || 'ws://localhost:3030'
@@ -31,6 +32,8 @@ const requiresConnection = Component =>
             if (this.state.user === null) {
                 if (window.location.pathname === '/learn-more') {
                     return <LearnMore />
+                } else if (window.location.pathname === '/register') {
+                    return <Register login={this.login} />
                 }
                 return <Login login={this.login} />
             }
