@@ -1,10 +1,18 @@
 import React from 'react'
+import Button from '@material-ui/core/Button'
 
 const LearnMore = () => {
     return (
-        <div style={{ textAlign: 'center', margin: '1rem 2rem' }}>
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                margin: '1rem 2rem',
+            }}
+        >
             <h2>What is Chatty?</h2>
-            <p style={{ textAlign: 'left' }}>
+            <p style={{ textAlign: 'left', lineHeight: '1.6rem' }}>
                 Chatty is a secure, end-to-end messaging application. While most
                 online messaging and SMS services store your messages in a
                 database, with Chatty everything is only saved locally on your
@@ -14,12 +22,16 @@ const LearnMore = () => {
                 applications, it is becoming increasingly more important to{' '}
                 <em>Own Your Own Data.</em>
             </p>
-            <h4>
+            <p style={{ textAlign: 'left', lineHeight: '1.6rem' }}>
                 Ready to get started? Go to the next page for a quick tutorial
                 on how to use Chatty. Or, if you're a returning user and would
                 just like to make a new account, click on the "Register" button
-                below
-            </h4>
+                below.
+            </p>
+            <Button style={{ margin: '2rem 0 3rem 0' }} variant="contained">
+                Tutorial -->
+            </Button>
+            <Button variant="contained">Register Now</Button>
         </div>
     )
 }
