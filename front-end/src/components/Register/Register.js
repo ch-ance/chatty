@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
     },
     header: {
-        fontSize: '3rem',
+        fontSize: '2.4rem',
         textAlign: 'center',
         margin: '1.4rem 0',
     },
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Login = ({ login, history }) => {
+const Register = ({ history }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -46,9 +46,9 @@ const Login = ({ login, history }) => {
     return (
         <div className={classes.container}>
             <Typography className={classes.header} variant="h1">
-                Chatty
+                Chatty Registration
             </Typography>
-            <form onSubmit={logIn} className={classes.loginForm}>
+            <form onSubmit={register} className={classes.loginForm}>
                 <TextField
                     variant="filled"
                     label="username"
@@ -59,46 +59,18 @@ const Login = ({ login, history }) => {
 
                 <TextField
                     variant="filled"
-                    label="password"
+                    label="passwprd"
                     className={classes.inputs}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                 />
                 <br />
                 <Button type="submit" variant="contained">
-                    Log In
+                    Register
                 </Button>
             </form>
-            <button
-                onClick={e => {
-                    e.preventDefault()
-                    history.push('/learn-more')
-                }}
-                style={{ all: 'unset' }}
-            >
-                <Typography variant="h6" className={classes.learnMore}>
-                    New to Chatty? Click here to register and learn how it works
-                </Typography>
-            </button>
         </div>
     )
-
-    function logIn(event) {
-        event.preventDefault()
-
-        axios
-            .post(`${process.env.REACT_APP_USERS_DB}/api/auth/login`, {
-                username,
-                password,
-            })
-            .then(res => {
-                localStorage.setItem('userID', res.data.userID)
-                login(res.data)
-            })
-            .catch(err => {
-                console.error(err)
-            })
-    }
 
     function register(event) {
         event.preventDefault()
@@ -110,6 +82,7 @@ const Login = ({ login, history }) => {
             })
             .then(res => {
                 console.log(res)
+                history.push('/')
             })
             .catch(err => {
                 console.error(err)
@@ -117,4 +90,4 @@ const Login = ({ login, history }) => {
     }
 }
 
-export default withRouter(Login)
+export default withRouter(Register)

@@ -1,7 +1,8 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
+import { withRouter } from 'react-router-dom'
 
-const LearnMore = () => {
+const LearnMore = ({ history }) => {
     return (
         <div
             style={{
@@ -31,9 +32,17 @@ const LearnMore = () => {
             <Button style={{ margin: '2rem 0 3rem 0' }} variant="contained">
                 Tutorial -->
             </Button>
-            <Button variant="contained">Register Now</Button>
+            <Button
+                onClick={e => {
+                    e.preventDefault()
+                    history.push('/register')
+                }}
+                variant="contained"
+            >
+                Register Now
+            </Button>
         </div>
     )
 }
 
-export default LearnMore
+export default withRouter(LearnMore)
