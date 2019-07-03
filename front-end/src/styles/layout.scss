@@ -1,12 +1,14 @@
-@import url("https://fonts.googleapis.com/css?family=Rajdhani");
+// @import url("https://fonts.googleapis.com/css?family=Rajdhani");
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 html {
   box-sizing: border-box;
   letter-spacing: 0.3rem;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
-  font-family: "Rajdhani", sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
