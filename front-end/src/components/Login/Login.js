@@ -1,47 +1,85 @@
 import React, { useState } from 'react'
+import { TextField } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/styles'
+import { withRouter } from 'react-router-dom'
 
 import axios from 'axios'
-require('now-env')
-const Login = ({ login }) => {
+
+const useStyles = makeStyles(theme => ({
+    container: {
+        backgroundColor: theme.palette.primary.main,
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100vw',
+        height: '100vh',
+    },
+    inputs: {
+        backgroundColor: 'white',
+        borderRadius: '5px',
+        width: '50vw',
+        margin: '5%',
+    },
+    loginForm: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    header: {
+        fontSize: '3rem',
+        textAlign: 'center',
+        margin: '1.4rem 0',
+    },
+    learnMore: {
+        textAlign: 'center',
+        margin: '2rem',
+    },
+}))
+
+const Login = ({ login, history }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [registering, setRegistering] = useState(false)
+
+    const classes = useStyles()
 
     return (
-        <div className="login-page">
-            <div className="tab-selector">
-                <button
-                    className={!registering ? 'activeTab' : ''}
-                    onClick={() => setRegistering(false)}
-                >
-                    Login
-                </button>
-                <button
-                    className={registering ? 'activeTab' : ''}
-                    onClick={() => setRegistering(true)}
-                >
-                    Sign Up
-                </button>
-            </div>
-
-            <h2>Chatty</h2>
-            <form onSubmit={registering ? register : logIn}>
-                <span>Username: </span>
-                <input
-                    type="text"
+        <div className={classes.container}>
+            <Typography className={classes.header} variant="h1">
+                Chatty
+            </Typography>
+            <form onSubmit={logIn} className={classes.loginForm}>
+                <TextField
+                    variant="filled"
+                    label="username"
+                    className={classes.inputs}
                     value={username}
                     onChange={e => setUsername(e.target.value)}
                 />
-                <br />
-                <span>Password:</span>
-                <input
-                    type="password"
+
+                <TextField
+                    variant="filled"
+                    label="passwprd"
+                    className={classes.inputs}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                 />
                 <br />
-                <button type="submit">Login</button>
+                <Button type="submit" variant="contained">
+                    Log In
+                </Button>
             </form>
+            <button
+                onClick={e => {
+                    e.preventDefault()
+                    history.push('/learn-more')
+                }}
+                style={{ all: 'unset' }}
+            >
+                <Typography variant="h6" className={classes.learnMore}>
+                    New to Chatty? Click here to register and learn how it works
+                </Typography>
+            </button>
         </div>
     )
 
@@ -51,7 +89,7 @@ const Login = ({ login }) => {
         axios
             .post(`${process.env.REACT_APP_USERS_DB}/api/auth/login`, {
                 username,
-                password
+                password,
             })
             .then(res => {
                 localStorage.setItem('userID', res.data.userID)
@@ -68,7 +106,7 @@ const Login = ({ login }) => {
         axios
             .post(`${process.env.REACT_APP_USERS_DB}/api/auth/register`, {
                 username,
-                password
+                password,
             })
             .then(res => {
                 console.log(res)
@@ -79,4 +117,4 @@ const Login = ({ login }) => {
     }
 }
 
-export default Login
+export default withRouter(Login)
