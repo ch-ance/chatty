@@ -4,6 +4,9 @@ import LearnMore from '../components/LearnMore/LearnMore'
 import Register from '../components/Register/Register'
 import Login from '../components/Login/Login'
 
+// DEV
+import axios from 'axios'
+
 const url = process.env.REACT_APP_SOCKET_URL || 'ws://localhost:3030'
 
 const requiresConnection = Component =>
@@ -19,6 +22,13 @@ const requiresConnection = Component =>
             this.setState({
                 ws: new WebSocket(url),
             })
+            setTimeout(() => {
+                const message = {
+                    userID: localStorage.getItem('userID'),
+                    identifier: true,
+                }
+                this.state.ws.send(JSON.stringify(message))
+            }, 1500)
         }
 
         login = user => {
@@ -27,8 +37,31 @@ const requiresConnection = Component =>
             })
         }
 
+        componentDidMount() {
+            axios
+                .post(`${process.env.REACT_APP_USERS_DB}/api/auth/login`, {
+                    username: 'username',
+                    password: 'password',
+                })
+                .then(res => {
+                    localStorage.setItem('userID', res.data.userID)
+                    console.log(res.data)
+                    this.setState(prevState => ({
+                        ...prevState,
+                        user: res.data,
+                    }))
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        }
+
         render() {
             // if user is not logged in, return Login page
+
+            // DEVELOPMENT:
+            // Hardcoding user login data
+
             if (this.state.user === null) {
                 if (window.location.pathname === '/learn-more') {
                     return <LearnMore />
@@ -42,12 +75,18 @@ const requiresConnection = Component =>
             if (this.state.ws !== undefined) {
                 return <Component ws={this.state.ws} />
             } else {
-                return <Connect connect={this.connect} props={this.props} />
+                return (
+                    <Connect
+                        connect={this.connect}
+                        props={this.props}
+                        ws={this.state.ws}
+                    />
+                )
             }
         }
     }
 
-const Connect = ({ connect, props }) => {
+const Connect = ({ connect, ws }) => {
     useEffect(() => {
         connect()
     }, [connect])

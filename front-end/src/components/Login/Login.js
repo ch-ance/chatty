@@ -93,6 +93,7 @@ const Login = ({ login, history }) => {
             })
             .then(res => {
                 localStorage.setItem('userID', res.data.userID)
+                console.log(res.data)
                 login(res.data)
             })
             .catch(err => {
