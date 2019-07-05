@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import HomeContainer from '../HomeContainer'
+import TopNav from '../TopNav'
 import Typography from '@material-ui/core/Typography'
 import '../../index.scss'
 
@@ -50,23 +51,6 @@ const HomeScreen = ({
                 />
             </div>
         </Context.Provider>
-    )
-}
-
-const TopNav = ({ history, online, toggleOnline, ws }) => {
-    console.log('ONLINE? :', online)
-
-    return (
-        <div className="top-nav">
-            <Typography variant="h1">Chatty</Typography>
-            <button
-                onClick={() => {
-                    history.push('/settings')
-                }}
-            >
-                Menu
-            </button>
-        </div>
     )
 }
 
