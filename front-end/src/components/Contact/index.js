@@ -18,22 +18,15 @@ const Contact = ({ contact, history, setFriendID }) => {
     return (
         <ListItem alignItems="flex-start">
             <ListItemAvatar>
-                <Avatar alt={contact.name} src="/static/images/avatar/1.jpg" />
+                <Avatar
+                    alt={contact.name}
+                    src="https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTE5NDg0MDU0ODQ5MjkxNzkx/jason-bateman-522670-1-402.jpg"
+                />
             </ListItemAvatar>
             <ListItemText
                 primary={contact.nickname}
                 secondary={
-                    <React.Fragment>
-                        <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                        >
-                            Ali Connors
-                        </Typography>
-                        {" — I'll be in your neighborhood doing errands this…"}
-                    </React.Fragment>
+                    <>{" — I'll be in your neighborhood doing errands this…"}</>
                 }
             />
         </ListItem>
