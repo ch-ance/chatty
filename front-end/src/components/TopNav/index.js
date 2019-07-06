@@ -11,7 +11,6 @@ import SearchIcon from '@material-ui/icons/Search'
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
-        border: '5px dotted black',
         height: '8vh',
     },
     appBar: {
@@ -33,9 +32,10 @@ const useStyles = makeStyles(theme => ({
         },
         marginLeft: 0,
         width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: '1rem',
-            width: 'auto',
+        ['@media (max-width: 600px)']: {
+            right: 5,
+            position: 'fixed',
+            width: '20%',
         },
     },
 }))
@@ -56,7 +56,7 @@ export default function SearchAppBar() {
                         <MenuIcon />
                     </IconButton>
                     <Typography className={classes.title} variant="h6" noWrap>
-                        Material-UI
+                        Chatty
                     </Typography>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
