@@ -16,7 +16,15 @@ const Contact = ({ contact, history, setFriendID }) => {
     const classes = useStyles()
 
     return (
-        <ListItem alignItems="flex-start">
+        <ListItem
+            alignItems="flex-start"
+            onClick={e => {
+                e.preventDefault()
+                console.table(contact.contactID)
+                setFriendID(contact.contactID)
+                history.push('/chat')
+            }}
+        >
             <ListItemAvatar>
                 <Avatar
                     alt={contact.name}
