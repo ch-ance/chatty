@@ -10,10 +10,9 @@ const HomeContainer = ({
     messages,
     friendID,
     setFriendID,
-    ws
+    ws,
 }) => {
-    console.log(path.path)
-
+    console.log('PATH: ', path)
     if (path === '/') {
         return <ContactsList history={history} setFriendID={setFriendID} />
     }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import HomeContainer from '../HomeContainer'
 import TopNav from '../TopNav'
-import Typography from '@material-ui/core/Typography'
 import '../../index.scss'
 
 const Context = React.createContext()
