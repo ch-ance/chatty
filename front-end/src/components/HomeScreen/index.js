@@ -26,6 +26,7 @@ const HomeScreen = ({
     }, [addMessage, ws.onmessage, ws.onopen])
 
     const [friendID, setFriendID] = useState('')
+    const [chattingWith, setChattingWith] = useState('')
 
     console.log(history.location.pathname)
 
@@ -46,6 +47,8 @@ const HomeScreen = ({
                     messages={messages}
                     friendID={friendID}
                     setFriendID={setFriendID}
+                    chattingWith={chattingWith}
+                    setChattingWith={setChattingWith}
                     ws={ws}
                 />
             </div>

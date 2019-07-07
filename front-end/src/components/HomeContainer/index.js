@@ -10,11 +10,19 @@ const HomeContainer = ({
     messages,
     friendID,
     setFriendID,
+    chattingWith,
+    setChattingWith,
     ws,
 }) => {
     console.log('PATH: ', path)
     if (path === '/') {
-        return <ContactsList history={history} setFriendID={setFriendID} />
+        return (
+            <ContactsList
+                history={history}
+                setFriendID={setFriendID}
+                setChattingWith={setChattingWith}
+            />
+        )
     }
 
     if (path === '/settings') {
@@ -22,7 +30,14 @@ const HomeContainer = ({
     }
 
     if (path === '/chat') {
-        return <Chat friendID={friendID} messages={messages} ws={ws} />
+        return (
+            <Chat
+                friendID={friendID}
+                messages={messages}
+                ws={ws}
+                chattingWith={chattingWith}
+            />
+        )
     }
 
     return <h2>Uh something is wrong</h2>
