@@ -7,11 +7,18 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 
 const useStyles = makeStyles(theme => ({
     sentMessage: {
-        // display: 'inline',
+        marginLeft: '5rem',
         marginRight: '1rem',
         borderRadius: '2%',
         marginBottom: '1rem',
     },
+    receivedMessage: {
+        marginRight: '5rem',
+        marginLeft: '1rem',
+        borderRadius: '2%',
+        marginBottom: '1rem',
+    },
+    // text input field
     root: {
         background: theme.palette.common.white,
         borderRadius: '2%',
@@ -47,22 +54,25 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
         <div
             style={{
                 backgroundColor: '#E0E0E0',
+                height: '92vh',
             }}
         >
-            <ul
-                style={{
-                    listStyle: 'none',
-                }}
-            >
+            <div style={{}}>
                 {messages.map(message => {
-                    return (
-                        <li>
-                            <UserChatBox message={message} />
-                        </li>
+                    return message.sent ? (
+                        <UserChatBox message={message} />
+                    ) : (
+                        <ContactChatBox message={message} />
                     )
                 })}
-            </ul>
-            <form onSubmit={sendMessage}>
+            </div>
+            <form
+                style={{
+                    position: 'fixed',
+                    bottom: 0,
+                }}
+                onSubmit={sendMessage}
+            >
                 {/* <input
                     type="text"
                     value={messageText}
@@ -99,7 +109,16 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
 
     function UserChatBox({ message }) {
         const classes = useStyles()
+
         return <Paper className={classes.sentMessage}>{message.message}</Paper>
+    }
+
+    function ContactChatBox({ message }) {
+        const classes = useStyles()
+
+        return (
+            <Paper className={classes.receivedMessage}>{message.message}</Paper>
+        )
     }
 }
 

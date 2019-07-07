@@ -37,6 +37,9 @@ const requiresConnection = Component =>
             })
         }
 
+        // DEVELOPMENT::
+        //      Logs in User automatically to get past auth screen
+
         componentDidMount() {
             axios
                 .post(`${process.env.REACT_APP_USERS_DB}/api/auth/login`, {
@@ -57,7 +60,7 @@ const requiresConnection = Component =>
         }
 
         render() {
-            // if user is not logged in, return Login page
+            // if user is not logged in, render Login page
 
             // DEVELOPMENT:
             // Hardcoding user login data
