@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const ContactsList = ({ history, setChattingWith, setFriendID }) => {
+const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
     const classes = useStyles()
 
     const [contacts, setContacts] = useState([])
@@ -45,6 +45,7 @@ const ContactsList = ({ history, setChattingWith, setFriendID }) => {
                         history={history}
                         setChattingWith={setChattingWith}
                         setFriendID={setFriendID}
+                        setView={setView}
                     />
                 )
             })}

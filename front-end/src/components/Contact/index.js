@@ -12,7 +12,13 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Contact = ({ contact, history, setFriendID, setChattingWith }) => {
+const Contact = ({
+    contact,
+    history,
+    setFriendID,
+    setChattingWith,
+    setView,
+}) => {
     const classes = useStyles()
 
     return (
@@ -22,6 +28,7 @@ const Contact = ({ contact, history, setFriendID, setChattingWith }) => {
                 e.preventDefault()
                 console.table(contact.contactID)
                 setChattingWith(contact.nickname)
+                setView('Chat')
                 setFriendID(contact.contactID)
                 history.push('/chat')
             }}

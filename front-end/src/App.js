@@ -15,7 +15,24 @@ class App extends Component {
             messages: [],
             loggedIn: false,
             online: false,
+            chattingWith: '',
+            view: 'Login',
+            // const [chattingWith, setChattingWith] = useState('')
         }
+    }
+
+    setView = view => {
+        this.setState(prevState => ({
+            ...prevState,
+            view,
+        }))
+    }
+
+    setChattingWith = name => {
+        this.setState(prevState => ({
+            ...prevState,
+            chattingWith: name,
+        }))
     }
 
     addMessage = message => {
@@ -44,6 +61,10 @@ class App extends Component {
                             addMessage={this.addMessage}
                             online={this.state.online}
                             toggleOnline={this.toggleOnline}
+                            chattingWith={this.state.chattingWith}
+                            setChattingWith={this.setChattingWith}
+                            view={this.state.view}
+                            setView={this.state.setView}
                         />
                     )}
                 />
