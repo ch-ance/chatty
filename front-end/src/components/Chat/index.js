@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -36,6 +36,14 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
 
     console.log('CHATTING WITH: ', chattingWith)
 
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    useEffect(scrollToBottom, [messages])
+
     return (
         <div
             style={{
@@ -46,17 +54,16 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                 style={{
                     height: '84vh',
                     overflow: 'auto',
-                    display: 'flex',
-                    flexDirection: 'column-reverse',
                 }}
             >
-                {messages.reverse().map(message => {
+                {messages.map(message => {
                     return message.sent ? (
                         <UserChatBox message={message} />
                     ) : (
                         <ContactChatBox message={message} />
                     )
                 })}
+                <div ref={messagesEndRef} />
             </div>
             <InputBox ws={ws} addMessage={addMessage} />
         </div>

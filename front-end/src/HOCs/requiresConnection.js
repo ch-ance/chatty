@@ -40,24 +40,24 @@ const requiresConnection = Component =>
         // DEVELOPMENT::
         //      Logs in User automatically to get past auth screen
 
-        // componentDidMount() {
-        //     axios
-        //         .post(`${process.env.REACT_APP_USERS_DB}/api/auth/login`, {
-        //             username: 'username',
-        //             password: 'password',
-        //         })
-        //         .then(res => {
-        //             localStorage.setItem('userID', res.data.userID)
-        //             console.log(res.data)
-        //             this.setState(prevState => ({
-        //                 ...prevState,
-        //                 user: res.data,
-        //             }))
-        //         })
-        //         .catch(err => {
-        //             console.error(err)
-        //         })
-        // }
+        componentDidMount() {
+            axios
+                .post(`${process.env.REACT_APP_USERS_DB}/api/auth/login`, {
+                    username: 'username',
+                    password: 'password',
+                })
+                .then(res => {
+                    localStorage.setItem('userID', res.data.userID)
+                    console.log(res.data)
+                    this.setState(prevState => ({
+                        ...prevState,
+                        user: res.data,
+                    }))
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        }
 
         render() {
             // if user is not logged in, render Login page
