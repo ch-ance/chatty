@@ -56,7 +56,6 @@ class App extends Component {
             online: false,
             chattingWith: '',
             view: 'Login',
-            // const [chattingWith, setChattingWith] = useState('')
         }
     }
 

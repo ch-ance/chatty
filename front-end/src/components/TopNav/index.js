@@ -40,14 +40,14 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default function TopNav({ view, contact }) {
+export default function TopNav({ contact }) {
     const classes = useStyles()
 
-    if (view === 'Login') {
-        return <LoginView />
-    } else if (view === 'Home') {
+    const view = window.location.pathname
+
+    if (view === '/') {
         return <HomeView />
-    } else if (view === 'Chat') {
+    } else if (view === '/chat') {
         return <ChatView contact={contact} />
     }
 
@@ -61,6 +61,9 @@ export default function TopNav({ view, contact }) {
                             className={classes.menuButton}
                             color="inherit"
                             aria-label="Open drawer"
+                            onClick={e => {
+                                e.preventDefault()
+                            }}
                         >
                             <MenuIcon />
                         </IconButton>
