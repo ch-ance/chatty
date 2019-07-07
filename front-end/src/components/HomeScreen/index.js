@@ -14,9 +14,9 @@ const HomeScreen = ({
     online,
     chattingWith,
     setChattingWith,
-    view,
-    setView,
 }) => {
+    const [view, setView] = useState('Login')
+
     useEffect(() => {
         ws.onopen = client => {
             console.log('connected')
