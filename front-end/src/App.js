@@ -51,6 +51,54 @@ class App extends Component {
                     message:
                         'I am testing the limits with this long message do do do da da lolololololol did what ha lol omg wtf lol wow hahahahahaa',
                 },
+                {
+                    pm: true,
+                    friendID: 222,
+                    contact: 'Chance',
+                    sent: true,
+                    message:
+                        "Hey, how's it going, mate? Been reaching out to you",
+                },
+                {
+                    pm: true,
+                    friendID: 222,
+                    contact: 'Chance',
+                    sent: true,
+                    message:
+                        "Hey, how's it going, mate? Been reaching out to you",
+                },
+                {
+                    pm: true,
+                    friendID: 222,
+                    contact: 'Chance',
+                    sent: true,
+                    message:
+                        "Hey, how's it going, mate? Been reaching out to you",
+                },
+                {
+                    pm: true,
+                    friendID: 222,
+                    contact: 'Chance',
+                    sent: true,
+                    message:
+                        "Hey, how's it be going, mate? Been reaching out to you",
+                },
+                {
+                    pm: true,
+                    friendID: 222,
+                    contact: 'Chance',
+                    sent: true,
+                    message:
+                        "Hey, how's it going, mate? Been reaching out to you",
+                },
+                {
+                    pm: true,
+                    friendID: 222,
+                    contact: 'Chance',
+                    sent: true,
+                    message:
+                        "Hey, how's it going, mate? Been reaching out to you",
+                },
             ],
             loggedIn: false,
             online: false,

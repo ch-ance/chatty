@@ -63,12 +63,13 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
         >
             <div
                 style={{
-                    minHeight: '84vh',
-                    overflowY: 'auto',
-                    position: 'sticky',
+                    height: '84vh',
+                    overflow: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column-reverse',
                 }}
             >
-                {messages.map(message => {
+                {messages.reverse().map(message => {
                     return message.sent ? (
                         <UserChatBox message={message} />
                     ) : (

@@ -12,6 +12,9 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
         height: '8vh',
+        position: 'sticky',
+        top: 0,
+        zIndex: 5,
     },
     appBar: {
         height: '100%',
