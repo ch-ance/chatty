@@ -1,4 +1,15 @@
 import React, { useState } from 'react'
+import Paper from '@material-ui/core/Paper'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles(theme => ({
+    sentMessage: {
+        // display: 'inline',
+        marginRight: '1rem',
+        borderRadius: '2%',
+        marginBottom: '1rem',
+    },
+}))
 
 const Chat = ({ ws, messages, friendID, chattingWith }) => {
     function sendMessage(event) {
@@ -6,7 +17,8 @@ const Chat = ({ ws, messages, friendID, chattingWith }) => {
         const message = {
             pm: true,
             friendID,
-            name: 'Chance',
+            contact: 'Chance',
+            sent: true,
             message: messageText,
         }
         ws.send(JSON.stringify(message))
@@ -18,7 +30,11 @@ const Chat = ({ ws, messages, friendID, chattingWith }) => {
     console.log('CHATTING WITH: ', chattingWith)
 
     return (
-        <div>
+        <div
+            style={{
+                backgroundColor: '#E0E0E0',
+            }}
+        >
             <form onSubmit={sendMessage}>
                 <input
                     type="text"
@@ -28,13 +44,26 @@ const Chat = ({ ws, messages, friendID, chattingWith }) => {
 
                 <button>Send message</button>
             </form>
-            <ul>
+            <ul
+                style={{
+                    listStyle: 'none',
+                }}
+            >
                 {messages.map(message => {
-                    return <li>{message.message}</li>
+                    return (
+                        <li>
+                            <UserChatBox message={message} />
+                        </li>
+                    )
                 })}
             </ul>
         </div>
     )
+
+    function UserChatBox({ message }) {
+        const classes = useStyles()
+        return <Paper className={classes.sentMessage}>{message.message}</Paper>
+    }
 }
 
 export default Chat

@@ -12,7 +12,31 @@ class App extends Component {
     constructor() {
         super()
         this.state = {
-            messages: [],
+            // const message = {
+            //     pm: true,
+            //     friendID,
+            //     contact: 'Chance',
+            //     sent: true,
+            //     message: messageText,
+            // }
+            messages: [
+                {
+                    pm: true,
+                    friendID: 222,
+                    contact: 'Chance',
+                    sent: true,
+                    message:
+                        "Hey, how's it going, mate? Been reaching out to you",
+                },
+                {
+                    pm: true,
+                    friendID: 222,
+                    contact: 'Chance',
+                    sent: true,
+                    message:
+                        'This is my second time trying to reach you. Here is a very long message to demonstrate the ability for this app to handle long messages! Simple enough, right? Well, lets see!',
+                },
+            ],
             loggedIn: false,
             online: false,
             chattingWith: '',
