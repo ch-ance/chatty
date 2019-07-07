@@ -12,7 +12,11 @@ const HomeScreen = ({
     history,
     toggleOnline,
     online,
+    chattingWith,
+    setChattingWith,
 }) => {
+    const [view, setView] = useState('Login')
+
     useEffect(() => {
         ws.onopen = client => {
             console.log('connected')
@@ -26,7 +30,6 @@ const HomeScreen = ({
     }, [addMessage, ws.onmessage, ws.onopen])
 
     const [friendID, setFriendID] = useState('')
-    const [chattingWith, setChattingWith] = useState('')
 
     console.log(history.location.pathname)
 
@@ -40,16 +43,20 @@ const HomeScreen = ({
                     online={online}
                     toggleOnline={toggleOnline}
                     ws={ws}
+                    view={view}
+                    contact={chattingWith}
                 />
                 <HomeContainer
                     path={path}
                     history={history}
                     messages={messages}
+                    addMessage={addMessage}
                     friendID={friendID}
                     setFriendID={setFriendID}
                     chattingWith={chattingWith}
                     setChattingWith={setChattingWith}
                     ws={ws}
+                    setView={setView}
                 />
             </div>
         </Context.Provider>

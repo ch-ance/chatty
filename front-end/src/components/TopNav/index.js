@@ -12,6 +12,9 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
         height: '8vh',
+        position: 'sticky',
+        top: 0,
+        zIndex: 5,
     },
     appBar: {
         height: '100%',
@@ -40,39 +43,134 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default function SearchAppBar() {
+export default function TopNav({ contact }) {
     const classes = useStyles()
 
-    return (
-        <div className={classes.root}>
-            <AppBar position="static" className={classes.appBar}>
-                <Toolbar>
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="Open drawer"
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        Chatty
-                    </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
+    const view = window.location.pathname
+
+    if (view === '/') {
+        return <HomeView />
+    } else if (view === '/chat') {
+        return <ChatView contact={contact} />
+    }
+
+    function HomeView() {
+        return (
+            <div className={classes.root}>
+                <AppBar position="static" className={classes.appBar}>
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="Open drawer"
+                            onClick={e => {
+                                e.preventDefault()
                             }}
-                            inputProps={{ 'aria-label': 'Search' }}
-                        />
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </div>
-    )
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                        >
+                            Chatty
+                        </Typography>
+                        <div className={classes.search}>
+                            <div className={classes.searchIcon}>
+                                <SearchIcon />
+                            </div>
+                            <InputBase
+                                placeholder="Search…"
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'Search' }}
+                            />
+                        </div>
+                    </Toolbar>
+                </AppBar>
+            </div>
+        )
+    }
+
+    function LoginView() {
+        return (
+            <div className={classes.root}>
+                <AppBar position="static" className={classes.appBar}>
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="Open drawer"
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                        >
+                            LOGIN PAGE
+                        </Typography>
+                        <div className={classes.search}>
+                            <div className={classes.searchIcon}>
+                                <SearchIcon />
+                            </div>
+                            <InputBase
+                                placeholder="Search…"
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'Search' }}
+                            />
+                        </div>
+                    </Toolbar>
+                </AppBar>
+            </div>
+        )
+    }
+
+    function ChatView({ contact }) {
+        return (
+            <div className={classes.root}>
+                <AppBar position="static" className={classes.appBar}>
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="Open drawer"
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                        >
+                            {contact}
+                        </Typography>
+                        <div className={classes.search}>
+                            <div className={classes.searchIcon}>
+                                <SearchIcon />
+                            </div>
+                            <InputBase
+                                placeholder="Search…"
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'Search' }}
+                            />
+                        </div>
+                    </Toolbar>
+                </AppBar>
+            </div>
+        )
+    }
 }

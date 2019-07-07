@@ -8,10 +8,12 @@ const HomeContainer = ({
     history,
     path,
     messages,
+    addMessage,
     friendID,
     setFriendID,
     chattingWith,
     setChattingWith,
+    setView,
     ws,
 }) => {
     console.log('PATH: ', path)
@@ -21,6 +23,7 @@ const HomeContainer = ({
                 history={history}
                 setFriendID={setFriendID}
                 setChattingWith={setChattingWith}
+                setView={setView}
             />
         )
     }
@@ -36,6 +39,7 @@ const HomeContainer = ({
                 messages={messages}
                 ws={ws}
                 chattingWith={chattingWith}
+                addMessage={addMessage}
             />
         )
     }
