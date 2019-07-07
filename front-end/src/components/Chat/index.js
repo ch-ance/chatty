@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 
 const useStyles = makeStyles(theme => ({
     sentMessage: {
@@ -9,9 +12,18 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '2%',
         marginBottom: '1rem',
     },
+    root: {
+        background: theme.palette.common.white,
+        borderRadius: '2%',
+        width: '75vw',
+    },
 }))
 
 const Chat = ({ ws, messages, friendID, chattingWith }) => {
+    const [messageText, setMessageText] = useState('')
+
+    const classes = useStyles()
+
     function sendMessage(event) {
         event.preventDefault()
         const message = {
@@ -26,7 +38,6 @@ const Chat = ({ ws, messages, friendID, chattingWith }) => {
         setMessageText('')
     }
 
-    const [messageText, setMessageText] = useState('')
     console.log('CHATTING WITH: ', chattingWith)
 
     return (
@@ -35,15 +46,6 @@ const Chat = ({ ws, messages, friendID, chattingWith }) => {
                 backgroundColor: '#E0E0E0',
             }}
         >
-            <form onSubmit={sendMessage}>
-                <input
-                    type="text"
-                    value={messageText}
-                    onChange={e => setMessageText(e.target.value)}
-                />
-
-                <button>Send message</button>
-            </form>
             <ul
                 style={{
                     listStyle: 'none',
@@ -57,6 +59,33 @@ const Chat = ({ ws, messages, friendID, chattingWith }) => {
                     )
                 })}
             </ul>
+            <form onSubmit={sendMessage}>
+                {/* <input
+                    type="text"
+                    value={messageText}
+                    onChange={e => setMessageText(e.target.value)}
+                /> */}
+                <TextField className={classes.root} variant="outlined" />
+
+                <button
+                    style={{
+                        all: 'unset',
+                        height: '2.4rem',
+                        width: '2.4rem',
+                        // background: 'white',
+                        // borderRadius: '10%',
+                        marginLeft: '.4rem',
+                    }}
+                >
+                    <FontAwesomeIcon
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                        }}
+                        icon={faPaperPlane}
+                    />
+                </button>
+            </form>
         </div>
     )
 
