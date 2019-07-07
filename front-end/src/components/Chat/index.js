@@ -11,12 +11,17 @@ const useStyles = makeStyles(theme => ({
         marginRight: '1rem',
         borderRadius: '2%',
         marginBottom: '1rem',
+        padding: '.4rem',
+        letterSpacing: '.1rem',
     },
     receivedMessage: {
         marginRight: '5rem',
         marginLeft: '1rem',
         borderRadius: '2%',
         marginBottom: '1rem',
+        padding: '.4rem',
+        letterSpacing: '.1rem',
+        backgroundColor: theme.palette.primary.main,
     },
     // text input field
     root: {
@@ -54,10 +59,15 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
         <div
             style={{
                 backgroundColor: '#E0E0E0',
-                height: '92vh',
             }}
         >
-            <div style={{}}>
+            <div
+                style={{
+                    minHeight: '84vh',
+                    overflowY: 'auto',
+                    position: 'sticky',
+                }}
+            >
                 {messages.map(message => {
                     return message.sent ? (
                         <UserChatBox message={message} />
@@ -66,44 +76,50 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                     )
                 })}
             </div>
-            <form
+            <div
                 style={{
-                    position: 'fixed',
+                    position: 'relative',
                     bottom: 0,
+                    height: '8vh',
                 }}
-                onSubmit={sendMessage}
             >
-                {/* <input
+                <form
+                    style={{
+                        position: 'sticky',
+                        bottom: 0,
+                    }}
+                    onSubmit={sendMessage}
+                >
+                    {/* <input
                     type="text"
                     value={messageText}
                     onChange={e => setMessageText(e.target.value)}
                 /> */}
-                <TextField
-                    value={messageText}
-                    onChange={e => setMessageText(e.target.value)}
-                    className={classes.root}
-                    variant="outlined"
-                />
-
-                <button
-                    style={{
-                        all: 'unset',
-                        height: '2.4rem',
-                        width: '2.4rem',
-                        // background: 'white',
-                        // borderRadius: '10%',
-                        marginLeft: '.4rem',
-                    }}
-                >
-                    <FontAwesomeIcon
-                        style={{
-                            height: '100%',
-                            width: '100%',
-                        }}
-                        icon={faPaperPlane}
+                    <TextField
+                        value={messageText}
+                        onChange={e => setMessageText(e.target.value)}
+                        className={classes.root}
+                        variant="outlined"
                     />
-                </button>
-            </form>
+
+                    <button
+                        style={{
+                            all: 'unset',
+                            height: '2.4rem',
+                            width: '2.4rem',
+                            marginLeft: '.4rem',
+                        }}
+                    >
+                        <FontAwesomeIcon
+                            style={{
+                                height: '100%',
+                                width: '100%',
+                            }}
+                            icon={faPaperPlane}
+                        />
+                    </button>
+                </form>
+            </div>
         </div>
     )
 
