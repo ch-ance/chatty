@@ -44,6 +44,7 @@ const HomeScreen = ({
                     toggleOnline={toggleOnline}
                     ws={ws}
                     view={view}
+                    contact={chattingWith}
                 />
                 <HomeContainer
                     path={path}

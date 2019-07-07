@@ -19,7 +19,6 @@ const Chat = ({ ws, messages, friendID, chattingWith }) => {
 
     return (
         <div>
-            <h3>Chatting with {chattingWith}</h3>
             <form onSubmit={sendMessage}>
                 <input
                     type="text"

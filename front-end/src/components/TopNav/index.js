@@ -40,13 +40,16 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default function TopNav({ view }) {
+export default function TopNav({ view, contact }) {
     const classes = useStyles()
 
     if (view === 'Login') {
         return <LoginView />
+    } else if (view === 'Home') {
+        return <HomeView />
+    } else if (view === 'Chat') {
+        return <ChatView contact={contact} />
     }
-    return <HomeView />
 
     function HomeView() {
         return (
@@ -88,6 +91,80 @@ export default function TopNav({ view }) {
     }
 
     function LoginView() {
-        return <h1>TOP NAV FOR LOGIN</h1>
+        return (
+            <div className={classes.root}>
+                <AppBar position="static" className={classes.appBar}>
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="Open drawer"
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                        >
+                            LOGIN PAGE
+                        </Typography>
+                        <div className={classes.search}>
+                            <div className={classes.searchIcon}>
+                                <SearchIcon />
+                            </div>
+                            <InputBase
+                                placeholder="Search…"
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'Search' }}
+                            />
+                        </div>
+                    </Toolbar>
+                </AppBar>
+            </div>
+        )
+    }
+
+    function ChatView({ contact }) {
+        return (
+            <div className={classes.root}>
+                <AppBar position="static" className={classes.appBar}>
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="Open drawer"
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                        >
+                            {contact}
+                        </Typography>
+                        <div className={classes.search}>
+                            <div className={classes.searchIcon}>
+                                <SearchIcon />
+                            </div>
+                            <InputBase
+                                placeholder="Search…"
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'Search' }}
+                            />
+                        </div>
+                    </Toolbar>
+                </AppBar>
+            </div>
+        )
     }
 }
