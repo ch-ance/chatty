@@ -50,6 +50,7 @@ const HomeScreen = ({
                     path={path}
                     history={history}
                     messages={messages}
+                    addMessage={addMessage}
                     friendID={friendID}
                     setFriendID={setFriendID}
                     chattingWith={chattingWith}

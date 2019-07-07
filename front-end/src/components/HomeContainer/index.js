@@ -8,6 +8,7 @@ const HomeContainer = ({
     history,
     path,
     messages,
+    addMessage,
     friendID,
     setFriendID,
     chattingWith,
@@ -38,6 +39,7 @@ const HomeContainer = ({
                 messages={messages}
                 ws={ws}
                 chattingWith={chattingWith}
+                addMessage={addMessage}
             />
         )
     }

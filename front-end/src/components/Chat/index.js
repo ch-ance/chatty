@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Chat = ({ ws, messages, friendID, chattingWith }) => {
+const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
     const [messageText, setMessageText] = useState('')
 
     const classes = useStyles()
@@ -34,6 +34,9 @@ const Chat = ({ ws, messages, friendID, chattingWith }) => {
             message: messageText,
         }
         ws.send(JSON.stringify(message))
+        if (message.sent) {
+            addMessage(message)
+        }
         // need to stringify for WebSocket server to accept and read it
         setMessageText('')
     }
@@ -65,7 +68,12 @@ const Chat = ({ ws, messages, friendID, chattingWith }) => {
                     value={messageText}
                     onChange={e => setMessageText(e.target.value)}
                 /> */}
-                <TextField className={classes.root} variant="outlined" />
+                <TextField
+                    value={messageText}
+                    onChange={e => setMessageText(e.target.value)}
+                    className={classes.root}
+                    variant="outlined"
+                />
 
                 <button
                     style={{
