@@ -32,26 +32,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
-    const [messageText, setMessageText] = useState('')
-
     const classes = useStyles()
-
-    function sendMessage(event) {
-        event.preventDefault()
-        const message = {
-            pm: true,
-            friendID,
-            contact: 'Chance',
-            sent: true,
-            message: messageText,
-        }
-        ws.send(JSON.stringify(message))
-        if (message.sent) {
-            addMessage(message)
-        }
-        // need to stringify for WebSocket server to accept and read it
-        setMessageText('')
-    }
 
     console.log('CHATTING WITH: ', chattingWith)
 
@@ -77,6 +58,14 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                     )
                 })}
             </div>
+            <InputBox ws={ws} addMessage={addMessage} />
+        </div>
+    )
+
+    function InputBox({ ws, addMessage }) {
+        const [messageText, setMessageText] = useState('')
+
+        return (
             <div
                 style={{
                     position: 'relative',
@@ -92,10 +81,10 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                     onSubmit={sendMessage}
                 >
                     {/* <input
-                    type="text"
-                    value={messageText}
-                    onChange={e => setMessageText(e.target.value)}
-                /> */}
+                type="text"
+                value={messageText}
+                onChange={e => setMessageText(e.target.value)}
+            /> */}
                     <TextField
                         value={messageText}
                         onChange={e => setMessageText(e.target.value)}
@@ -121,8 +110,25 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                     </button>
                 </form>
             </div>
-        </div>
-    )
+        )
+
+        function sendMessage(event) {
+            event.preventDefault()
+            const message = {
+                pm: true,
+                friendID,
+                contact: 'Chance',
+                sent: true,
+                message: messageText,
+            }
+            ws.send(JSON.stringify(message))
+            if (message.sent) {
+                addMessage(message)
+            }
+            // need to stringify for WebSocket server to accept and read it
+            setMessageText('')
+        }
+    }
 
     function UserChatBox({ message }) {
         const classes = useStyles()

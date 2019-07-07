@@ -123,7 +123,8 @@ class App extends Component {
 
     addMessage = message => {
         this.setState(prevState => ({
-            messages: [...prevState.messages, message],
+            ...prevState,
+            messages: prevState.messages.concat(message),
         }))
     }
 
