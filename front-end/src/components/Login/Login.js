@@ -30,10 +30,14 @@ const useStyles = makeStyles(theme => ({
         fontSize: '3rem',
         textAlign: 'center',
         margin: '1.4rem 0',
+        letterSpacing: '.2rem',
     },
     learnMore: {
         textAlign: 'center',
         margin: '2rem',
+        fontWeight: 'bold',
+        // color: 'white',
+        textDecoration: 'underline',
     },
 }))
 
@@ -62,6 +66,7 @@ const Login = ({ login, history }) => {
                     label="password"
                     className={classes.inputs}
                     value={password}
+                    type="password"
                     onChange={e => setPassword(e.target.value)}
                 />
                 <br />
@@ -77,7 +82,7 @@ const Login = ({ login, history }) => {
                 style={{ all: 'unset' }}
             >
                 <Typography variant="h6" className={classes.learnMore}>
-                    New to Chatty? Click here to register and learn how it works
+                    New to Chatty? Click here to learn more
                 </Typography>
             </button>
         </div>
