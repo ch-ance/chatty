@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -32,28 +32,19 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
-    const [messageText, setMessageText] = useState('')
-
     const classes = useStyles()
 
-    function sendMessage(event) {
-        event.preventDefault()
-        const message = {
-            pm: true,
-            friendID,
-            contact: 'Chance',
-            sent: true,
-            message: messageText,
-        }
-        ws.send(JSON.stringify(message))
-        if (message.sent) {
-            addMessage(message)
-        }
-        // need to stringify for WebSocket server to accept and read it
-        setMessageText('')
+    console.log('CHATTING WITH: ', chattingWith)
+
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
 
-    console.log('CHATTING WITH: ', chattingWith)
+    useEffect(scrollToBottom, [messages])
+
+    const userID = localStorage.getItem('userID')
 
     return (
         <div
@@ -65,18 +56,25 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                 style={{
                     height: '84vh',
                     overflow: 'auto',
-                    display: 'flex',
-                    flexDirection: 'column-reverse',
                 }}
             >
-                {messages.reverse().map(message => {
-                    return message.sent ? (
+                {messages.map(message => {
+                    return message.me == userID ? (
                         <UserChatBox message={message} />
                     ) : (
                         <ContactChatBox message={message} />
                     )
                 })}
+                <div ref={messagesEndRef} />
             </div>
+            <InputBox ws={ws} addMessage={addMessage} />
+        </div>
+    )
+
+    function InputBox({ ws, addMessage }) {
+        const [messageText, setMessageText] = useState('')
+
+        return (
             <div
                 style={{
                     position: 'relative',
@@ -92,10 +90,10 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                     onSubmit={sendMessage}
                 >
                     {/* <input
-                    type="text"
-                    value={messageText}
-                    onChange={e => setMessageText(e.target.value)}
-                /> */}
+                type="text"
+                value={messageText}
+                onChange={e => setMessageText(e.target.value)}
+            /> */}
                     <TextField
                         value={messageText}
                         onChange={e => setMessageText(e.target.value)}
@@ -121,8 +119,25 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                     </button>
                 </form>
             </div>
-        </div>
-    )
+        )
+
+        function sendMessage(event) {
+            event.preventDefault()
+            const message = {
+                pm: true,
+                friendID,
+                other: chattingWith.nickname,
+                me: localStorage.getItem('userID'),
+                message: messageText,
+            }
+            ws.send(JSON.stringify(message))
+            if (message.me == userID) {
+                addMessage(message)
+            }
+            // need to stringify for WebSocket server to accept and read it
+            setMessageText('')
+        }
+    }
 
     function UserChatBox({ message }) {
         const classes = useStyles()

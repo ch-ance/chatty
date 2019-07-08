@@ -27,7 +27,7 @@ const Contact = ({
             onClick={e => {
                 e.preventDefault()
                 console.table(contact.contactID)
-                setChattingWith(contact.nickname)
+                setChattingWith(contact)
                 setView('Chat')
                 setFriendID(contact.contactID)
                 history.push('/chat')
