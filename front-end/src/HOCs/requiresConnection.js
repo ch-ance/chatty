@@ -8,6 +8,7 @@ import Login from '../components/Login/Login'
 import axios from 'axios'
 
 const url = process.env.REACT_APP_SOCKET_URL || 'ws://localhost:3030'
+// const url = 'ws://localhost:1234'
 
 const requiresConnection = Component =>
     class extends React.Component {
