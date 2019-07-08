@@ -176,15 +176,7 @@ export default function TopNav({ chattingWith, history }) {
 
     function DropDownHome() {
         return (
-            <div
-                className={classes.dropDownHome}
-                role="presentation"
-                onClick={e => {
-                    e.preventDefault()
-                    console.log('clickingggg')
-                    toggleDrawer(false)
-                }}
-            >
+            <div className={classes.dropDownHome} role="presentation">
                 <AddFriend />
             </div>
         )
@@ -205,6 +197,8 @@ export default function TopNav({ chattingWith, history }) {
         }
         return (
             <form>
+                <h3>{`Your ID: ${localStorage.getItem('userID')}`}</h3>
+
                 <h2>Enter contact ID</h2>
                 <input
                     type="text"
