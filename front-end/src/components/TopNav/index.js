@@ -58,7 +58,8 @@ const useStyles = makeStyles(theme => ({
         ['@media (max-width: 600px)']: {
             right: 5,
             position: 'fixed',
-            width: '20%',
+            width: '50%',
+            textAlign: 'center',
         },
     },
     dropDownHome: {
