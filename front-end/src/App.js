@@ -12,13 +12,6 @@ class App extends Component {
     constructor() {
         super()
         this.state = {
-            // const message = {
-            //     pm: true,
-            //     friendID,
-            //     contact: 'Chance',
-            //     sent: true,
-            //     message: messageText,
-            // }
             messages: [
                 {
                     pm: true,
@@ -102,7 +95,7 @@ class App extends Component {
             ],
             loggedIn: false,
             online: false,
-            chattingWith: '',
+            chattingWith: null,
             view: 'Login',
         }
     }
@@ -114,10 +107,10 @@ class App extends Component {
         }))
     }
 
-    setChattingWith = name => {
+    setChattingWith = contact => {
         this.setState(prevState => ({
             ...prevState,
-            chattingWith: name,
+            chattingWith: contact,
         }))
     }
 

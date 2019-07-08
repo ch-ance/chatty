@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
@@ -7,6 +8,7 @@ import InputBase from '@material-ui/core/InputBase'
 import { makeStyles, fade } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -43,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default function TopNav({ contact }) {
+export default function TopNav({ chattingWith, history }) {
     const classes = useStyles()
 
     const view = window.location.pathname
@@ -51,7 +53,7 @@ export default function TopNav({ contact }) {
     if (view === '/') {
         return <HomeView />
     } else if (view === '/chat') {
-        return <ChatView contact={contact} />
+        return <ChatView chattingWith={chattingWith} history={history} />
     }
 
     function HomeView() {
@@ -96,7 +98,7 @@ export default function TopNav({ contact }) {
         )
     }
 
-    function LoginView() {
+    function ChatView({ chattingWith }) {
         return (
             <div className={classes.root}>
                 <AppBar position="static" className={classes.appBar}>
@@ -106,54 +108,19 @@ export default function TopNav({ contact }) {
                             className={classes.menuButton}
                             color="inherit"
                             aria-label="Open drawer"
+                            onClick={e => {
+                                e.preventDefault()
+                                history.push('/')
+                            }}
                         >
-                            <MenuIcon />
+                            <ArrowBackIcon />
                         </IconButton>
                         <Typography
                             className={classes.title}
                             variant="h6"
                             noWrap
                         >
-                            LOGIN PAGE
-                        </Typography>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InputBase
-                                placeholder="Search…"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'Search' }}
-                            />
-                        </div>
-                    </Toolbar>
-                </AppBar>
-            </div>
-        )
-    }
-
-    function ChatView({ contact }) {
-        return (
-            <div className={classes.root}>
-                <AppBar position="static" className={classes.appBar}>
-                    <Toolbar>
-                        <IconButton
-                            edge="start"
-                            className={classes.menuButton}
-                            color="inherit"
-                            aria-label="Open drawer"
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography
-                            className={classes.title}
-                            variant="h6"
-                            noWrap
-                        >
-                            {contact}
+                            {chattingWith !== null && chattingWith.nickname}
                         </Typography>
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>
