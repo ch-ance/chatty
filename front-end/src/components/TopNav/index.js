@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
 import { makeStyles, fade } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
+import SettingsIcon from '@material-ui/icons/Settings'
 import SearchIcon from '@material-ui/icons/Search'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 
@@ -20,10 +21,20 @@ const useStyles = makeStyles(theme => ({
     },
     appBar: {
         height: '100%',
+        width: '100vw',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    menuButton: {
+    toolbar: {
+        display: 'flex',
+        width: '100vw',
+        justifyContent: 'space-between',
+    },
+    backButton: {
         marginRight: '2rem',
     },
+    settingsButton: {},
     title: {
         fontSize: '2rem',
         // display: 'block',
@@ -102,12 +113,12 @@ export default function TopNav({ chattingWith, history }) {
         return (
             <div className={classes.root}>
                 <AppBar position="static" className={classes.appBar}>
-                    <Toolbar>
+                    <Toolbar className={classes.toolbar}>
                         <IconButton
                             edge="start"
-                            className={classes.menuButton}
+                            className={classes.backButton}
                             color="inherit"
-                            aria-label="Open drawer"
+                            aria-label="Go Back"
                             onClick={e => {
                                 e.preventDefault()
                                 history.push('/')
@@ -122,19 +133,18 @@ export default function TopNav({ chattingWith, history }) {
                         >
                             {chattingWith !== null && chattingWith.nickname}
                         </Typography>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InputBase
-                                placeholder="Search…"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'Search' }}
-                            />
-                        </div>
+                        <IconButton
+                            edge="end"
+                            className={classes.settingsButton}
+                            color="inherit"
+                            aria-label="Open Settings"
+                            onClick={e => {
+                                e.preventDefault()
+                                history.push('/')
+                            }}
+                        >
+                            <SettingsIcon />
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
             </div>
