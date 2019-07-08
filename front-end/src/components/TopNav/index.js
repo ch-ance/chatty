@@ -1,15 +1,22 @@
-import React from 'react'
-import { withRouter } from 'react-router-dom'
+import React, { useState } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
 import { makeStyles, fade } from '@material-ui/core/styles'
-import MenuIcon from '@material-ui/icons/Menu'
 import SettingsIcon from '@material-ui/icons/Settings'
 import SearchIcon from '@material-ui/icons/Search'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import Drawer from '@material-ui/core/Drawer'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import AddIcon from '@material-ui/icons/AddCircle'
+
+import db from '../../db'
+import AddFriend from '../AddFriend'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -54,12 +61,18 @@ const useStyles = makeStyles(theme => ({
             width: '20%',
         },
     },
+    dropDownHome: {
+        width: '100vw',
+        // height: '92vh',
+    },
 }))
 
 export default function TopNav({ chattingWith, history }) {
     const classes = useStyles()
 
     const view = window.location.pathname
+
+    const [drawer, toggleDrawer] = useState(false)
 
     if (view === '/') {
         return <HomeView />
@@ -79,10 +92,20 @@ export default function TopNav({ chattingWith, history }) {
                             aria-label="Open drawer"
                             onClick={e => {
                                 e.preventDefault()
+                                toggleDrawer(true)
+                                console.log('DRAWER IS: ', drawer)
                             }}
                         >
-                            <MenuIcon />
+                            <AddIcon />
                         </IconButton>
+                        <Drawer
+                            anchor={'bottom'}
+                            open={drawer}
+                            onClose={() => toggleDrawer(false)}
+                        >
+                            {/* <DropDownHome /> */}
+                            {DropDownHome()}
+                        </Drawer>
                         <Typography
                             className={classes.title}
                             variant="h6"
@@ -148,6 +171,54 @@ export default function TopNav({ chattingWith, history }) {
                     </Toolbar>
                 </AppBar>
             </div>
+        )
+    }
+
+    function DropDownHome() {
+        return (
+            <div
+                className={classes.dropDownHome}
+                role="presentation"
+                onClick={e => {
+                    e.preventDefault()
+                    console.log('clickingggg')
+                    toggleDrawer(false)
+                }}
+            >
+                <AddFriend />
+            </div>
+        )
+    }
+    function AddFriend() {
+        const [contactID, setContactID] = useState('')
+        const [nickname, setNickname] = useState('')
+
+        async function addContact(event) {
+            event.preventDefault()
+            console.log(db.contacts)
+            // need some error handling for users that already exist
+            await db.contacts.add({
+                nickname,
+                contactID,
+                myID: localStorage.getItem('userID'),
+            })
+        }
+        return (
+            <form>
+                <h2>Enter contact ID</h2>
+                <input
+                    type="text"
+                    value={contactID}
+                    onChange={e => setContactID(e.target.value)}
+                />
+                <h2>Enter a nickname for this contact</h2>
+                <input
+                    type="text"
+                    value={nickname}
+                    onChange={e => setNickname(e.target.value)}
+                />
+                <button onClick={addContact}>Add to Contacts</button>
+            </form>
         )
     }
 }
