@@ -1,2 +1,3 @@
 # chatty
-messaging application using indexedDB
+
+Work-in-Progress!
