@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
 
 import db from './db'
-
+import Loading from './components/Loading/'
 import HomeScreen from './components/HomeScreen'
 import requiresConnection from './HOCs/requiresConnection'
 
@@ -52,6 +52,7 @@ class App extends Component {
         return (
             <div className="App">
                 <Route
+                    exact
                     path="/"
                     render={props => (
                         <HomeScreen
@@ -67,6 +68,11 @@ class App extends Component {
                             setView={this.state.setView}
                         />
                     )}
+                />
+                <Route
+                    exact
+                    path="/loading"
+                    render={props => <Loading {...props} />}
                 />
             </div>
         )

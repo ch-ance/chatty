@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/styles'
 import { Typography, TextField, Button } from '@material-ui/core'
 import TopNav from '../TopNav/'
@@ -95,4 +96,4 @@ const InvitePage = ({ login }) => {
     }
 }
 
-export default InvitePage
+export default withRouter(InvitePage)
