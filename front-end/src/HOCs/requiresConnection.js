@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import LearnMore from '../components/LearnMore/LearnMore'
 import Register from '../components/Register/Register'
 import Login from '../components/Login/Login'
+import InvitePage from '../components/InvitePage/'
 
 // DEV
 import axios from 'axios'
@@ -65,6 +66,11 @@ const requiresConnection = Component =>
 
             // DEVELOPMENT:
             // Hardcoding user login data
+
+            // Link from an existing user to join Chatty
+            if (window.location.pathname.includes('/invite')) {
+                return <InvitePage />
+            }
 
             if (this.state.user === null) {
                 if (window.location.pathname === '/learn-more') {
