@@ -23,7 +23,8 @@ const requiresConnection = (props, Component) =>
             }
         }
         destination = '/'
-        connect = () => {
+        connect = (history, destination) => {
+            console.log('trying to connect')
             this.setState({
                 ws: new WebSocket(url),
             })
@@ -33,14 +34,19 @@ const requiresConnection = (props, Component) =>
                     identifier: true,
                 }
                 this.state.ws.send(JSON.stringify(message))
+                console.log(history)
+                console.log(destination)
+                // history.push(destination)
             }, 1500)
         }
 
         login = (user, placeToGo = '/') => {
+            console.log('logging in ', placeToGo)
             this.setState({
                 user,
                 destination: placeToGo,
             })
+            console.log('done logging in')
         }
 
         // DEVELOPMENT::
@@ -79,7 +85,8 @@ const requiresConnection = (props, Component) =>
                 }
                 if (window.location.pathname === '/learn-more') {
                     return <LearnMore />
-                } else if (window.location.pathname === '/register') {
+                }
+                if (window.location.pathname === '/register') {
                     return <Register login={this.login} />
                 }
                 return <Login login={this.login} />
@@ -89,24 +96,29 @@ const requiresConnection = (props, Component) =>
             if (this.state.ws !== undefined) {
                 return <Component ws={this.state.ws} />
             } else {
-                return (
-                    <Connect
-                        connect={this.connect}
-                        props={this.props}
-                        ws={this.state.ws}
-                        history={props.history}
-                        destination={this.state.destination}
-                    />
-                )
+                return withRouter(props => {
+                    return (
+                        <Connect
+                            connect={this.connect}
+                            props={this.props}
+                            ws={this.state.ws}
+                            // history={props.history}
+                            destination={this.state.destination}
+                        />
+                    )
+                })
             }
         }
     }
 
 const Connect = ({ connect, ws, history, destination }) => {
     useEffect(() => {
-        connect()
-        history.push(destination)
-    }, [connect])
+        console.log('in connect')
+        connect(
+            history,
+            destination,
+        )
+    }, [])
 
     return (
         <div>
