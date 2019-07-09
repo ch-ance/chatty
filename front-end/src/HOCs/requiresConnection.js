@@ -12,15 +12,17 @@ import InvitePage from '../components/InvitePage/'
 const url = process.env.REACT_APP_SOCKET_URL || 'ws://localhost:3030'
 // const url = 'ws://localhost:1234'
 
-const requiresConnection = (Component, history) =>
+const requiresConnection = (props, Component) =>
     class extends React.Component {
         constructor(props) {
             super(props)
             this.state = {
                 ws: undefined,
                 user: null,
+                destination: '/',
             }
         }
+        destination = '/'
         connect = () => {
             this.setState({
                 ws: new WebSocket(url),
@@ -34,9 +36,10 @@ const requiresConnection = (Component, history) =>
             }, 1500)
         }
 
-        login = user => {
+        login = (user, placeToGo = '/') => {
             this.setState({
                 user,
+                destination: placeToGo,
             })
         }
 
@@ -91,15 +94,18 @@ const requiresConnection = (Component, history) =>
                         connect={this.connect}
                         props={this.props}
                         ws={this.state.ws}
+                        history={props.history}
+                        destination={this.state.destination}
                     />
                 )
             }
         }
     }
 
-const Connect = ({ connect, ws }) => {
+const Connect = ({ connect, ws, history, destination }) => {
     useEffect(() => {
         connect()
+        history.push(destination)
     }, [connect])
 
     return (

@@ -4,6 +4,7 @@ import { Route, withRouter } from 'react-router-dom'
 import db from './db'
 import Loading from './components/Loading/'
 import HomeScreen from './components/HomeScreen'
+import AddContact from './components/AddContact/'
 import requiresConnection from './HOCs/requiresConnection'
 
 db.open('contacts')
@@ -68,6 +69,11 @@ class App extends Component {
                             setView={this.state.setView}
                         />
                     )}
+                />
+                <Route
+                    exact
+                    path="/add-contact"
+                    render={props => <AddContact {...props} />}
                 />
                 <Route
                     exact
