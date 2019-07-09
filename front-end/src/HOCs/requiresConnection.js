@@ -6,7 +6,7 @@ import Login from '../components/Login/Login'
 import InvitePage from '../components/InvitePage/'
 
 // DEV
-import axios from 'axios'
+// import axios from 'axios'
 
 const url = process.env.REACT_APP_SOCKET_URL || 'ws://localhost:3030'
 // const url = 'ws://localhost:1234'

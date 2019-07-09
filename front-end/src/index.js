@@ -5,7 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
 import App from './App'
-import { blue, yellow } from '@material-ui/core/colors'
+import { blue } from '@material-ui/core/colors'
 
 import { StateProvider, initialState, reducer } from './state/'
 

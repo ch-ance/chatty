@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { Typography, TextField, Button } from '@material-ui/core'
 import TopNav from '../TopNav/'
 import axios from 'axios'
+import { useStateValue } from '../../state'
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -15,11 +16,29 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
+// const ThemedButton = () => {
+//     const [state, dispatch] = useStateValue()
+//             onClick={() =>
+//                 dispatch({
+//                     type: 'changeTheme',
+//                     newTheme: { primary: 'blue' },
+
 const InvitePage = ({ login }) => {
     const classes = useStyles()
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+
+    const inviteCode = window.location.pathname.replace('/invite/', '')
+
+    const [{}, dispatch] = useStateValue()
+
+    useEffect(() => {
+        dispatch({
+            type: 'setInviteCode',
+            payload: inviteCode,
+        })
+    }, [inviteCode])
 
     return (
         <>

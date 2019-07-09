@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import List from '@material-ui/core/List'
-import Divider from '@material-ui/core/Divider'
+// import Divider from '@material-ui/core/Divider'
 
 import Contact from '../Contact'
 

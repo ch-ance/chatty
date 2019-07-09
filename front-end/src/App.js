@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
 
 import db from './db'

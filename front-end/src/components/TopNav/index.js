@@ -9,14 +9,9 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import SearchIcon from '@material-ui/icons/Search'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Drawer from '@material-ui/core/Drawer'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
 import AddIcon from '@material-ui/icons/AddCircle'
 
 import db from '../../db'
-import AddFriend from '../AddFriend'
 
 const useStyles = makeStyles(theme => ({
     root: {
