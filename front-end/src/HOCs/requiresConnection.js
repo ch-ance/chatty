@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
 
 import LearnMore from '../components/LearnMore/LearnMore'
 import Register from '../components/Register/Register'
@@ -11,7 +12,7 @@ import InvitePage from '../components/InvitePage/'
 const url = process.env.REACT_APP_SOCKET_URL || 'ws://localhost:3030'
 // const url = 'ws://localhost:1234'
 
-const requiresConnection = Component =>
+const requiresConnection = (Component, history) =>
     class extends React.Component {
         constructor(props) {
             super(props)

@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 //                     type: 'changeTheme',
 //                     newTheme: { primary: 'blue' },
 
-const InvitePage = ({ login }) => {
+const InvitePage = ({ login, history }) => {
     const classes = useStyles()
 
     const [username, setUsername] = useState('')
@@ -89,6 +89,8 @@ const InvitePage = ({ login }) => {
                 localStorage.setItem('userID', res.data.userID)
                 console.log(res.data)
                 login(res.data)
+
+                history.push('/addContact')
             })
             .catch(err => {
                 console.error(err)

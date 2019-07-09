@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 
 const Loading = ({ history }, condition = true) => {
-    const destination = window.location.pathname
+    const destination = window.location.pathname.replace('/loading/', '')
     useEffect(() => {
         if (condition) {
             history.push(destination)
