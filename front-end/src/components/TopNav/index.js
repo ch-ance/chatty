@@ -79,6 +79,8 @@ export default function TopNav({ chattingWith, history }) {
         return <HomeView />
     } else if (view === '/chat') {
         return <ChatView chattingWith={chattingWith} history={history} />
+    } else {
+        return <HomeView />
     }
 
     function HomeView() {
