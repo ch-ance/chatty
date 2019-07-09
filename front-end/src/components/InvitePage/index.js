@@ -88,7 +88,7 @@ const InvitePage = ({ login, history }) => {
             .then(res => {
                 localStorage.setItem('userID', res.data.userID)
                 console.log(res.data)
-                login(res.data, '/add-contact')
+                login(res.data, true)
             })
             .catch(err => {
                 console.error(err)

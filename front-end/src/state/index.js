@@ -9,6 +9,8 @@ export const useStateValue = () => useContext(StateContext)
 
 export const initialState = {
     inviteCode: null,
+    messages: [],
+    chattingWith: null,
 }
 
 export const reducer = (state, action) => {
@@ -17,6 +19,16 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 inviteCode: action.payload,
+            }
+        case 'addMessage':
+            return {
+                ...state,
+                messages: [...state.messages, action.payload],
+            }
+        case 'setChattingWith':
+            return {
+                ...state,
+                chattingWith: action.payload,
             }
 
         default:

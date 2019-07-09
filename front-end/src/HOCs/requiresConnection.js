@@ -5,6 +5,7 @@ import LearnMore from '../components/LearnMore/LearnMore'
 import Register from '../components/Register/Register'
 import Login from '../components/Login/Login'
 import InvitePage from '../components/InvitePage/'
+import AddContact from '../components/AddContact/'
 
 // DEV
 // import axios from 'axios'
@@ -12,19 +13,17 @@ import InvitePage from '../components/InvitePage/'
 const url = process.env.REACT_APP_SOCKET_URL || 'ws://localhost:3030'
 // const url = 'ws://localhost:1234'
 
-const requiresConnection = (props, Component) =>
+const requiresConnection = Component =>
     class extends React.Component {
         constructor(props) {
             super(props)
             this.state = {
                 ws: undefined,
                 user: null,
-                destination: '/',
             }
         }
-        destination = '/'
-        connect = (history, destination) => {
-            console.log('trying to connect')
+        // const  = props.
+        connect = () => {
             this.setState({
                 ws: new WebSocket(url),
             })
@@ -34,19 +33,13 @@ const requiresConnection = (props, Component) =>
                     identifier: true,
                 }
                 this.state.ws.send(JSON.stringify(message))
-                console.log(history)
-                console.log(destination)
-                // history.push(destination)
             }, 1500)
         }
 
-        login = (user, placeToGo = '/') => {
-            console.log('logging in ', placeToGo)
+        login = (user, invite = false) => {
             this.setState({
                 user,
-                destination: placeToGo,
             })
-            console.log('done logging in')
         }
 
         // DEVELOPMENT::
@@ -88,37 +81,33 @@ const requiresConnection = (props, Component) =>
                 }
                 if (window.location.pathname === '/register') {
                     return <Register login={this.login} />
+                } else if (window.location.pathname === '/') {
+                    return <Login login={this.login} />
                 }
-                return <Login login={this.login} />
             }
 
             // if websocket is connected, render HomeScreen
             if (this.state.ws !== undefined) {
                 return <Component ws={this.state.ws} />
             } else {
-                return withRouter(props => {
-                    return (
-                        <Connect
-                            connect={this.connect}
-                            props={this.props}
-                            ws={this.state.ws}
-                            // history={props.history}
-                            destination={this.state.destination}
-                        />
-                    )
-                })
+                console.log('elseBLOCKSFSDFSDFSD')
+                return (
+                    <Connect
+                        connect={this.connect}
+                        ws={this.state.ws}
+                        props={this.props}
+                        // destination={this.state.destination}
+                    />
+                )
             }
         }
     }
 
-const Connect = ({ connect, ws, history, destination }) => {
+const Connect = ({ connect, ws }) => {
     useEffect(() => {
         console.log('in connect')
-        connect(
-            history,
-            destination,
-        )
-    }, [])
+        connect()
+    }, [connect])
 
     return (
         <div>
