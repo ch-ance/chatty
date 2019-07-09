@@ -68,11 +68,11 @@ const requiresConnection = Component =>
             // Hardcoding user login data
 
             // Link from an existing user to join Chatty
-            if (window.location.pathname.includes('/invite')) {
-                return <InvitePage login={this.login} />
-            }
 
             if (this.state.user === null) {
+                if (window.location.pathname.includes('/invite')) {
+                    return <InvitePage login={this.login} />
+                }
                 if (window.location.pathname === '/learn-more') {
                     return <LearnMore />
                 } else if (window.location.pathname === '/register') {
