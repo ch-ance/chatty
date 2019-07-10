@@ -6,12 +6,17 @@ import List from '@material-ui/core/List'
 import Contact from '../Contact'
 
 import db from '../../db'
+import { Button, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         maxWidth: 360,
         backgroundColor: theme.palette.background.paper,
+    },
+    noContacts: {
+        width: '100vw',
+        padding: '2rem',
     },
 }))
 
@@ -35,6 +40,17 @@ const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
     useEffect(() => {
         getContacts()
     }, [contacts])
+
+    if (contacts.length === 0) {
+        return (
+            <div className={classes.noContacts}>
+                <Typography>
+                    New to Chatty? Click on the PLUS button in the top left to
+                    add a contact
+                </Typography>
+            </div>
+        )
+    }
 
     return (
         <List className={classes.root}>

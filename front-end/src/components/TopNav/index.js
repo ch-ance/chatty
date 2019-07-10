@@ -11,6 +11,8 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Drawer from '@material-ui/core/Drawer'
 import AddIcon from '@material-ui/icons/AddCircle'
 
+import AddContact from '../AddContact/'
+
 import db from '../../db'
 
 const useStyles = makeStyles(theme => ({
@@ -111,7 +113,7 @@ export default function TopNav({ chattingWith, history }) {
                         >
                             Chatty
                         </Typography>
-                        <div className={classes.search}>
+                        {/* <div className={classes.search}>
                             <div className={classes.searchIcon}>
                                 <SearchIcon />
                             </div>
@@ -123,7 +125,7 @@ export default function TopNav({ chattingWith, history }) {
                                 }}
                                 inputProps={{ 'aria-label': 'Search' }}
                             />
-                        </div>
+                        </div> */}
                     </Toolbar>
                 </AppBar>
             </div>
@@ -226,7 +228,7 @@ export default function TopNav({ chattingWith, history }) {
     function DropDownHome() {
         return (
             <div className={classes.dropDownHome} role="presentation">
-                <AddFriend />
+                <AddContact />
             </div>
         )
     }
@@ -234,18 +236,19 @@ export default function TopNav({ chattingWith, history }) {
         const [contactID, setContactID] = useState('')
         const [nickname, setNickname] = useState('')
 
-        async function addContact(event) {
+        function addContact(event) {
             event.preventDefault()
             console.log(db.contacts)
+            console.log('click')
             // need some error handling for users that already exist
-            await db.contacts.add({
+            db.contacts.add({
                 nickname,
                 contactID,
                 myID: localStorage.getItem('userID'),
             })
         }
         return (
-            <form>
+            <form onSubmit={e => addContact(e)}>
                 <h3>{`Your ID: ${localStorage.getItem('userID')}`}</h3>
 
                 <h2>Enter contact ID</h2>
@@ -260,7 +263,7 @@ export default function TopNav({ chattingWith, history }) {
                     value={nickname}
                     onChange={e => setNickname(e.target.value)}
                 />
-                <button onClick={addContact}>Add to Contacts</button>
+                <button type="submit">Add to Contacts</button>
             </form>
         )
     }
