@@ -74,8 +74,8 @@ export default function TopNav({ chattingWith, history }) {
         return <HomeView />
     } else if (view === '/chat') {
         return <ChatView chattingWith={chattingWith} history={history} />
-    } else {
-        return <HomeView />
+    } else if (view.includes('/invite')) {
+        return <InvitedView />
     }
 
     function HomeView() {
@@ -166,6 +166,57 @@ export default function TopNav({ chattingWith, history }) {
                         >
                             <SettingsIcon />
                         </IconButton>
+                    </Toolbar>
+                </AppBar>
+            </div>
+        )
+    }
+
+    function InvitedView() {
+        return (
+            <div className={classes.root}>
+                <AppBar position="static" className={classes.appBar}>
+                    <Toolbar>
+                        {/* <IconButton
+                            edge="start"
+                            className={classes.backButton}
+                            color="inherit"
+                            aria-label="Go Back"
+                            onClick={e => {
+                                e.preventDefault()
+                                history.push('/')
+                            }}
+                        >
+                            <ArrowBackIcon />
+                        </IconButton> */}
+                        <Drawer
+                            anchor={'bottom'}
+                            open={drawer}
+                            onClose={() => toggleDrawer(false)}
+                        >
+                            {/* <DropDownHome /> */}
+                            {DropDownHome()}
+                        </Drawer>
+                        <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                        >
+                            Chatty
+                        </Typography>
+                        {/* <div className={classes.search}>
+                            <div className={classes.searchIcon}>
+                                <SearchIcon />
+                            </div>
+                            <InputBase
+                                placeholder="Search…"
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'Search' }}
+                            />
+                        </div> */}
                     </Toolbar>
                 </AppBar>
             </div>
