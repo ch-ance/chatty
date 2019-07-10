@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/styles'
 import { withRouter } from 'react-router-dom'
+import { useStateValue } from '../../state/'
 
 import axios from 'axios'
 
@@ -38,6 +39,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Register = ({ history }) => {
+    const [state, dispatch] = useStateValue()
+
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -81,8 +84,11 @@ const Register = ({ history }) => {
                 password,
             })
             .then(res => {
-                console.log(res)
                 history.push('/')
+                dispatch({
+                    type: 'setUser',
+                    payload: res,
+                })
             })
             .catch(err => {
                 console.error(err)

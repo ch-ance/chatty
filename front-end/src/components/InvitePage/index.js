@@ -10,10 +10,19 @@ const useStyles = makeStyles(theme => ({
     container: {
         backgroundColor: theme.palette.primary.main,
         height: '100vh',
-        padding: '.7rem .5rem',
+        padding: '1rem .6rem',
     },
     signInText: {
         fontSize: '2rem',
+    },
+    registerText: {
+        marginTop: '1rem',
+        fontSize: '1.6rem',
+    },
+    clickHere: {
+        marginTop: '1rem',
+        textDecoration: 'underline',
+        color: 'white',
     },
 }))
 
@@ -77,6 +86,20 @@ const InvitePage = ({ login, history }) => {
                         Log In
                     </Button>
                 </form>
+                <Typography className={classes.registerText} variant="h3">
+                    Not a user?
+                </Typography>
+                <button
+                    style={{ all: 'unset' }}
+                    onClick={e => {
+                        e.preventDefault()
+                        history.push('/register')
+                    }}
+                >
+                    <Typography className={classes.clickHere}>
+                        Click <strong>Here</strong> to Register an Account
+                    </Typography>
+                </button>
             </div>
         </>
     )

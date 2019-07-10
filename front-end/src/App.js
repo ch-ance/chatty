@@ -30,6 +30,10 @@ const App = ({ ws, history }) => {
     }
 
     useEffect(() => {
+        console.table(state)
+    }, [state])
+
+    useEffect(() => {
         if (state.addingContact && state.user !== null) {
             history.push('/add-contact')
         }
