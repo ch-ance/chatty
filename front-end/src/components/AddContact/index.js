@@ -1,9 +1,13 @@
 import React from 'react'
 
+import { useStateValue } from '../../state/'
+
 const AddContact = () => {
+    const [state, dispatch] = useStateValue()
+
     return (
         <>
-            <h2>Add contact</h2>
+            <h2>CODE: {state.inviteCode}</h2>
         </>
     )
 }

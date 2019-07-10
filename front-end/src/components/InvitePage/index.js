@@ -39,6 +39,10 @@ const InvitePage = ({ login, history }) => {
             type: 'setInviteCode',
             payload: inviteCode,
         })
+        dispatch({
+            type: 'toggleAddingContact',
+            payload: null,
+        })
     }, [inviteCode])
 
     return (
@@ -88,7 +92,11 @@ const InvitePage = ({ login, history }) => {
             .then(res => {
                 localStorage.setItem('userID', res.data.userID)
                 console.log(res.data)
-                login(res.data, true)
+                login(res.data)
+                dispatch({
+                    type: 'setUser',
+                    payload: res.data,
+                })
             })
             .catch(err => {
                 console.error(err)

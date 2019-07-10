@@ -11,6 +11,9 @@ export const initialState = {
     inviteCode: null,
     messages: [],
     chattingWith: null,
+    user: null,
+    view: 'Login',
+    addingContact: false,
 }
 
 export const reducer = (state, action) => {
@@ -19,6 +22,11 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 inviteCode: action.payload,
+            }
+        case 'setUser':
+            return {
+                ...state,
+                user: action.payload,
             }
         case 'addMessage':
             return {
@@ -29,6 +37,16 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 chattingWith: action.payload,
+            }
+        case 'setView':
+            return {
+                ...state,
+                view: action.payload,
+            }
+        case 'toggleAddingContact':
+            return {
+                ...state,
+                addingContact: !state.addingContact,
             }
 
         default:

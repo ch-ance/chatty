@@ -10,7 +10,7 @@ import { useStateValue } from './state/'
 
 db.open('contacts')
 
-const App = ({ ws }) => {
+const App = ({ ws, history }) => {
     // const state = {
     //     messages: [],
     //     loggedIn: false,
@@ -28,6 +28,12 @@ const App = ({ ws }) => {
         // addingContact: true,
         // }))
     }
+
+    useEffect(() => {
+        if (state.addingContact && state.user !== null) {
+            history.push('/add-contact')
+        }
+    }, [state.addingContact, state.user])
 
     // setView = view => {
     //     this.setState(prevState => ({
@@ -50,6 +56,13 @@ const App = ({ ws }) => {
         })
     }
 
+    const setView = view => {
+        dispatch({
+            type: 'setView',
+            payload: view,
+        })
+    }
+
     // toggleOnline = () => {
     //     // only sets to online for now, need to add toggle
     //     this.setState({
@@ -60,7 +73,6 @@ const App = ({ ws }) => {
     return (
         <div className="App">
             <Route
-                exact
                 path="/"
                 render={props => (
                     <HomeScreen
@@ -70,10 +82,10 @@ const App = ({ ws }) => {
                         addMessage={addMessage}
                         // online={this.state.online}
                         // toggleOnline={this.toggleOnline}
-                        // chattingWith={this.state.chattingWith}
-                        // setChattingWith={this.setChattingWith}
-                        // view={this.state.view}
-                        // setView={this.state.setView}
+                        chattingWith={state.chattingWith}
+                        setChattingWith={setChattingWith}
+                        view={state.view}
+                        setView={setView}
                     />
                 )}
             />

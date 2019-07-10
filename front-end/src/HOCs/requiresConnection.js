@@ -7,14 +7,15 @@ import Login from '../components/Login/Login'
 import InvitePage from '../components/InvitePage/'
 import AddContact from '../components/AddContact/'
 
+import { useStateValue } from '../state/'
 // DEV
 // import axios from 'axios'
 
 const url = process.env.REACT_APP_SOCKET_URL || 'ws://localhost:3030'
 // const url = 'ws://localhost:1234'
 
-const requiresConnection = Component =>
-    class extends React.Component {
+const requiresConnection = Component => {
+    return class extends React.Component {
         constructor(props) {
             super(props)
             this.state = {
@@ -23,20 +24,24 @@ const requiresConnection = Component =>
             }
         }
         // const  = props.
-        connect = () => {
-            this.setState({
-                ws: new WebSocket(url),
-            })
-            setTimeout(() => {
+
+        componentDidUpdate() {
+            if (this.state.ws !== undefined && this.state.ws.readyState == 1) {
                 const message = {
                     userID: localStorage.getItem('userID'),
                     identifier: true,
                 }
                 this.state.ws.send(JSON.stringify(message))
-            }, 1500)
+            }
         }
 
-        login = (user, invite = false) => {
+        connect = () => {
+            this.setState({
+                ws: new WebSocket(url),
+            })
+        }
+
+        login = user => {
             this.setState({
                 user,
             })
@@ -88,7 +93,12 @@ const requiresConnection = Component =>
 
             // if websocket is connected, render HomeScreen
             if (this.state.ws !== undefined) {
-                return <Component ws={this.state.ws} />
+                return (
+                    <Component
+                        ws={this.state.ws}
+                        history={this.props.history}
+                    />
+                )
             } else {
                 console.log('elseBLOCKSFSDFSDFSD')
                 return (
@@ -102,11 +112,13 @@ const requiresConnection = Component =>
             }
         }
     }
+}
 
 const Connect = ({ connect, ws }) => {
+    const [state, dispatch] = useStateValue()
     useEffect(() => {
-        console.log('in connect')
         connect()
+        console.log('in connect')
     }, [connect])
 
     return (
