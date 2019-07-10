@@ -90,10 +90,6 @@ const App = ({ ws, history }) => {
                 )}
             />
             <Route
-                path="/add-contact"
-                render={props => <AddContact {...props} />}
-            />
-            <Route
                 exact
                 path="/loading"
                 render={props => <Loading {...props} />}

@@ -3,6 +3,7 @@ import React from 'react'
 import ContactsList from '../ContactsList'
 import Settings from '../Settings'
 import Chat from '../Chat'
+import AddContact from '../AddContact'
 
 const HomeContainer = ({
     history,
@@ -44,7 +45,7 @@ const HomeContainer = ({
         )
     }
 
-    return <h2>Uh something is wrong</h2>
+    return <AddContact />
 }
 
 export default HomeContainer
