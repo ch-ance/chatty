@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import { withRouter } from 'react-router-dom'
 import { useStateValue } from '../../state/'
 
 import db from '../../db'
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const AddContact = () => {
+const AddContact = ({ history }) => {
     const classes = useStyles()
     const [state, dispatch] = useStateValue()
 
@@ -56,6 +56,7 @@ const AddContact = () => {
             contactID,
             myID: localStorage.getItem('userID'),
         })
+        history.push('/')
     }
     return (
         <>
@@ -141,4 +142,4 @@ const AddContact = () => {
     )
 }
 
-export default AddContact
+export default withRouter(AddContact)
