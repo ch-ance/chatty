@@ -78,10 +78,27 @@ const Register = ({ history }) => {
     function register(event) {
         event.preventDefault()
 
+        function getID() {
+            const id = Math.random()
+                .toString(36)
+                .replace(/[^a-z]+/g, '')
+                .substr(0, 5)
+                .toUpperCase()
+                .concat(
+                    Math.random()
+                        .toString(36)
+                        .replace(/[^a-z]+/g, '')
+                        .substr(0, 5)
+                        .toUpperCase(),
+                )
+            return id
+        }
+
         axios
             .post(`${process.env.REACT_APP_USERS_DB}/api/auth/register`, {
                 username,
                 password,
+                userID: getID(),
             })
             .then(res => {
                 history.push('/')
