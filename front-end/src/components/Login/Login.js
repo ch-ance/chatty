@@ -106,21 +106,21 @@ const Login = ({ login, history }) => {
             })
     }
 
-    function register(event) {
-        event.preventDefault()
+    // function register(event) {
+    //     event.preventDefault()
 
-        axios
-            .post(`${process.env.REACT_APP_USERS_DB}/api/auth/register`, {
-                username,
-                password,
-            })
-            .then(res => {
-                console.log(res)
-            })
-            .catch(err => {
-                console.error(err)
-            })
-    }
+    //     axios
+    //         .post(`${process.env.REACT_APP_USERS_DB}/api/auth/register`, {
+    //             username,
+    //             password,
+    //         })
+    //         .then(res => {
+    //             console.log(res)
+    //         })
+    //         .catch(err => {
+    //             console.error(err)
+    //         })
+    // }
 }
 
 export default withRouter(Login)

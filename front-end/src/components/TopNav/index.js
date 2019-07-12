@@ -9,14 +9,11 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import SearchIcon from '@material-ui/icons/Search'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Drawer from '@material-ui/core/Drawer'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
 import AddIcon from '@material-ui/icons/AddCircle'
 
+import AddContact from '../AddContact/'
+
 import db from '../../db'
-import AddFriend from '../AddFriend'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -79,6 +76,8 @@ export default function TopNav({ chattingWith, history }) {
         return <HomeView />
     } else if (view === '/chat') {
         return <ChatView chattingWith={chattingWith} history={history} />
+    } else {
+        return <InvitedView />
     }
 
     function HomeView() {
@@ -114,7 +113,7 @@ export default function TopNav({ chattingWith, history }) {
                         >
                             Chatty
                         </Typography>
-                        <div className={classes.search}>
+                        {/* <div className={classes.search}>
                             <div className={classes.searchIcon}>
                                 <SearchIcon />
                             </div>
@@ -126,7 +125,7 @@ export default function TopNav({ chattingWith, history }) {
                                 }}
                                 inputProps={{ 'aria-label': 'Search' }}
                             />
-                        </div>
+                        </div> */}
                     </Toolbar>
                 </AppBar>
             </div>
@@ -175,10 +174,61 @@ export default function TopNav({ chattingWith, history }) {
         )
     }
 
+    function InvitedView() {
+        return (
+            <div className={classes.root}>
+                <AppBar position="static" className={classes.appBar}>
+                    <Toolbar>
+                        {/* <IconButton
+                            edge="start"
+                            className={classes.backButton}
+                            color="inherit"
+                            aria-label="Go Back"
+                            onClick={e => {
+                                e.preventDefault()
+                                history.push('/')
+                            }}
+                        >
+                            <ArrowBackIcon />
+                        </IconButton> */}
+                        <Drawer
+                            anchor={'bottom'}
+                            open={drawer}
+                            onClose={() => toggleDrawer(false)}
+                        >
+                            {/* <DropDownHome /> */}
+                            {DropDownHome()}
+                        </Drawer>
+                        <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                        >
+                            Chatty
+                        </Typography>
+                        {/* <div className={classes.search}>
+                            <div className={classes.searchIcon}>
+                                <SearchIcon />
+                            </div>
+                            <InputBase
+                                placeholder="Search…"
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'Search' }}
+                            />
+                        </div> */}
+                    </Toolbar>
+                </AppBar>
+            </div>
+        )
+    }
+
     function DropDownHome() {
         return (
             <div className={classes.dropDownHome} role="presentation">
-                <AddFriend />
+                <AddContact />
             </div>
         )
     }
@@ -186,18 +236,19 @@ export default function TopNav({ chattingWith, history }) {
         const [contactID, setContactID] = useState('')
         const [nickname, setNickname] = useState('')
 
-        async function addContact(event) {
+        function addContact(event) {
             event.preventDefault()
             console.log(db.contacts)
+            console.log('click')
             // need some error handling for users that already exist
-            await db.contacts.add({
+            db.contacts.add({
                 nickname,
                 contactID,
                 myID: localStorage.getItem('userID'),
             })
         }
         return (
-            <form>
+            <form onSubmit={e => addContact(e)}>
                 <h3>{`Your ID: ${localStorage.getItem('userID')}`}</h3>
 
                 <h2>Enter contact ID</h2>
@@ -212,7 +263,7 @@ export default function TopNav({ chattingWith, history }) {
                     value={nickname}
                     onChange={e => setNickname(e.target.value)}
                 />
-                <button onClick={addContact}>Add to Contacts</button>
+                <button type="submit">Add to Contacts</button>
             </form>
         )
     }

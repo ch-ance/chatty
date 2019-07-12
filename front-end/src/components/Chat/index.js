@@ -59,7 +59,7 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                 }}
             >
                 {messages.map(message => {
-                    return message.me == userID ? (
+                    return message.me === userID ? (
                         <UserChatBox message={message} />
                     ) : (
                         <ContactChatBox message={message} />
@@ -131,7 +131,7 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                 message: messageText,
             }
             ws.send(JSON.stringify(message))
-            if (message.me == userID) {
+            if (message.me === userID) {
                 addMessage(message)
             }
             // need to stringify for WebSocket server to accept and read it

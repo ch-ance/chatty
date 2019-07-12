@@ -5,7 +5,10 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
 import App from './App'
-import { blue, yellow } from '@material-ui/core/colors'
+import { blue } from '@material-ui/core/colors'
+
+import { StateProvider, initialState, reducer } from './state/'
+
 const theme = createMuiTheme({
     palette: {
         primary: blue,
@@ -18,11 +21,13 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
     <Router>
-        <CssBaseline>
-            <ThemeProvider theme={theme}>
-                <App />
-            </ThemeProvider>
-        </CssBaseline>
+        <StateProvider initialState={initialState} reducer={reducer}>
+            <CssBaseline>
+                <ThemeProvider theme={theme}>
+                    <App />
+                </ThemeProvider>
+            </CssBaseline>
+        </StateProvider>
     </Router>,
     document.getElementById('root'),
 )
