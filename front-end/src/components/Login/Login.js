@@ -120,7 +120,7 @@ const Login = ({ login, history }) => {
     //         .catch(err => {
     //             console.error(err)
     //         })
-    // }
+    //  }
 }
 
 export default withRouter(Login)
