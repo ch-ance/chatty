@@ -98,6 +98,8 @@ const Login = ({ login, history }) => {
             })
             .then(res => {
                 localStorage.setItem('userID', res.data.userID)
+                localStorage.setItem('username', username)
+                localStorage.setItem('token', res.data.token)
                 console.log(res.data)
                 login(res.data)
             })

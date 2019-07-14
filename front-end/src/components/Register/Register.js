@@ -101,11 +101,27 @@ const Register = ({ history }) => {
                 userID: getID(),
             })
             .then(res => {
-                history.push('/')
                 dispatch({
                     type: 'setUser',
                     payload: res,
                 })
+                console.log('user registered')
+                axios
+                    .post(`${process.env.REACT_APP_USERS_DB}/api/auth/login`, {
+                        username,
+                        password,
+                    })
+                    .then(res => {
+                        console.log('user logged in')
+                        console.log(res.data)
+                        localStorage.setItem('username', username)
+                        localStorage.setItem('userID', res.data.userID)
+                        localStorage.setItem('token', res.data.token)
+                        history.push('/')
+                    })
+                    .catch(err => {
+                        console.error(err)
+                    })
             })
             .catch(err => {
                 console.error(err)

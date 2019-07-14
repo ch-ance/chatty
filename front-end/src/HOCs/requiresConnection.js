@@ -77,7 +77,7 @@ const requiresConnection = Component => {
 
             // Link from an existing user to join Chatty
 
-            if (this.state.user === null) {
+            if (!localStorage.getItem('token')) {
                 if (window.location.pathname.includes('/invite')) {
                     return <InvitePage login={this.login} />
                 }
