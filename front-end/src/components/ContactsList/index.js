@@ -5,8 +5,8 @@ import List from '@material-ui/core/List'
 
 import Contact from '../Contact'
 
-import db from '../../db'
 import { Button, Typography } from '@material-ui/core'
+import axios from 'axios'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -25,16 +25,19 @@ const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
 
     const [contacts, setContacts] = useState([])
 
-    async function getContacts() {
-        await db
-            .table('contacts')
-            .where('myID')
-            .equals(localStorage.getItem('userID'))
-            .toArray()
-            .then(contacts => {
-                setContacts(contacts)
+    function getContacts() {
+        axios
+            .get(
+                `${
+                    process.env.REACT_APP_USERS_DB
+                }/api/users/${localStorage.getItem('username')}/contacts`,
+            )
+            .then(res => {
+                setContacts(res.data)
             })
-            .catch(console.error)
+            .catch(err => {
+                console.error(err)
+            })
     }
 
     useEffect(() => {
