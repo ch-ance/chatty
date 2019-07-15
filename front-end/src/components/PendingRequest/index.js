@@ -4,7 +4,9 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
-import { Typography, Modal } from '@material-ui/core'
+import { Typography, Modal, Button } from '@material-ui/core'
+
+import axios from 'axios'
 
 const useStyles = makeStyles(theme => ({
     inline: {
@@ -17,12 +19,20 @@ const useStyles = makeStyles(theme => ({
     },
     modal: {
         position: 'absolute',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
         width: '50%',
         height: '50%',
         backgroundColor: theme.palette.common.white,
         border: '2px solid black',
         top: '25%',
         left: '25%',
+    },
+    buttonDiv: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-evenly',
     },
 }))
 
@@ -50,7 +60,38 @@ const PendingRequest = ({ from }) => {
                     setOpen(false)
                 }}
             >
-                <div className={classes.modal} />
+                <div className={classes.modal}>
+                    <Typography variant="h4">
+                        {from} would like to add you as a contact. Click "Add"
+                        to accept their invitation, or "Decline" otherwise
+                    </Typography>
+                    <div className={classes.buttonDiv}>
+                        <Button
+                            onClick={e => {
+                                e.preventDefault()
+                                axios
+                                    .post(
+                                        `${
+                                            process.env.REACT_APP_USERS_DB
+                                        }/api/users/accept-contact`,
+                                        {
+                                            id: 3,
+                                        },
+                                    )
+                                    .then(res => {
+                                        console.log(res)
+                                        setOpen(false)
+                                    })
+                                    .catch(err => {
+                                        console.error(err)
+                                    })
+                            }}
+                        >
+                            Add
+                        </Button>
+                        <Button>Decline</Button>
+                    </div>
+                </div>
             </Modal>
         </ListItem>
     )
