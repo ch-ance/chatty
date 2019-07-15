@@ -25,6 +25,8 @@ const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
 
     const [contacts, setContacts] = useState([])
 
+    const [contactRequests, setContactRequests] = useState([])
+
     function getContacts() {
         axios
             .get(
@@ -40,36 +42,56 @@ const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
             })
     }
 
-    useEffect(() => {
-        getContacts()
-    }, [contacts])
-
-    if (contacts.length === 0) {
-        return (
-            <div className={classes.noContacts}>
-                <Typography>
-                    New to Chatty? Click on the PLUS button in the top left to
-                    add a contact
-                </Typography>
-            </div>
-        )
+    function getContactRequests() {
+        axios
+            .get(
+                `${
+                    process.env.REACT_APP_USERS_DB
+                }/api/users/${localStorage.getItem(
+                    'username',
+                )}/pending-contacts`,
+            )
+            .then(res => {
+                setContactRequests(res.data)
+            })
+            .catch(err => {
+                console.error(err)
+            })
     }
 
+    useEffect(() => {
+        getContacts()
+        getContactRequests()
+    }, [contacts])
+
     return (
-        <List className={classes.root}>
-            {contacts.map(contact => {
-                return (
-                    <Contact
-                        contact={contact}
-                        history={history}
-                        setChattingWith={setChattingWith}
-                        setFriendID={setFriendID}
-                        setView={setView}
-                    />
-                )
+        <>
+            {contacts.length === 0 && (
+                <div className={classes.noContacts}>
+                    <Typography>
+                        New to chatty? Click on the PLUS button in the top left
+                        corner to add a new contact
+                    </Typography>
+                </div>
+            )}
+            <List className={classes.root}>
+                {contacts.map(contact => {
+                    return (
+                        <Contact
+                            contact={contact}
+                            history={history}
+                            setChattingWith={setChattingWith}
+                            setFriendID={setFriendID}
+                            setView={setView}
+                        />
+                    )
+                })}
+                {/* <Divider variant="inset" component="li" /> */}
+            </List>
+            {contactRequests.map(request => {
+                return <div>Request from: {request.first_user}</div>
             })}
-            {/* <Divider variant="inset" component="li" /> */}
-        </List>
+        </>
     )
 }
 
