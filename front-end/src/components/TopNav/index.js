@@ -14,6 +14,7 @@ import AddIcon from '@material-ui/icons/AddCircle'
 import AddContact from '../AddContact/'
 
 import db from '../../db'
+import { Button } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -127,6 +128,15 @@ export default function TopNav({ chattingWith, history }) {
                             />
                         </div> */}
                     </Toolbar>
+                    <Button
+                        onClick={e => {
+                            e.preventDefault()
+                            localStorage.clear()
+                            history.push('/')
+                        }}
+                    >
+                        Log out
+                    </Button>
                 </AppBar>
             </div>
         )

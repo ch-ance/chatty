@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useStateValue } from '../../state/'
 
-import db from '../../db'
 import {
     TextField,
-    FormControlLabel,
     FormLabel,
     makeStyles,
     Button,
     Typography,
 } from '@material-ui/core'
+import axios from 'axios'
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -37,45 +36,50 @@ const AddContact = ({ history }) => {
     const classes = useStyles()
     const [state, dispatch] = useStateValue()
 
-    const [contactID, setContactID] = useState('')
-    const [nickname, setNickname] = useState('')
+    const [contactUsername, setContactUsername] = useState('')
 
     useEffect(() => {
         if (state.inviteCode) {
-            setContactID(state.inviteCode)
+            setContactUsername(state.inviteCode)
         }
     }, [state.inviteCode])
 
     async function addContact(event) {
         event.preventDefault()
-        console.log('clicking')
-        console.log(db.contacts)
+
+        axios
+            .post(
+                `${
+                    process.env.REACT_APP_USERS_DB
+                }/api/users/request-add-contact`,
+                {
+                    first_user: localStorage.getItem('username'),
+                    second_user: contactUsername,
+                },
+            )
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+
         // need some error handling for users that already exist, DUH!
-        await db.contacts.add({
-            nickname,
-            contactID,
-            myID: localStorage.getItem('userID'),
-        })
-        history.push('/')
     }
     return (
         <>
             <form className={classes.form} onSubmit={e => addContact(e)}>
-                <FormLabel>Enter a nickname</FormLabel>
+                <FormLabel>
+                    Enter the username of a contact you'd like to add
+                </FormLabel>
                 <br />
                 <TextField
                     variant="filled"
-                    value={nickname}
-                    onChange={e => setNickname(e.target.value)}
+                    value={contactUsername}
+                    onChange={e => setContactUsername(e.target.value)}
                 />
                 <br />
-                <FormLabel>Contact ID Code</FormLabel>
-                <br />
-                <TextField
-                    variant="filled"
-                    value={contactID}
-                    onChange={e => setContactID(e.target.value)}
-                />
+
                 <Button
                     type="submit"
                     variant="outlined"
@@ -85,17 +89,6 @@ const AddContact = ({ history }) => {
                 </Button>
             </form>
             <div className={classes.bottom}>
-                <Typography variant="h4">
-                    Your Contact ID:{' '}
-                    <span
-                        style={{
-                            backgroundColor: 'blue',
-                            border: '5px solid red',
-                        }}
-                    >
-                        {localStorage.getItem('userID')}
-                    </span>
-                </Typography>
                 <Typography
                     stye={{
                         margin: '1rem',
@@ -115,9 +108,9 @@ const AddContact = ({ history }) => {
                     }}
                 >
                     <input
-                        value={`http://localhost:3000/invite/${localStorage.getItem(
-                            'userID',
-                        )}`}
+                        value={`${
+                            window.location
+                        }/invite/${localStorage.getItem('username')}`}
                         readOnly
                         style={{
                             width: '35vw',

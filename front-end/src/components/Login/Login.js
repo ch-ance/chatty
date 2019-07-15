@@ -97,7 +97,6 @@ const Login = ({ login, history }) => {
                 password,
             })
             .then(res => {
-                localStorage.setItem('userID', res.data.userID)
                 localStorage.setItem('username', username)
                 localStorage.setItem('token', res.data.token)
                 console.log(res.data)
@@ -107,22 +106,6 @@ const Login = ({ login, history }) => {
                 console.error(err)
             })
     }
-
-    // function register(event) {
-    //     event.preventDefault()
-
-    //     axios
-    //         .post(`${process.env.REACT_APP_USERS_DB}/api/auth/register`, {
-    //             username,
-    //             password,
-    //         })
-    //         .then(res => {
-    //             console.log(res)
-    //         })
-    //         .catch(err => {
-    //             console.error(err)
-    //         })
-    //  }
 }
 
 export default withRouter(Login)
