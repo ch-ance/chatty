@@ -4,6 +4,7 @@ import List from '@material-ui/core/List'
 // import Divider from '@material-ui/core/Divider'
 
 import Contact from '../Contact'
+import PendingRequest from '../PendingRequest/'
 
 import { Button, Typography } from '@material-ui/core'
 import axios from 'axios'
@@ -62,7 +63,11 @@ const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
     useEffect(() => {
         getContacts()
         getContactRequests()
-    }, [contacts])
+    }, [])
+
+    // useEffect(() => {
+    //     getContactRequests()
+    // }, [contactRequests])
 
     return (
         <>
@@ -89,7 +94,7 @@ const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
                 {/* <Divider variant="inset" component="li" /> */}
             </List>
             {contactRequests.map(request => {
-                return <div>Request from: {request.first_user}</div>
+                return <PendingRequest from={request.first_user} />
             })}
         </>
     )
