@@ -28,6 +28,9 @@ const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
 
     const [contactRequests, setContactRequests] = useState([])
 
+    // a toggle function to re-fetch contacts after accepting a request
+    const [toggle, setToggle] = useState(false)
+
     function getContacts() {
         axios
             .get(
@@ -63,7 +66,7 @@ const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
     useEffect(() => {
         getContacts()
         getContactRequests()
-    }, [])
+    }, [toggle])
 
     // useEffect(() => {
     //     getContactRequests()
@@ -94,7 +97,13 @@ const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
                 {/* <Divider variant="inset" component="li" /> */}
             </List>
             {contactRequests.map(request => {
-                return <PendingRequest from={request.first_user} />
+                return (
+                    <PendingRequest
+                        from={request.first_user}
+                        toggle={toggle}
+                        setToggle={setToggle}
+                    />
+                )
             })}
         </>
     )

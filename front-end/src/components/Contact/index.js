@@ -1,15 +1,18 @@
 import React from 'react'
-// import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
 
-// const useStyles = makeStyles(theme => ({
-//     inline: {
-//         display: 'inline',
-//     },
-// }))
+const useStyles = makeStyles(theme => ({
+    listItem: {
+        width: '100%',
+        borderBottom: '1px solid black',
+        marginBottom: '.1rem',
+        paddingBottom: '.1rem',
+    },
+}))
 
 const Contact = ({
     contact,
@@ -18,17 +21,17 @@ const Contact = ({
     setChattingWith,
     setView,
 }) => {
-    // const classes = useStyles()
+    const classes = useStyles()
 
     return (
         <ListItem
+            className={classes.listItem}
             alignItems="flex-start"
             onClick={e => {
                 e.preventDefault()
-                console.table(contact.contactID)
-                setChattingWith(contact)
+                setChattingWith(contact.second_user)
                 setView('Chat')
-                setFriendID(contact.contactID)
+                setFriendID(contact.second_user)
                 history.push('/chat')
             }}
         >
@@ -39,7 +42,7 @@ const Contact = ({
                 />
             </ListItemAvatar>
             <ListItemText
-                primary={contact.nickname}
+                primary={contact.second_user}
                 secondary={
                     <>{" — I'll be in your neighborhood doing errands this…"}</>
                 }

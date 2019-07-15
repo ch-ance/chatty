@@ -5,6 +5,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
 import { Typography, Modal, Button } from '@material-ui/core'
+import { withRouter } from 'react-router-dom'
 
 import axios from 'axios'
 
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const PendingRequest = ({ from }) => {
+const PendingRequest = ({ from, history, setToggle, toggle }) => {
     const classes = useStyles()
 
     const [open, setOpen] = useState(false)
@@ -75,12 +76,13 @@ const PendingRequest = ({ from }) => {
                                             process.env.REACT_APP_USERS_DB
                                         }/api/users/accept-contact`,
                                         {
-                                            id: 3,
+                                            username: from,
                                         },
                                     )
                                     .then(res => {
                                         console.log(res)
                                         setOpen(false)
+                                        setToggle(!toggle)
                                     })
                                     .catch(err => {
                                         console.error(err)
@@ -97,4 +99,4 @@ const PendingRequest = ({ from }) => {
     )
 }
 
-export default PendingRequest
+export default withRouter(PendingRequest)
