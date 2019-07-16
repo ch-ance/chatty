@@ -44,7 +44,7 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
 
     useEffect(scrollToBottom, [messages])
 
-    const userID = localStorage.getItem('userID')
+    const username = localStorage.getItem('username')
 
     return (
         <div
@@ -59,7 +59,7 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                 }}
             >
                 {messages.map(message => {
-                    return message.me === userID ? (
+                    return message.me === username ? (
                         <UserChatBox message={message} />
                     ) : (
                         <ContactChatBox message={message} />
@@ -127,11 +127,11 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                 pm: true,
                 friendID,
                 other: chattingWith.nickname,
-                me: localStorage.getItem('userID'),
+                me: localStorage.getItem('username'),
                 message: messageText,
             }
             ws.send(JSON.stringify(message))
-            if (message.me === userID) {
+            if (message.me === username) {
                 addMessage(message)
             }
             // need to stringify for WebSocket server to accept and read it

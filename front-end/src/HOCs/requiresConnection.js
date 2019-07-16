@@ -28,7 +28,7 @@ const requiresConnection = Component => {
         componentDidUpdate() {
             if (this.state.ws !== undefined && this.state.ws.readyState == 1) {
                 const message = {
-                    userID: localStorage.getItem('userID'),
+                    username: localStorage.getItem('username'),
                     identifier: true,
                 }
                 this.state.ws.send(JSON.stringify(message))

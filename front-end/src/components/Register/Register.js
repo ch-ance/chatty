@@ -62,9 +62,10 @@ const Register = ({ history }) => {
 
                 <TextField
                     variant="filled"
-                    label="passwprd"
+                    label="password"
                     className={classes.inputs}
                     value={password}
+                    type="password"
                     onChange={e => setPassword(e.target.value)}
                 />
                 <br />
