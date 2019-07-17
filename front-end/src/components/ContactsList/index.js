@@ -6,6 +6,8 @@ import List from '@material-ui/core/List'
 import Contact from '../Contact'
 import PendingRequest from '../PendingRequest/'
 
+import { useStateValue } from '../../state/'
+
 import { Button, Typography } from '@material-ui/core'
 import axios from 'axios'
 
@@ -21,56 +23,23 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const ContactsList = ({ history, setChattingWith, setFriendID, setView }) => {
+const ContactsList = ({
+    history,
+    setChattingWith,
+    setFriendID,
+    setView,
+    contacts,
+    contactRequests,
+}) => {
+    const [{ ws }, dispatch] = useStateValue()
+
     const classes = useStyles()
-
-    const [contacts, setContacts] = useState([])
-
-    const [contactRequests, setContactRequests] = useState([])
-
-    // a toggle function to re-fetch contacts after accepting a request
-    const [toggle, setToggle] = useState(false)
-
-    function getContacts() {
-        axios
-            .get(
-                `${
-                    process.env.REACT_APP_USERS_DB
-                }/api/users/${localStorage.getItem('username')}/contacts`,
-            )
-            .then(res => {
-                setContacts(res.data)
-            })
-            .catch(err => {
-                console.error(err)
-            })
-    }
-
-    function getContactRequests() {
-        axios
-            .get(
-                `${
-                    process.env.REACT_APP_USERS_DB
-                }/api/users/${localStorage.getItem(
-                    'username',
-                )}/pending-contacts`,
-            )
-            .then(res => {
-                setContactRequests(res.data)
-            })
-            .catch(err => {
-                console.error(err)
-            })
-    }
-
-    useEffect(() => {
-        getContacts()
-        getContactRequests()
-    }, [toggle])
 
     // useEffect(() => {
     //     getContactRequests()
     // }, [contactRequests])
+
+    const [toggle, setToggle] = useState(false)
 
     return (
         <>

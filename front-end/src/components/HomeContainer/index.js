@@ -16,6 +16,8 @@ const HomeContainer = ({
     setChattingWith,
     setView,
     ws,
+    contacts,
+    contactRequests,
 }) => {
     console.log('PATH: ', path)
     if (path === '/') {
@@ -25,6 +27,8 @@ const HomeContainer = ({
                 setFriendID={setFriendID}
                 setChattingWith={setChattingWith}
                 setView={setView}
+                contacts={contacts}
+                contactRequests={contactRequests}
             />
         )
     }

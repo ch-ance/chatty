@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import HomeContainer from '../HomeContainer'
 import TopNav from '../TopNav'
 import '../../index.scss'
@@ -16,6 +17,57 @@ const HomeScreen = ({
     setChattingWith,
 }) => {
     const [view, setView] = useState('Login')
+
+    const [contacts, setContacts] = useState([])
+
+    const [contactRequests, setContactRequests] = useState([])
+
+    // a toggle function to re-fetch contacts after accepting a request
+    const [toggle, setToggle] = useState(false)
+
+    function getContacts() {
+        axios
+            .get(
+                `${
+                    process.env.REACT_APP_USERS_DB
+                }/api/users/${localStorage.getItem('username')}/contacts`,
+            )
+            .then(res => {
+                setContacts(
+                    res.data.map(contact => {
+                        return {
+                            ...contact,
+                            online: true,
+                        }
+                    }),
+                )
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+
+    function getContactRequests() {
+        axios
+            .get(
+                `${
+                    process.env.REACT_APP_USERS_DB
+                }/api/users/${localStorage.getItem(
+                    'username',
+                )}/pending-contacts`,
+            )
+            .then(res => {
+                setContactRequests(res.data)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+
+    useEffect(() => {
+        getContacts()
+        getContactRequests()
+    }, [toggle])
 
     useEffect(() => {
         ws.onopen = client => {
@@ -57,6 +109,8 @@ const HomeScreen = ({
                     setChattingWith={setChattingWith}
                     ws={ws}
                     setView={setView}
+                    contacts={contacts}
+                    contactRequests={contactRequests}
                 />
             </div>
         </Context.Provider>

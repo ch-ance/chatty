@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Route, withRouter } from 'react-router-dom'
 
-import db from './db'
 import Loading from './components/Loading/'
 import HomeScreen from './components/HomeScreen'
 import AddContact from './components/AddContact/'
 import requiresConnection from './HOCs/requiresConnection'
 import { useStateValue } from './state/'
-
-db.open('contacts')
 
 const App = ({ ws, history }) => {
     // const state = {
@@ -30,8 +27,11 @@ const App = ({ ws, history }) => {
     }
 
     useEffect(() => {
-        console.table(state)
-    }, [state])
+        dispatch({
+            type: 'setWebSocket',
+            payload: ws,
+        })
+    }, [state.ws])
 
     useEffect(() => {
         if (state.addingContact && state.user !== null) {

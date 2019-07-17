@@ -14,6 +14,7 @@ export const initialState = {
     user: null,
     view: 'Login',
     addingContact: false,
+    ws: null,
 }
 
 export const reducer = (state, action) => {
@@ -47,6 +48,11 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 addingContact: !state.addingContact,
+            }
+        case 'setWebSocket':
+            return {
+                ...state,
+                ws: action.payload,
             }
 
         default:

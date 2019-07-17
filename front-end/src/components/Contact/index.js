@@ -23,6 +23,8 @@ const Contact = ({
 }) => {
     const classes = useStyles()
 
+    const statusColor = contact.online ? 'yellow' : 'red'
+
     return (
         <ListItem
             className={classes.listItem}
@@ -46,6 +48,14 @@ const Contact = ({
                 secondary={
                     <>{" — I'll be in your neighborhood doing errands this…"}</>
                 }
+            />
+            <div
+                style={{
+                    height: '2rem',
+                    width: '2rem',
+                    backgroundColor: statusColor,
+                    borderRadius: '50%',
+                }}
             />
         </ListItem>
     )
