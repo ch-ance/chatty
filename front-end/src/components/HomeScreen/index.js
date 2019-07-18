@@ -37,7 +37,6 @@ const HomeScreen = ({
                     res.data.map(contact => {
                         return {
                             ...contact,
-                            online: true,
                         }
                     }),
                 )
@@ -76,10 +75,50 @@ const HomeScreen = ({
 
         ws.onmessage = evt => {
             const message = JSON.parse(evt.data)
-            console.log('New Message: ', message)
-            addMessage(message)
+            if (message.pm) {
+                console.log('New Message: ', message)
+                addMessage(message)
+            } else if (message.statusCheck) {
+                console.log('status update: ', message)
+                console.log(contacts)
+                // setContacts(
+                //     contacts.map(contact => {
+                //         if (message.me === contact.second_user) {
+                //             return {
+                //                 ...contact,
+                //                 online: true,
+                //             }
+                //         } else {
+                //             return contact
+                //         }
+                //     }),
+                // )
+            }
         }
-    }, [addMessage, ws.onmessage, ws.onopen])
+    }, [addMessage, ws.onopen])
+
+    useEffect(() => {
+        setTimeout(() => {
+            console.log(ws)
+            const message = {
+                statusCheck: true,
+                me: localStorage.getItem('username'),
+                contactIDs: contacts.map(contact => {
+                    return contact.second_user
+                }),
+            }
+            ws.send(JSON.stringify(message))
+        }, 1000)
+
+        // const message = {
+        //     statusCheck: true,
+        //     me: localStorage.getItem('username'),
+        //     contactIDs: contacts.map(contact => {
+        //         return contact.username
+        //     }),
+        // }
+        // ws.send(JSON.stringify(message))
+    }, [ws, contacts])
 
     const [friendID, setFriendID] = useState('')
 

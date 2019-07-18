@@ -21,6 +21,7 @@ const requiresConnection = Component => {
             this.state = {
                 ws: undefined,
                 user: null,
+                pointless: 0,
             }
         }
         // const  = props.
@@ -32,12 +33,21 @@ const requiresConnection = Component => {
                     identifier: true,
                 }
                 this.state.ws.send(JSON.stringify(message))
+            } else {
+                // this.setState(prevState => ({
+                //     ...prevState,
+                //     pointless: prevState.pointless + 1,
+                // }))
             }
         }
 
         connect = () => {
-            this.setState({
-                ws: new WebSocket(url),
+            const socket = new WebSocket(url)
+            socket.addEventListener('open', () => {
+                console.log('its open')
+                this.setState({
+                    ws: socket,
+                })
             })
         }
 
@@ -92,7 +102,7 @@ const requiresConnection = Component => {
             }
 
             // if websocket is connected, render HomeScreen
-            if (this.state.ws !== undefined) {
+            if (this.state.ws !== undefined && this.state.ws.readyState == 1) {
                 return (
                     <Component
                         ws={this.state.ws}
