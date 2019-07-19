@@ -25,6 +25,8 @@ const HomeScreen = ({
     // a toggle function to re-fetch contacts after accepting a request
     const [toggle, setToggle] = useState(false)
 
+    const [gettingMessage, setGettingMessage] = useState(false)
+
     function getContacts() {
         axios
             .get(
@@ -37,6 +39,7 @@ const HomeScreen = ({
                     res.data.map(contact => {
                         return {
                             ...contact,
+                            online: false,
                         }
                     }),
                 )
@@ -78,21 +81,24 @@ const HomeScreen = ({
             if (message.pm) {
                 console.log('New Message: ', message)
                 addMessage(message)
-            } else if (message.statusCheck) {
-                console.log('status update: ', message)
-                console.log(contacts)
-                // setContacts(
-                //     contacts.map(contact => {
-                //         if (message.me === contact.second_user) {
-                //             return {
-                //                 ...contact,
-                //                 online: true,
-                //             }
-                //         } else {
-                //             return contact
-                //         }
-                //     }),
-                // )
+            } else if (message.updatingOnlineStatus) {
+                const onlineContacts = message.onlineContacts
+                setContacts(
+                    contacts.map(contact => {
+                        console.log('CONTACT MAPPPING: ', contact)
+                        console.log(onlineContacts)
+                        console.log('Contact: ', contact.second_user)
+                        if (onlineContacts.includes(contact.second_user)) {
+                            console.log('HYESSSS!')
+
+                            return {
+                                ...contact,
+                                online: true,
+                            }
+                        } else return contact
+                    }),
+                )
+                console.log('Contacts: ', contacts)
             }
         }
     }, [addMessage, ws.onopen])
@@ -118,7 +124,7 @@ const HomeScreen = ({
         //     }),
         // }
         // ws.send(JSON.stringify(message))
-    }, [ws, contacts])
+    }, [ws])
 
     const [friendID, setFriendID] = useState('')
 

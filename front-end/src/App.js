@@ -8,23 +8,7 @@ import requiresConnection from './HOCs/requiresConnection'
 import { useStateValue } from './state/'
 
 const App = ({ ws, history }) => {
-    // const state = {
-    //     messages: [],
-    //     loggedIn: false,
-    //     online: false,
-    //     chattingWith: null,
-    //     view: 'Login',
-    //     addingContact: false,
-    // }
-
     const [state, dispatch] = useStateValue()
-
-    const setAddingContact = () => {
-        // this.setState(prevState => ({
-        // ...prevState,
-        // addingContact: true,
-        // }))
-    }
 
     useEffect(() => {
         dispatch({
@@ -38,13 +22,6 @@ const App = ({ ws, history }) => {
             history.push('/add-contact')
         }
     }, [state.addingContact, state.user])
-
-    // setView = view => {
-    //     this.setState(prevState => ({
-    //         ...prevState,
-    //         view,
-    //     }))
-    // }
 
     const setChattingWith = contact => {
         dispatch({
@@ -67,13 +44,6 @@ const App = ({ ws, history }) => {
         })
     }
 
-    // toggleOnline = () => {
-    //     // only sets to online for now, need to add toggle
-    //     this.setState({
-    //         online: true,
-    //     })
-    // }
-
     return (
         <div className="App">
             <Route
@@ -84,8 +54,6 @@ const App = ({ ws, history }) => {
                         ws={ws}
                         messages={state.messages}
                         addMessage={addMessage}
-                        // online={this.state.online}
-                        // toggleOnline={this.toggleOnline}
                         chattingWith={state.chattingWith}
                         setChattingWith={setChattingWith}
                         view={state.view}

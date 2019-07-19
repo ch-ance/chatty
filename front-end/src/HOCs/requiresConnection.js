@@ -57,36 +57,7 @@ const requiresConnection = Component => {
             })
         }
 
-        // DEVELOPMENT::
-        //      Logs in User automatically to get past auth screen
-
-        // componentDidMount() {
-        //     axios
-        //         .post(`${process.env.REACT_APP_USERS_DB}/api/auth/login`, {
-        //             username: 'username',
-        //             password: 'password',
-        //         })
-        //         .then(res => {
-        //             localStorage.setItem('userID', res.data.userID)
-        //             console.log(res.data)
-        //             this.setState(prevState => ({
-        //                 ...prevState,
-        //                 user: res.data,
-        //             }))
-        //         })
-        //         .catch(err => {
-        //             console.error(err)
-        //         })
-        // }
-
         render() {
-            // if user is not logged in, render Login page
-
-            // DEVELOPMENT:
-            // Hardcoding user login data
-
-            // Link from an existing user to join Chatty
-
             if (!localStorage.getItem('token')) {
                 if (window.location.pathname.includes('/invite')) {
                     return <InvitePage login={this.login} />
@@ -110,13 +81,12 @@ const requiresConnection = Component => {
                     />
                 )
             } else {
-                console.log('elseBLOCKSFSDFSDFSD')
+                console.log('else block requiresConnection')
                 return (
                     <Connect
                         connect={this.connect}
                         ws={this.state.ws}
                         props={this.props}
-                        // destination={this.state.destination}
                     />
                 )
             }
@@ -124,8 +94,7 @@ const requiresConnection = Component => {
     }
 }
 
-const Connect = ({ connect, ws }) => {
-    const [state, dispatch] = useStateValue()
+const Connect = ({ connect }) => {
     useEffect(() => {
         connect()
         console.log('in connect')
