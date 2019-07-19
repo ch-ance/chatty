@@ -47,6 +47,17 @@ const HomeScreen = ({
             .catch(err => {
                 console.error(err)
             })
+        // window.onbeforeunload = () => {
+        //     const message = {
+        //         me: localStorage.getItem('username'),
+        //         statusCheck: true,
+        //         online: false,
+        //         contactIDs: contacts.map(contact => {
+        //             return contact.second_user
+        //         }),
+        //     }
+        //     ws.send(JSON.stringify(message))
+        // }
     }
 
     function getContactRequests() {
@@ -85,12 +96,7 @@ const HomeScreen = ({
                 const onlineContacts = message.onlineContacts
                 setContacts(
                     contacts.map(contact => {
-                        console.log('CONTACT MAPPPING: ', contact)
-                        console.log(onlineContacts)
-                        console.log('Contact: ', contact.second_user)
                         if (onlineContacts.includes(contact.second_user)) {
-                            console.log('HYESSSS!')
-
                             return {
                                 ...contact,
                                 online: true,
@@ -98,7 +104,6 @@ const HomeScreen = ({
                         } else return contact
                     }),
                 )
-                console.log('Contacts: ', contacts)
             }
         }
     }, [addMessage, ws.onopen])
@@ -109,21 +114,13 @@ const HomeScreen = ({
             const message = {
                 statusCheck: true,
                 me: localStorage.getItem('username'),
+                online: true,
                 contactIDs: contacts.map(contact => {
                     return contact.second_user
                 }),
             }
             ws.send(JSON.stringify(message))
         }, 1000)
-
-        // const message = {
-        //     statusCheck: true,
-        //     me: localStorage.getItem('username'),
-        //     contactIDs: contacts.map(contact => {
-        //         return contact.username
-        //     }),
-        // }
-        // ws.send(JSON.stringify(message))
     }, [ws])
 
     const [friendID, setFriendID] = useState('')
