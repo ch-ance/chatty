@@ -1,8 +1,8 @@
-import Dexie from "dexie";
+import Dexie from 'dexie'
 
-const db = new Dexie("chatty");
+const db = new Dexie('chatty')
 db.version(1).stores({
-  contacts: "&contactID, nickname, myID"
-});
+    messages: '++id, contact, message',
+})
 
-export default db;
+export default db

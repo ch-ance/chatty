@@ -43,6 +43,15 @@ const HomeScreen = ({
                         }
                     }),
                 )
+                const message = {
+                    statusCheck: true,
+                    me: localStorage.getItem('username'),
+                    online: true,
+                    contactIDs: contacts.map(contact => {
+                        return contact.second_user
+                    }),
+                }
+                ws.send(JSON.stringify(message))
             })
             .catch(err => {
                 console.error(err)
@@ -104,23 +113,24 @@ const HomeScreen = ({
                         } else return contact
                     }),
                 )
+            } else if (message.userIsOnline) {
+                console.log(`${message.user} is now online!`)
+                setContacts(
+                    contacts.map(contact => {
+                        if (contact.second_user === message.user) {
+                            return {
+                                ...contact,
+                                online: true,
+                            }
+                        } else return contact
+                    }),
+                )
             }
         }
-    }, [addMessage, ws.onopen])
+    }, [ws.onopen])
 
     useEffect(() => {
-        setTimeout(() => {
-            console.log(ws)
-            const message = {
-                statusCheck: true,
-                me: localStorage.getItem('username'),
-                online: true,
-                contactIDs: contacts.map(contact => {
-                    return contact.second_user
-                }),
-            }
-            ws.send(JSON.stringify(message))
-        }, 1000)
+        console.log(ws)
     }, [ws])
 
     const [friendID, setFriendID] = useState('')

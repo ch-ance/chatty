@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Route, withRouter } from 'react-router-dom'
+import db from './db/'
 
 import Loading from './components/Loading/'
 import HomeScreen from './components/HomeScreen'
@@ -31,10 +32,19 @@ const App = ({ ws, history }) => {
     }
 
     const addMessage = message => {
-        dispatch({
-            type: 'addMessage',
-            payload: message,
-        })
+        const insertion = {
+            contact: message.other,
+            message: message.message,
+        }
+        db.table('messages')
+            .add(insertion)
+            .then(id => {
+                console.log('adddddd ed the thing')
+                dispatch({
+                    type: 'addMessage',
+                    payload: message,
+                })
+            })
     }
 
     const setView = view => {

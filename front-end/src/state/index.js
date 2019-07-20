@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from 'react'
+
 export const StateContext = createContext()
 export const StateProvider = ({ reducer, initialState, children }) => (
     <StateContext.Provider value={useReducer(reducer, initialState)}>
@@ -30,6 +31,7 @@ export const reducer = (state, action) => {
                 user: action.payload,
             }
         case 'addMessage':
+            console.log('addding a message from the states place!!!')
             return {
                 ...state,
                 messages: [...state.messages, action.payload],
