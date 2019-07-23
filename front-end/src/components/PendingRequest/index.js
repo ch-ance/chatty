@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         display: 'inline',
     },
     listItem: {
-        border: '1px solid black',
+        border: '2px solid pink',
         borderRadius: '5%',
         cursor: 'pointer',
     },
@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        width: '50%',
-        height: '50%',
+        width: '50vh',
+        height: '50vh',
         backgroundColor: theme.palette.common.white,
         border: '2px solid black',
         top: '25%',
@@ -37,10 +37,15 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const PendingRequest = ({ from, history, setToggle, toggle }) => {
+const PendingRequest = ({
+    from,
+    history,
+    setToggle,
+    toggle,
+    open,
+    setOpen,
+}) => {
     const classes = useStyles()
-
-    const [open, setOpen] = useState(false)
 
     return (
         <ListItem

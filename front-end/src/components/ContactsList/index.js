@@ -14,7 +14,6 @@ import axios from 'axios'
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        maxWidth: 360,
         backgroundColor: theme.palette.background.paper,
     },
     noContacts: {
@@ -35,14 +34,20 @@ const ContactsList = ({
 
     const classes = useStyles()
 
-    // useEffect(() => {
-    //     getContactRequests()
-    // }, [contactRequests])
+    const [open, setOpen] = useState(false)
 
     const [toggle, setToggle] = useState(false)
 
     return (
-        <>
+        <div
+            onClick={e => {
+                console.log('lsdfksdlfksldf')
+                e.preventDefault()
+                if (open === true) {
+                    setOpen(false)
+                }
+            }}
+        >
             {contacts.length === 0 && (
                 <div className={classes.noContacts}>
                     <Typography>
@@ -51,6 +56,17 @@ const ContactsList = ({
                     </Typography>
                 </div>
             )}
+            {contactRequests.map(request => {
+                return (
+                    <PendingRequest
+                        open={open}
+                        setOpen={setOpen}
+                        from={request.first_user}
+                        toggle={toggle}
+                        setToggle={setToggle}
+                    />
+                )
+            })}
             <List className={classes.root}>
                 {contacts.map(contact => {
                     return (
@@ -65,16 +81,7 @@ const ContactsList = ({
                 })}
                 {/* <Divider variant="inset" component="li" /> */}
             </List>
-            {contactRequests.map(request => {
-                return (
-                    <PendingRequest
-                        from={request.first_user}
-                        toggle={toggle}
-                        setToggle={setToggle}
-                    />
-                )
-            })}
-        </>
+        </div>
     )
 }
 
