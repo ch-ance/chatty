@@ -36,6 +36,10 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
 
     console.log('CHATTING WITH: ', chattingWith)
 
+    const [theseMsgs, setTheseMsgs] = useState([
+        messages.filter(msg => msg.contact === chattingWith),
+    ])
+
     const messagesEndRef = useRef(null)
 
     const scrollToBottom = () => {
@@ -44,7 +48,9 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
 
     useEffect(() => {
         scrollToBottom()
-        messages = messages.filter(msg => msg.contact === chattingWith)
+        setTheseMsgs(messages.filter(msg => msg.contact === chattingWith))
+        console.log('FILTEDED: ', theseMsgs)
+        console.log('UNFILTERED: ', messages)
     }, [messages])
 
     const username = localStorage.getItem('username')
@@ -61,7 +67,7 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                     overflow: 'auto',
                 }}
             >
-                {messages.map(message => {
+                {theseMsgs.map(message => {
                     return message.me === username ? (
                         <UserChatBox message={message} />
                     ) : (
@@ -128,7 +134,7 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
             event.preventDefault()
             const message = {
                 pm: true,
-                friendID,
+                contact: friendID,
                 other: chattingWith,
                 me: localStorage.getItem('username'),
                 message: messageText,
