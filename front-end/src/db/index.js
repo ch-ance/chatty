@@ -1,6 +1,6 @@
 import Dexie from 'dexie'
 
-const db = new Dexie('chattest')
+const db = new Dexie('chattyvi')
 db.version(1).stores({
     messages: '++id, contact, message',
 })
