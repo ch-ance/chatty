@@ -32,9 +32,15 @@ const App = ({ ws, history }) => {
     }
 
     useEffect(() => {
-        const messages = db.table('messages').toArray()
-
-        console.log('DB MESS: ', messages)
+        const messages = db
+            .table('messages')
+            .toArray()
+            .then(messages => {
+                console.log('MSGS: ', messages)
+            })
+            .catch(err => {
+                console.error(err)
+            })
     })
 
     const addMessage = message => {
