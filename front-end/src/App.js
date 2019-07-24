@@ -32,16 +32,19 @@ const App = ({ ws, history }) => {
     }
 
     useEffect(() => {
-        const messages = db
-            .table('messages')
+        db.table('messages')
             .toArray()
             .then(messages => {
                 console.log('MSGS: ', messages)
+                dispatch({
+                    type: 'getMessages',
+                    payload: messages,
+                })
             })
             .catch(err => {
                 console.error(err)
             })
-    })
+    }, [])
 
     const addMessage = message => {
         const insertion = {

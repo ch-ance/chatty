@@ -56,6 +56,11 @@ export const reducer = (state, action) => {
                 ...state,
                 ws: action.payload,
             }
+        case 'getMessages':
+            return {
+                ...state,
+                messages: action.payload,
+            }
 
         default:
             return state
