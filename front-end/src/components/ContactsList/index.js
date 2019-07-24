@@ -41,7 +41,9 @@ const ContactsList = ({
     return (
         <div
             onClick={e => {
-                console.log('lsdfksdlfksldf')
+                console.log(
+                    'clicking where it should close the modal. Hopefully OUTSIDE of the modal itself',
+                )
                 e.preventDefault()
                 if (open === true) {
                     setOpen(false)

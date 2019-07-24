@@ -31,6 +31,12 @@ const App = ({ ws, history }) => {
         })
     }
 
+    useEffect(() => {
+        const messages = db.table('messages').toArray()
+
+        console.log('DB MESS: ', messages)
+    })
+
     const addMessage = message => {
         const insertion = {
             contact: message.other,
