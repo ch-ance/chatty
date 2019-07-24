@@ -42,7 +42,10 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
         messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
 
-    useEffect(scrollToBottom, [messages])
+    useEffect(() => {
+        scrollToBottom()
+        messages = messages.filter(msg => msg.contact === chattingWith)
+    }, [messages])
 
     const username = localStorage.getItem('username')
 
@@ -126,7 +129,7 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
             const message = {
                 pm: true,
                 friendID,
-                other: chattingWith.nickname,
+                other: chattingWith,
                 me: localStorage.getItem('username'),
                 message: messageText,
             }

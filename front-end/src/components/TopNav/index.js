@@ -164,7 +164,7 @@ export default function TopNav({ chattingWith, history }) {
                             variant="h6"
                             noWrap
                         >
-                            {chattingWith !== null && chattingWith.nickname}
+                            {chattingWith !== null && chattingWith}
                         </Typography>
                         <IconButton
                             edge="end"
