@@ -51,9 +51,8 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
         setTheseMsgs(messages.filter(msg => msg.contact === chattingWith))
         console.log('FILTEDED: ', theseMsgs)
         console.log('UNFILTERED: ', messages)
+        console.log(messages[0])
     }, [messages])
-
-    const username = localStorage.getItem('username')
 
     return (
         <div
@@ -68,7 +67,7 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                 }}
             >
                 {theseMsgs.map(message => {
-                    return message.me === username ? (
+                    return message.user === localStorage.getItem('username') ? (
                         <UserChatBox message={message} />
                     ) : (
                         <ContactChatBox message={message} />
@@ -136,11 +135,12 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
                 pm: true,
                 contact: friendID,
                 other: chattingWith,
-                me: localStorage.getItem('username'),
+                user: localStorage.getItem('username'),
                 message: messageText,
             }
             ws.send(JSON.stringify(message))
-            if (message.me === username) {
+            console.log('SENDING: ', message)
+            if (message.user === localStorage.getItem('username')) {
                 addMessage(message)
             }
             // need to stringify for WebSocket server to accept and read it
