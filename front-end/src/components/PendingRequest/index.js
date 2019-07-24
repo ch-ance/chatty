@@ -14,6 +14,8 @@ const useStyles = makeStyles(theme => ({
         border: '2px solid pink',
         borderRadius: '5%',
         cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
     },
     modal: {
         position: 'absolute',
@@ -54,49 +56,35 @@ const PendingRequest = ({
             }}
         >
             <Typography variant="h4">
-                New Contact Request From: {from}
+                {from} sent you a contact request.
             </Typography>
-            <Modal
-                open={open}
-                onClose={e => {
-                    e.preventDefault()
-                    setOpen(false)
-                }}
-            >
-                <div className={classes.modal}>
-                    <Typography variant="h4">
-                        {from} would like to add you as a contact. Click "Add"
-                        to accept their invitation, or "Decline" otherwise
-                    </Typography>
-                    <div className={classes.buttonDiv}>
-                        <Button
-                            onClick={e => {
-                                e.preventDefault()
-                                axios
-                                    .post(
-                                        `${
-                                            process.env.REACT_APP_USERS_DB
-                                        }/api/users/accept-contact`,
-                                        {
-                                            username: from,
-                                        },
-                                    )
-                                    .then(res => {
-                                        console.log(res)
-                                        setOpen(false)
-                                        setToggle(!toggle)
-                                    })
-                                    .catch(err => {
-                                        console.error(err)
-                                    })
-                            }}
-                        >
-                            Add
-                        </Button>
-                        <Button>Decline</Button>
-                    </div>
-                </div>
-            </Modal>
+            <div>
+                <Button
+                    onClick={e => {
+                        e.preventDefault()
+                        axios
+                            .post(
+                                `${
+                                    process.env.REACT_APP_USERS_DB
+                                }/api/users/accept-contact`,
+                                {
+                                    username: from,
+                                },
+                            )
+                            .then(res => {
+                                console.log(res)
+                                setOpen(false)
+                                setToggle(!toggle)
+                            })
+                            .catch(err => {
+                                console.error(err)
+                            })
+                    }}
+                >
+                    Accept
+                </Button>
+                <Button>Decline</Button>
+            </div>
         </ListItem>
     )
 }
