@@ -72,6 +72,14 @@ const Register = ({ history }) => {
                 <Button type="submit" variant="contained">
                     Register
                 </Button>
+                <Button
+                    onClick={e => {
+                        e.preventDefault()
+                        history.push('/')
+                    }}
+                >
+                    I already have an account, let me Sign In
+                </Button>
             </form>
         </div>
     )

@@ -77,12 +77,12 @@ const Login = ({ login, history }) => {
             <button
                 onClick={e => {
                     e.preventDefault()
-                    history.push('/learn-more')
+                    history.push('/register')
                 }}
                 style={{ all: 'unset' }}
             >
                 <Typography variant="h6" className={classes.learnMore}>
-                    New to Chatty? Click here to learn more
+                    New to Chatty? Click here to create an account
                 </Typography>
             </button>
         </div>
