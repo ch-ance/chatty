@@ -30,6 +30,9 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         justifyContent: 'space-between',
     },
+    invitationScreen: {
+        display: 'none',
+    },
 }))
 
 const AddContact = ({ history }) => {
@@ -88,7 +91,11 @@ const AddContact = ({ history }) => {
                     Add Contact
                 </Button>
             </form>
-            <div className={classes.bottom}>
+            <div
+                className={
+                    state.inviteCode ? classes.bottom : classes.invitationScreen
+                }
+            >
                 <Typography
                     stye={{
                         margin: '1rem',
