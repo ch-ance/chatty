@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
+import { useStateValue } from '../../state/'
 
 const useStyles = makeStyles(theme => ({
     listItem: {
@@ -25,6 +26,15 @@ const Contact = ({
 
     const statusColor = contact.online ? 'yellow' : 'red'
 
+    const [{ messages }, dispatch] = useStateValue()
+
+    const [lastMessage, setLastMessage] = useState('')
+
+    useEffect(() => {
+        const msgs = messages.filter(msg => msg.contact === contact.second_user)
+        setLastMessage(msgs[msgs.length - 1])
+    }, [messages])
+
     return (
         <ListItem
             className={classes.listItem}
@@ -45,9 +55,7 @@ const Contact = ({
             </ListItemAvatar>
             <ListItemText
                 primary={contact.second_user}
-                secondary={
-                    <>{" — I'll be in your neighborhood doing errands this…"}</>
-                }
+                secondary={<>{lastMessage && lastMessage.message}</>}
             />
             <div
                 style={{
