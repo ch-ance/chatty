@@ -31,13 +31,13 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
+const Chat = ({ ws, messages, addMessage, chattingWith }) => {
     const classes = useStyles()
 
     console.log('CHATTING WITH: ', chattingWith)
 
     const [theseMsgs, setTheseMsgs] = useState([
-        messages.filter(msg => msg.contact === chattingWith),
+        messages.filter(msg => msg.sendingUser === chattingWith),
     ])
 
     const messagesEndRef = useRef(null)
@@ -48,10 +48,10 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
 
     useEffect(() => {
         scrollToBottom()
-        setTheseMsgs(messages.filter(msg => msg.contact === chattingWith))
+        console.log('ALL MESSAGES FUCK: ', messages)
+        setTheseMsgs(messages.filter(msg => msg.sendingUser === chattingWith))
         console.log('FILTEDED: ', theseMsgs)
         console.log('UNFILTERED: ', messages)
-        console.log(messages[0])
     }, [messages])
 
     return (
@@ -132,11 +132,10 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
         function sendMessage(event) {
             event.preventDefault()
             const message = {
-                pm: true,
-                contact: friendID,
-                other: chattingWith,
-                user: localStorage.getItem('username'),
-                message: messageText,
+                type: 'Private Message',
+                sendingUser: localStorage.getItem('username'),
+                receivingUser: chattingWith,
+                messageText: messageText,
             }
             ws.send(JSON.stringify(message))
             console.log('SENDING: ', message)
@@ -151,14 +150,18 @@ const Chat = ({ ws, messages, addMessage, friendID, chattingWith }) => {
     function UserChatBox({ message }) {
         const classes = useStyles()
 
-        return <Paper className={classes.sentMessage}>{message.message}</Paper>
+        return (
+            <Paper className={classes.sentMessage}>{message.messageText}</Paper>
+        )
     }
 
     function ContactChatBox({ message }) {
         const classes = useStyles()
 
         return (
-            <Paper className={classes.receivedMessage}>{message.message}</Paper>
+            <Paper className={classes.receivedMessage}>
+                {message.messageText}
+            </Paper>
         )
     }
 }

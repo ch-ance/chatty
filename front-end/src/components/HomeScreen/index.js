@@ -98,7 +98,7 @@ const HomeScreen = ({
 
         ws.onmessage = evt => {
             const message = JSON.parse(evt.data)
-            if (message.pm) {
+            if (message.type === 'Private Message') {
                 console.log('New Message: ', message)
                 addMessage(message)
             } else if (message.updatingOnlineStatus) {
@@ -113,6 +113,9 @@ const HomeScreen = ({
                         } else return contact
                     }),
                 )
+            } else if (message.contactRequestAccepted) {
+                console.log('IT FUCKED ACCEPTED IT!!!!!')
+                console.table('MSSSSSSSGGGGG: ', message)
             } else if (message.userIsOnline) {
                 console.log(`${message.user} is now online!`)
                 setContacts(

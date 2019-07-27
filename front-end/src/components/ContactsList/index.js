@@ -29,14 +29,17 @@ const ContactsList = ({
     setView,
     contacts,
     contactRequests,
+    ws,
 }) => {
-    const [{ ws }, dispatch] = useStateValue()
-
     const classes = useStyles()
 
     const [open, setOpen] = useState(false)
 
     const [toggle, setToggle] = useState(false)
+
+    useEffect(() => {
+        console.log('web socket something')
+    }, [ws])
 
     return (
         <div

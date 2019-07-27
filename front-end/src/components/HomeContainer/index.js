@@ -29,6 +29,7 @@ const HomeContainer = ({
                 setView={setView}
                 contacts={contacts}
                 contactRequests={contactRequests}
+                ws={ws}
             />
         )
     }

@@ -48,9 +48,9 @@ const App = ({ ws, history }) => {
 
     const addMessage = message => {
         const insertion = {
-            contact: message.other,
-            message: message.message,
-            user: message.user,
+            sendingUser: message.sendingUser,
+            receivingUser: message.receivingUser,
+            messageText: message.messageText,
         }
         db.table('messages')
             .add(insertion)

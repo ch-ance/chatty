@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import ListItem from '@material-ui/core/ListItem'
 import { Typography, Modal, Button } from '@material-ui/core'
 import { withRouter } from 'react-router-dom'
+import { useStateValue } from '../../state/'
 
 import axios from 'axios'
 
@@ -46,6 +47,12 @@ const PendingRequest = ({
 }) => {
     const classes = useStyles()
 
+    const [state, dispatch] = useStateValue()
+
+    useEffect(() => {
+        console.log(state.ws)
+    }, [])
+
     return (
         <ListItem
             className={classes.listItem}
@@ -73,8 +80,16 @@ const PendingRequest = ({
                             )
                             .then(res => {
                                 console.log(res)
-                                setOpen(false)
-                                setToggle(!toggle)
+
+                                state.ws.send(
+                                    JSON.stringify({
+                                        type: 'Accepting Contact Request',
+                                        acceptingUser: localStorage.getItem(
+                                            'username',
+                                        ),
+                                        requestingUser: from,
+                                    }),
+                                )
                             })
                             .catch(err => {
                                 console.error(err)
