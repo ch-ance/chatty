@@ -62,6 +62,12 @@ const AddContact = ({ history }) => {
             )
             .then(res => {
                 console.log(res)
+                const message = {
+                    type: 'Sending Contact Request',
+                    acceptingUser: contactUsername,
+                    requestingUser: localStorage.getItem('username'),
+                }
+                state.ws.send(JSON.stringify(message))
             })
             .catch(err => {
                 console.error(err)
