@@ -10,22 +10,24 @@ import SearchIcon from '@material-ui/icons/Search'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Drawer from '@material-ui/core/Drawer'
 import AddIcon from '@material-ui/icons/AddCircle'
+import Avatar from '@material-ui/core/Avatar'
 
 import AddContact from '../AddContact/'
+import chatty_logo from '../../assets/chatty-logo-v1.png'
 
 import db from '../../db'
 import { Button } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        flexGrow: 1,
-        height: '8vh',
+        // maxHeight: '20%',
         position: 'sticky',
         top: 0,
         zIndex: 5,
     },
     appBar: {
         height: '100%',
+        maxHeight: '100%',
         width: '100vw',
         display: 'flex',
         flexDirection: 'row',
@@ -33,6 +35,7 @@ const useStyles = makeStyles(theme => ({
     },
     toolbar: {
         display: 'flex',
+        maxHeight: '100%',
         width: '100vw',
         justifyContent: 'space-between',
     },
@@ -63,6 +66,9 @@ const useStyles = makeStyles(theme => ({
     dropDownHome: {
         width: '100vw',
         // height: '92vh',
+    },
+    chattyLogo: {
+        height: '50px',
     },
 }))
 
@@ -114,19 +120,6 @@ export default function TopNav({ chattingWith, history }) {
                         >
                             Chatty
                         </Typography>
-                        {/* <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InputBase
-                                placeholder="Search…"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'Search' }}
-                            />
-                        </div> */}
                     </Toolbar>
                     <Button
                         onClick={e => {

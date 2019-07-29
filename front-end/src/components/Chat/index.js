@@ -37,11 +37,14 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
     console.log('CHATTING WITH: ', chattingWith)
 
     const [theseMsgs, setTheseMsgs] = useState([
-        messages.filter(
-            msg =>
+        messages.filter(msg => {
+            if (
                 msg.sendingUser === chattingWith ||
-                msg.receivingUser === chattingWith,
-        ),
+                msg.receivingUser === chattingWith
+            ) {
+                return msg
+            }
+        }),
     ])
 
     const messagesEndRef = useRef(null)
@@ -53,7 +56,16 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
     useEffect(() => {
         scrollToBottom()
         console.log('ALL MESSAGES FUCK: ', messages)
-        setTheseMsgs(messages.filter(msg => msg.sendingUser === chattingWith))
+        setTheseMsgs(
+            messages.filter(msg => {
+                if (
+                    msg.sendingUser === chattingWith ||
+                    msg.receivingUser === chattingWith
+                ) {
+                    return msg
+                }
+            }),
+        )
         console.log('FILTEDED: ', theseMsgs)
         console.log('UNFILTERED: ', messages)
     }, [messages])
