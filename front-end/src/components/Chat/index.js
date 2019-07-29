@@ -37,7 +37,11 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
     console.log('CHATTING WITH: ', chattingWith)
 
     const [theseMsgs, setTheseMsgs] = useState([
-        messages.filter(msg => msg.sendingUser === chattingWith),
+        messages.filter(
+            msg =>
+                msg.sendingUser === chattingWith ||
+                msg.receivingUser === chattingWith,
+        ),
     ])
 
     const messagesEndRef = useRef(null)
@@ -67,7 +71,8 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
                 }}
             >
                 {theseMsgs.map(message => {
-                    return message.user === localStorage.getItem('username') ? (
+                    return message.sendingUser ===
+                        localStorage.getItem('username') ? (
                         <UserChatBox message={message} />
                     ) : (
                         <ContactChatBox message={message} />
@@ -139,7 +144,8 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
             }
             ws.send(JSON.stringify(message))
             console.log('SENDING: ', message)
-            if (message.user === localStorage.getItem('username')) {
+            if (message.sendingUser === localStorage.getItem('username')) {
+                console.log('Test??!??!?')
                 addMessage(message)
             }
             // need to stringify for WebSocket server to accept and read it

@@ -1,8 +1,8 @@
 import Dexie from 'dexie'
 
-const db = new Dexie('chattyhaha')
+const db = new Dexie('chattyploo')
 db.version(1).stores({
-    messages: '++id, contact, message, user',
+    messages: '++id, receivingUser, sendingUser, messageText',
 })
 
 export default db
