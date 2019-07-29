@@ -54,7 +54,6 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
     }
 
     useEffect(() => {
-        scrollToBottom()
         console.log('ALL MESSAGES FUCK: ', messages)
         setTheseMsgs(
             messages.filter(msg => {
@@ -68,6 +67,7 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
         )
         console.log('FILTEDED: ', theseMsgs)
         console.log('UNFILTERED: ', messages)
+        scrollToBottom()
     }, [messages])
 
     return (
