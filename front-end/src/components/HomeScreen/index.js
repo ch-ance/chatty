@@ -101,6 +101,10 @@ const HomeScreen = ({
             if (message.type === 'Private Message') {
                 console.log('New Message: ', message)
                 addMessage(message)
+            } else if (message.type === 'Accepting Contact Request') {
+                console.log(message.requestingUser, ' accepted your request!')
+                getContacts()
+                getContactRequests()
             } else if (message.updatingOnlineStatus) {
                 const onlineContacts = message.onlineContacts
                 setContacts(

@@ -80,16 +80,14 @@ const PendingRequest = ({
                             )
                             .then(res => {
                                 console.log(res)
-
-                                state.ws.send(
-                                    JSON.stringify({
-                                        type: 'Accepting Contact Request',
-                                        acceptingUser: localStorage.getItem(
-                                            'username',
-                                        ),
-                                        requestingUser: from,
-                                    }),
-                                )
+                                const message = {
+                                    type: 'Accepting Contact Request',
+                                    acceptingUser: localStorage.getItem(
+                                        'username',
+                                    ),
+                                    requestingUser: from,
+                                }
+                                state.ws.send(JSON.stringify(message))
                             })
                             .catch(err => {
                                 console.error(err)
