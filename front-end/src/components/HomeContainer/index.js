@@ -18,6 +18,8 @@ const HomeContainer = ({
     ws,
     contacts,
     contactRequests,
+    getContactRequests,
+    getContacts,
 }) => {
     console.log('PATH: ', path)
     if (path === '/') {
@@ -30,6 +32,8 @@ const HomeContainer = ({
                 contacts={contacts}
                 contactRequests={contactRequests}
                 ws={ws}
+                getContacts={getContacts}
+                getContactRequests={getContactRequests}
             />
         )
     }

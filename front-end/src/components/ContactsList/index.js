@@ -30,6 +30,8 @@ const ContactsList = ({
     contacts,
     contactRequests,
     ws,
+    getContacts,
+    getContactRequests,
 }) => {
     const classes = useStyles()
 
@@ -69,6 +71,8 @@ const ContactsList = ({
                         from={request.first_user}
                         toggle={toggle}
                         setToggle={setToggle}
+                        getContacts={getContacts}
+                        getContactRequests={getContactRequests}
                     />
                 )
             })}

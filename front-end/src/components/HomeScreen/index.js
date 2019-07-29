@@ -170,6 +170,8 @@ const HomeScreen = ({
                     setView={setView}
                     contacts={contacts}
                     contactRequests={contactRequests}
+                    getContactRequests={getContactRequests}
+                    getContacts={getContacts}
                 />
             </div>
         </Context.Provider>

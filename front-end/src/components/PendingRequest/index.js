@@ -37,14 +37,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const PendingRequest = ({
-    from,
-    history,
-    setToggle,
-    toggle,
-    open,
-    setOpen,
-}) => {
+const PendingRequest = ({ from, setOpen, getContacts, getContactRequests }) => {
     const classes = useStyles()
 
     const [state, dispatch] = useStateValue()
@@ -88,6 +81,8 @@ const PendingRequest = ({
                                     requestingUser: from,
                                 }
                                 state.ws.send(JSON.stringify(message))
+                                getContacts()
+                                getContactRequests()
                             })
                             .catch(err => {
                                 console.error(err)
