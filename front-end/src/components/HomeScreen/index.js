@@ -124,9 +124,6 @@ const HomeScreen = ({
                         } else return contact
                     }),
                 )
-            } else if (message.contactRequestAccepted) {
-                console.log('IT FUCKED ACCEPTED IT!!!!!')
-                console.table('MSSSSSSSGGGGG: ', message)
             } else if (message.userIsOnline) {
                 console.log(`${message.user} is now online!`)
                 setContacts(
