@@ -105,6 +105,13 @@ const HomeScreen = ({
                 console.log(message.requestingUser, ' accepted your request!')
                 getContacts()
                 getContactRequests()
+            } else if (message.type === 'Sending Contact Request') {
+                console.log(
+                    message.requestingUser,
+                    ' sent you a contact request!',
+                )
+                getContactRequests()
+                getContacts()
             } else if (message.updatingOnlineStatus) {
                 const onlineContacts = message.onlineContacts
                 setContacts(
