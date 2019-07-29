@@ -54,7 +54,6 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
     }
 
     useEffect(() => {
-        console.log('ALL MESSAGES FUCK: ', messages)
         setTheseMsgs(
             messages.filter(msg => {
                 if (
@@ -65,8 +64,6 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
                 }
             }),
         )
-        console.log('FILTEDED: ', theseMsgs)
-        console.log('UNFILTERED: ', messages)
         scrollToBottom()
     }, [messages])
 
@@ -120,6 +117,8 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
                 onChange={e => setMessageText(e.target.value)}
             /> */}
                     <TextField
+                        autoFocus
+                        type="text"
                         value={messageText}
                         onChange={e => setMessageText(e.target.value)}
                         className={classes.root}
