@@ -26,13 +26,6 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-// const ThemedButton = () => {
-//     const [state, dispatch] = useStateValue()
-//             onClick={() =>
-//                 dispatch({
-//                     type: 'changeTheme',
-//                     newTheme: { primary: 'blue' },
-
 const InvitePage = ({ login, history }) => {
     const classes = useStyles()
 

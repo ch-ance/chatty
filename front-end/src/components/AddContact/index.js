@@ -73,7 +73,7 @@ const AddContact = ({ history }) => {
                 console.error(err)
             })
 
-        // need some error handling for users that already exist, DUH!
+        // need some error handling for users that already exist,
     }
     return (
         <>

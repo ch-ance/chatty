@@ -88,7 +88,6 @@ const ContactsList = ({
                         />
                     )
                 })}
-                {/* <Divider variant="inset" component="li" /> */}
             </List>
         </div>
     )

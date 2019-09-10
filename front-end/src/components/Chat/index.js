@@ -50,7 +50,6 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
     const messagesEndRef = useRef(null)
 
     const scrollToBottom = () => {
-        // messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
         messagesEndRef.current.scrollIntoView()
     }
 
@@ -112,11 +111,6 @@ const Chat = ({ ws, messages, addMessage, chattingWith }) => {
                     }}
                     onSubmit={sendMessage}
                 >
-                    {/* <input
-                type="text"
-                value={messageText}
-                onChange={e => setMessageText(e.target.value)}
-            /> */}
                     <TextField
                         autoFocus
                         type="text"

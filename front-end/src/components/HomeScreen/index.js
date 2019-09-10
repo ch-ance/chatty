@@ -56,17 +56,6 @@ const HomeScreen = ({
             .catch(err => {
                 console.error(err)
             })
-        // window.onbeforeunload = () => {
-        //     const message = {
-        //         me: localStorage.getItem('username'),
-        //         statusCheck: true,
-        //         online: false,
-        //         contactIDs: contacts.map(contact => {
-        //             return contact.second_user
-        //         }),
-        //     }
-        //     ws.send(JSON.stringify(message))
-        // }
     }
 
     function getContactRequests() {

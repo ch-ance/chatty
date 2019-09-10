@@ -1,18 +1,11 @@
 import React, { useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
 
 import LearnMore from '../components/LearnMore/LearnMore'
 import Register from '../components/Register/Register'
 import Login from '../components/Login/Login'
 import InvitePage from '../components/InvitePage/'
-import AddContact from '../components/AddContact/'
-
-import { useStateValue } from '../state/'
-// DEV
-// import axios from 'axios'
 
 const url = process.env.REACT_APP_SOCKET_URL || 'ws://localhost:3030'
-// const url = 'ws://localhost:1234'
 
 const requiresConnection = Component => {
     return class extends React.Component {
@@ -24,7 +17,6 @@ const requiresConnection = Component => {
                 pointless: 0,
             }
         }
-        // const  = props.
 
         componentDidUpdate() {
             if (this.state.ws !== undefined && this.state.ws.readyState == 1) {
@@ -34,10 +26,6 @@ const requiresConnection = Component => {
                 }
                 this.state.ws.send(JSON.stringify(message))
             } else {
-                // this.setState(prevState => ({
-                //     ...prevState,
-                //     pointless: prevState.pointless + 1,
-                // }))
             }
         }
 

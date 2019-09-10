@@ -9,7 +9,7 @@ const AddFriend = () => {
   async function addContact(event) {
     event.preventDefault();
     console.log(db.contacts);
-    // need some error handling for users that already exist, DUH!
+    // need some error handling for users that already exist
     await db.contacts.add({
       nickname,
       contactID,

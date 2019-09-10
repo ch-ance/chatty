@@ -3,24 +3,19 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
-import InputBase from '@material-ui/core/InputBase'
 import { makeStyles, fade } from '@material-ui/core/styles'
 import SettingsIcon from '@material-ui/icons/Settings'
-import SearchIcon from '@material-ui/icons/Search'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Drawer from '@material-ui/core/Drawer'
 import AddIcon from '@material-ui/icons/AddCircle'
-import Avatar from '@material-ui/core/Avatar'
 
 import AddContact from '../AddContact/'
-import chatty_logo from '../../assets/chatty-logo-v1.png'
 
 import db from '../../db'
 import { Button } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        // maxHeight: '20%',
         position: 'sticky',
         top: 0,
         zIndex: 5,
@@ -45,7 +40,6 @@ const useStyles = makeStyles(theme => ({
     settingsButton: {},
     title: {
         fontSize: '2rem',
-        // display: 'block',
     },
     search: {
         position: 'relative',
@@ -65,7 +59,6 @@ const useStyles = makeStyles(theme => ({
     },
     dropDownHome: {
         width: '100vw',
-        // height: '92vh',
     },
     chattyLogo: {
         height: '50px',
@@ -182,18 +175,6 @@ export default function TopNav({ chattingWith, history }) {
             <div className={classes.root}>
                 <AppBar position="static" className={classes.appBar}>
                     <Toolbar>
-                        {/* <IconButton
-                            edge="start"
-                            className={classes.backButton}
-                            color="inherit"
-                            aria-label="Go Back"
-                            onClick={e => {
-                                e.preventDefault()
-                                history.push('/')
-                            }}
-                        >
-                            <ArrowBackIcon />
-                        </IconButton> */}
                         <Drawer
                             anchor={'bottom'}
                             open={drawer}
@@ -209,19 +190,6 @@ export default function TopNav({ chattingWith, history }) {
                         >
                             Chatty
                         </Typography>
-                        {/* <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InputBase
-                                placeholder="Search…"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'Search' }}
-                            />
-                        </div> */}
                     </Toolbar>
                 </AppBar>
             </div>
