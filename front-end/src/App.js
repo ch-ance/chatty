@@ -4,7 +4,6 @@ import db from './db/'
 
 import Loading from './components/Loading/'
 import HomeScreen from './components/HomeScreen'
-import AddContact from './components/AddContact/'
 import requiresConnection from './HOCs/requiresConnection'
 import { useStateValue } from './state/'
 
